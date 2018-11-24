@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ru.nemodev.project.quotes.view.author.search.AuthorCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/authorCardItem"
+    card_view:cardElevation="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+        <ImageView
+            android:id="@+id/authorImg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/authorName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/authorImg"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000"/>
+    </RelativeLayout>
+</ru.nemodev.project.quotes.view.author.search.AuthorCardView>
+

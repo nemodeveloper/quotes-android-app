@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main theme app -->
+    <color name="colorPrimary">#3A88C5</color>
+    <color name="colorPrimaryDark">#3A88C5</color>
+    <color name="colorAccent">#3A88C5</color>
+
+    <!-- Quote Card -->
+    <color name="quoteCardBackground">#FFFFFF</color>
+    <color name="quoteAuthor">#000000</color>
+    <color name="quoteSource">#828282</color>
+    <color name="quoteText">#000000</color>
+
+    <color name="quoteCategoryButton">#3F88C5</color>
+
+    <!-- Fast search index bar RV -->
+    <color name="search_bar_background">#666666</color>
+
+</resources>

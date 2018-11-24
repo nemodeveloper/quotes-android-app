@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item_random"
+            android:icon="@drawable/random"
+            android:title="@string/random_title" />
+        <item
+            android:id="@+id/nav_item_author"
+            android:icon="@drawable/author"
+            android:title="@string/author_title" />
+        <item
+            android:id="@+id/nav_item_category"
+            android:icon="@drawable/category"
+            android:title="@string/category_title" />
+        <item
+            android:id="@+id/nav_item_like"
+            android:icon="@drawable/category"
+            android:title="@string/like_title" />
+    </group>
+
+    <item android:title="@string/menu_item_others">
+        <menu>
+            <item
+                android:id="@+id/nav_item_telegram_channel"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_item_telegram_channel" />
+            <item
+                android:id="@+id/nav_item_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_item_share" />
+        </menu>
+    </item>
+
+</menu>
