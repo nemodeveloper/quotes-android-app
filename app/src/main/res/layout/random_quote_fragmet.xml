@@ -30,11 +30,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
-                android:id="@+id/authorList"
+            <ru.nemodev.project.quotes.mvp.base.RandomQuoteRV
+                android:id="@+id/quoteList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView>
+                android:layout_height="match_parent"
+                android:background="#EEEEEE">
+            </ru.nemodev.project.quotes.mvp.base.RandomQuoteRV>
             <ProgressBar
                 android:id="@+id/contentLoadingProgressBar"
                 android:layout_width="100dp"

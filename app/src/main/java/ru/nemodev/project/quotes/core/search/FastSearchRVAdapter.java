@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.nemodev.project.quotes.core.load.simple.SimpleLoadRVAdapter;
+import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends SimpleLoadRVAdapter<T, VH> implements SectionIndexer
+        extends SimpleRVAdapter<T, VH> implements SectionIndexer
 {
     private List<Integer> sectionPositions;
 
-    public FastSearchRVAdapter(Context context, int initialDataSize)
+    public FastSearchRVAdapter(Context context, List<T> data)
     {
-        super(context, initialDataSize);
+        super(context, data);
         this.sectionPositions = Collections.emptyList();
     }
 

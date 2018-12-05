@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.nemodev.project.quotes.view.quote.category.QuoteByCategoryCardView
+<ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/quoteCardItem"
@@ -87,5 +87,5 @@
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </RelativeLayout>
-</ru.nemodev.project.quotes.view.quote.category.QuoteByCategoryCardView>
+</ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView>
 

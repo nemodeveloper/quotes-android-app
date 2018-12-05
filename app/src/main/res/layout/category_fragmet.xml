@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ru.nemodev.project.quotes.view.MainActivity">
+    tools:context="ru.nemodev.project.quotes.mvp.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,12 +30,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ru.nemodev.project.quotes.view.category.search.CategoryLoadRV
+            <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
                 android:id="@+id/categoryList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE">
-            </ru.nemodev.project.quotes.view.category.search.CategoryLoadRV>
+            </in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView>
             <ProgressBar
                 android:id="@+id/contentLoadingProgressBar"
                 android:layout_width="100dp"
