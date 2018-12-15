@@ -11,7 +11,7 @@ import java.util.List;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.core.recyclerView.OnItemClickRVListener;
 import ru.nemodev.project.quotes.core.search.FastSearchRVAdapter;
-import ru.nemodev.project.quotes.entity.external.Author;
+import ru.nemodev.project.quotes.entity.Author;
 
 public class AuthorRVAdapter extends FastSearchRVAdapter<Author, AuthorRVAdapter.AuthorViewHolder>
 {

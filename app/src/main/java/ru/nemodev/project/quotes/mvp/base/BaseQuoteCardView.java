@@ -17,7 +17,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
@@ -25,7 +25,7 @@ import ru.nemodev.project.quotes.utils.QuoteUtils;
 public class BaseQuoteCardView extends CardView
 {
     protected FragmentActivity fragmentActivity;
-    protected Quote quote;
+    protected QuoteInfo quote;
 
     public BaseQuoteCardView(@NonNull Context context)
     {
@@ -47,7 +47,7 @@ public class BaseQuoteCardView extends CardView
         this.fragmentActivity = fragmentActivity;
     }
 
-    public void setQuote(Quote quote)
+    public void setQuote(QuoteInfo quote)
     {
         this.quote = quote;
 
@@ -64,7 +64,7 @@ public class BaseQuoteCardView extends CardView
 
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(quote.getAuthor() == null ? "?" : authorNameText.substring(0, 1),
-                        ColorGenerator.MATERIAL.getColor(quote.getId()));
+                        ColorGenerator.MATERIAL.getColor(quote.getQuote().getId()));
 
         ImageView authorImage = this.findViewById(R.id.authorImg);
         authorImage.setImageDrawable(drawable);
@@ -96,7 +96,7 @@ public class BaseQuoteCardView extends CardView
     protected void showQuote()
     {
         TextView quoteText = this.findViewById(R.id.quoteText);
-        quoteText.setText(quote.getText());
+        quoteText.setText(quote.getQuote().getText());
     }
 
     protected void showActions()

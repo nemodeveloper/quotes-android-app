@@ -16,8 +16,8 @@ import com.google.android.gms.ads.MobileAds;
 
 import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Author;
-import ru.nemodev.project.quotes.entity.external.Category;
+import ru.nemodev.project.quotes.entity.Author;
+import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
 import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;

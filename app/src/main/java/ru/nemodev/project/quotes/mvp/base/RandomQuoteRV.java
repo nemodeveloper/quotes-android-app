@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import ru.nemodev.project.quotes.core.recyclerView.BaseLoadingRV;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
-public class RandomQuoteRV<VH extends RecyclerView.ViewHolder> extends BaseLoadingRV<Quote, VH>
+public class RandomQuoteRV<VH extends RecyclerView.ViewHolder> extends BaseLoadingRV<QuoteInfo, VH>
 {
     public RandomQuoteRV(Context context)
     {

@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
-public abstract class BaseQuoteAdapter extends SimpleRVAdapter<Quote, BaseQuoteAdapter.BaseQuoteViewHolder>
+public abstract class BaseQuoteAdapter extends SimpleRVAdapter<QuoteInfo, BaseQuoteAdapter.BaseQuoteViewHolder>
 {
     private final FragmentActivity fragmentActivity;
 
-    public BaseQuoteAdapter(FragmentActivity fragmentActivity, List<Quote> quotes)
+    public BaseQuoteAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes)
     {
         super(fragmentActivity, quotes);
         this.fragmentActivity = fragmentActivity;
@@ -33,7 +33,7 @@ public abstract class BaseQuoteAdapter extends SimpleRVAdapter<Quote, BaseQuoteA
             this.quoteCardView.setFragmentActivity(fragmentActivity);
         }
 
-        public void setQuote(Quote quote)
+        public void setQuote(QuoteInfo quote)
         {
             quoteCardView.setQuote(quote);
         }

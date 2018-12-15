@@ -6,7 +6,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.service.quote.QuoteCacheService;
 
 public class AuthorDetailIntractorImpl implements AuthorDetailContract.AuthorDetailIntractor
@@ -14,7 +14,7 @@ public class AuthorDetailIntractorImpl implements AuthorDetailContract.AuthorDet
     @Override
     public void loadQuotes(Long authorId, OnFinishLoadListener onFinishLoadListener)
     {
-        final Observer<List<Quote>> loadNewItemsSubscriber = new Observer<List<Quote>>()
+        final Observer<List<QuoteInfo>> loadNewItemsSubscriber = new Observer<List<QuoteInfo>>()
         {
             @Override
             public void onError(Throwable e)
@@ -29,7 +29,7 @@ public class AuthorDetailIntractorImpl implements AuthorDetailContract.AuthorDet
             public void onSubscribe(Disposable d) { }
 
             @Override
-            public void onNext(List<Quote> items)
+            public void onNext(List<QuoteInfo> items)
             {
                 onFinishLoadListener.onFinishLoad(items);
             }

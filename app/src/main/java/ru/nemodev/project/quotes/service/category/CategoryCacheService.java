@@ -9,8 +9,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.entity.external.Category;
-import ru.nemodev.project.quotes.service.RetrofitServiceFactory;
+import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
+import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.utils.CategoryUtils;
 
 public class CategoryCacheService
 {
@@ -46,7 +47,8 @@ public class CategoryCacheService
             List<Category> cachedAuthors = categoryCache.get(CATEGORY_GET_ALL_CACHE_KEY);
             if (cachedAuthors == null)
             {
-                Observable<List<Category>> observable = RetrofitServiceFactory.getCategoryService().getAll()
+                Observable<List<Category>> observable = RetrofitAPIFactory.getCategoryAPI().getAll()
+                        .map(CategoryUtils::convertCategories)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 

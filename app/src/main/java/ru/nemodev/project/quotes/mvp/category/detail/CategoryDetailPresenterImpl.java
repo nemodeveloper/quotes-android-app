@@ -10,7 +10,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 
 public class CategoryDetailPresenterImpl implements CategoryDetailContract.CategoryDetailPresenter, CategoryDetailContract.CategoryDetailIntractor.OnFinishLoadListener
@@ -42,7 +42,7 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
     }
 
     @Override
-    public void onFinishLoad(List<Quote> quotes)
+    public void onFinishLoad(List<QuoteInfo> quotes)
     {
         Collections.shuffle(quotes);
 

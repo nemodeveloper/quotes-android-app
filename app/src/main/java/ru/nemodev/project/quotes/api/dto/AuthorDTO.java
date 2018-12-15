@@ -1,8 +1,8 @@
-package ru.nemodev.project.quotes.entity.external;
+package ru.nemodev.project.quotes.api.dto;
 
 import java.io.Serializable;
 
-public class Author implements Serializable
+public class AuthorDTO implements Serializable
 {
     private Long id;
     private String fullName;

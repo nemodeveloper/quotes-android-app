@@ -18,7 +18,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
@@ -114,7 +114,7 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     }
 
     @Override
-    public void showQuotes(List<Quote> quotes)
+    public void showQuotes(List<QuoteInfo> quotes)
     {
         // TODO прокидывать OnClickQuoteActionListener вместо Context
         quoteRV.setAdapter(new AuthorQuotesAdapter(getActivity(), quotes));

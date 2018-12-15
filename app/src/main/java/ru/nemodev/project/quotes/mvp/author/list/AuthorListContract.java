@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.author.list;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.external.Author;
+import ru.nemodev.project.quotes.entity.Author;
 
 public interface AuthorListContract
 {

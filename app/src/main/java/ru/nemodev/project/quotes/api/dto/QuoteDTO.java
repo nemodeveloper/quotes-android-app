@@ -1,18 +1,18 @@
-package ru.nemodev.project.quotes.entity.external;
+package ru.nemodev.project.quotes.api.dto;
 
 
 import java.io.Serializable;
 
-public class Quote implements Serializable
+public class QuoteDTO implements Serializable
 {
     private Long id;
-    private Category category;
+    private CategoryDTO category;
     private String text;
-    private Author author;
+    private AuthorDTO author;
     private String source;
     private String year;
 
-    public Quote() {}
+    public QuoteDTO() {}
 
     public Long getId()
     {
@@ -24,12 +24,12 @@ public class Quote implements Serializable
         this.id = id;
     }
 
-    public Category getCategory()
+    public CategoryDTO getCategory()
     {
         return category;
     }
 
-    public void setCategory(Category category)
+    public void setCategory(CategoryDTO category)
     {
         this.category = category;
     }
@@ -44,12 +44,12 @@ public class Quote implements Serializable
         this.text = text;
     }
 
-    public Author getAuthor()
+    public AuthorDTO getAuthor()
     {
         return author;
     }
 
-    public void setAuthor(Author author)
+    public void setAuthor(AuthorDTO author)
     {
         this.author = author;
     }

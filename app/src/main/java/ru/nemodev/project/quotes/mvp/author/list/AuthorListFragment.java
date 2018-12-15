@@ -17,7 +17,7 @@ import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Author;
+import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;

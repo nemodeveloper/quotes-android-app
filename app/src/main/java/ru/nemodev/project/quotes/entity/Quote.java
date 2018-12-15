@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.entity.internal;
+package ru.nemodev.project.quotes.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity(tableName = "quotes")
-public class QuoteInternal implements Serializable
+public class Quote implements Serializable
 {
     @PrimaryKey
     private Long id;
@@ -18,7 +18,6 @@ public class QuoteInternal implements Serializable
     private Long authorId;
     private String source;
     private String year;
-    private Boolean liked;
 
     public Long getId()
     {
@@ -78,15 +77,5 @@ public class QuoteInternal implements Serializable
     public void setYear(String year)
     {
         this.year = year;
-    }
-
-    public Boolean getLiked()
-    {
-        return liked;
-    }
-
-    public void setLiked(Boolean liked)
-    {
-        this.liked = liked;
     }
 }

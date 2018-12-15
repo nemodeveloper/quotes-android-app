@@ -1,14 +1,9 @@
-package ru.nemodev.project.quotes.entity.internal;
-
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+package ru.nemodev.project.quotes.api.dto;
 
 import java.io.Serializable;
 
-@Entity(tableName = "categories")
-public class CategoryInternal implements Serializable
+public class CategoryDTO implements Serializable
 {
-    @PrimaryKey
     private Long id;
     private String name;
 

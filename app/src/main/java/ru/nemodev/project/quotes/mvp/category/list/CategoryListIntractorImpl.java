@@ -6,7 +6,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.entity.external.Category;
+import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.service.category.CategoryCacheService;
 
 public class CategoryListIntractorImpl implements CategoryListContract.CategoryListIntractor

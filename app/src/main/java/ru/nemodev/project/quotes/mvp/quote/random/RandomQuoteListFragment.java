@@ -18,7 +18,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.base.RandomQuoteRV;
@@ -133,7 +133,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
     }
 
     @Override
-    public void showNextQuotes(List<Quote> quotes)
+    public void showNextQuotes(List<QuoteInfo> quotes)
     {
         quoteRV.getAdapter().addItems(quotes);
         quoteRV.getAdapter().notifyItemInserted(quoteRV.getAdapter().getItemCount() - quotes.size());

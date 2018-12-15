@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.category.list;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.external.Category;
+import ru.nemodev.project.quotes.entity.Category;
 
 public interface CategoryListContract
 {

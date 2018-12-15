@@ -1,16 +1,16 @@
-package ru.nemodev.project.quotes.entity.internal;
+package ru.nemodev.project.quotes.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "authors")
-public class AuthorInternal implements Serializable
+@Entity(tableName = "categories")
+public class Category implements Serializable
 {
     @PrimaryKey
     private Long id;
-    private String fullName;
+    private String name;
 
     public Long getId()
     {
@@ -22,13 +22,13 @@ public class AuthorInternal implements Serializable
         this.id = id;
     }
 
-    public String getFullName()
+    public String getName()
     {
-        return fullName;
+        return name;
     }
 
-    public void setFullName(String fullName)
+    public void setName(String name)
     {
-        this.fullName = fullName;
+        this.name = name;
     }
 }

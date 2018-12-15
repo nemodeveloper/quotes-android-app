@@ -10,24 +10,22 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import io.reactivex.Single;
-import ru.nemodev.project.quotes.entity.internal.QuoteInfo;
-import ru.nemodev.project.quotes.entity.internal.QuoteInternal;
+import ru.nemodev.project.quotes.entity.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 @Dao
-public interface QuoteInternalDAO
+public interface QuoteDAO
 {
     @Transaction
-    @Query("SELECT * FROM quotes")
+    @Query("SELECT * FROM quotes " +
+            "INNER JOIN authors ON authors.id = quotes.author_id " +
+            "INNER JOIN categories ON categories.id = quotes.category_id")
     Single<List<QuoteInfo>> getAll();
 
     @Transaction
-    @Query("SELECT * FROM quotes WHERE liked = '1'")
-    Single<List<QuoteInfo>> getLiked();
-
-    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void add(List<QuoteInternal> quotes);
+    void add(List<Quote> quotes);
 
     @Update
-    void update(QuoteInternal quoteInternal);
+    void update(List<Quote> quotes);
 }

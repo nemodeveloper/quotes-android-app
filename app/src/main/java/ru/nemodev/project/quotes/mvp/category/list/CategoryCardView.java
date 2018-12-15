@@ -12,7 +12,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Category;
+import ru.nemodev.project.quotes.entity.Category;
+
 
 public class CategoryCardView extends CardView
 {

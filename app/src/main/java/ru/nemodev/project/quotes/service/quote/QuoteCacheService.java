@@ -2,7 +2,6 @@ package ru.nemodev.project.quotes.service.quote;
 
 import android.support.v4.util.LruCache;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.entity.external.Quote;
-import ru.nemodev.project.quotes.service.RetrofitServiceFactory;
+import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class QuoteCacheService
 {
@@ -21,7 +21,7 @@ public class QuoteCacheService
     private static final String GET_BY_AUTHOR_PREF_KEY = "getByAuthor_";
     private static final String GET_BY_CATEGORY_PREF_KEY = "getByCategory_";
 
-    private final LruCache<String, List<Quote>> quoteCache;
+    private final LruCache<String, List<QuoteInfo>> quoteCache;
 
     private QuoteCacheService(int maxSize)
     {
@@ -44,31 +44,33 @@ public class QuoteCacheService
         return instance;
     }
 
-    public Observable<List<Quote>> getRandom(Map<String, String> queryParams)
+    public Observable<List<QuoteInfo>> getRandom(Map<String, String> queryParams)
     {
-        return RetrofitServiceFactory.getQuoteService().getRandom(queryParams);
+        return RetrofitAPIFactory.getQuoteAPI().getRandom(queryParams)
+                .map(QuoteUtils::toQuotesInfo);
     }
 
-    public Observable<List<Quote>> getByAuthor(Long authorId)
+    public Observable<List<QuoteInfo>> getByAuthor(Long authorId)
     {
         synchronized (QuoteCacheService.class)
         {
             final String byAuthorKey = GET_BY_AUTHOR_PREF_KEY + authorId;
 
-            List<Quote> quotesByAuthor = quoteCache.get(byAuthorKey);
+            List<QuoteInfo> quotesByAuthor = quoteCache.get(byAuthorKey);
             if (quotesByAuthor == null)
             {
-                Observable<List<Quote>> observable = RetrofitServiceFactory.getQuoteService().getByAuthor(authorId)
+                Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByAuthor(authorId)
+                        .map(QuoteUtils::toQuotesInfo)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 
-                observable.subscribe(new Observer<List<Quote>>()
+                observable.subscribe(new Observer<List<QuoteInfo>>()
                 {
                     @Override
                     public void onSubscribe(Disposable d) { }
 
                     @Override
-                    public void onNext(List<Quote> quotes)
+                    public void onNext(List<QuoteInfo> quotes)
                     {
                         quoteCache.put(byAuthorKey, quotes);
                     }
@@ -87,26 +89,27 @@ public class QuoteCacheService
         }
     }
 
-    public Observable<List<Quote>> getByCategory(Long categoryId)
+    public Observable<List<QuoteInfo>> getByCategory(Long categoryId)
     {
         synchronized (QuoteCacheService.class)
         {
             final String byCategoryKey = GET_BY_CATEGORY_PREF_KEY + categoryId;
 
-            List<Quote> quotesByCategory = quoteCache.get(byCategoryKey);
+            List<QuoteInfo> quotesByCategory = quoteCache.get(byCategoryKey);
             if (quotesByCategory == null)
             {
-                Observable<List<Quote>> observable = RetrofitServiceFactory.getQuoteService().getByCategory(categoryId)
+                Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByCategory(categoryId)
+                        .map(QuoteUtils::toQuotesInfo)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 
-                observable.subscribe(new Observer<List<Quote>>()
+                observable.subscribe(new Observer<List<QuoteInfo>>()
                 {
                     @Override
                     public void onSubscribe(Disposable d) { }
 
                     @Override
-                    public void onNext(List<Quote> quotes)
+                    public void onNext(List<QuoteInfo> quotes)
                     {
                         quoteCache.put(byCategoryKey, quotes);
                     }
@@ -123,10 +126,5 @@ public class QuoteCacheService
 
             return Observable.just(quotesByCategory);
         }
-    }
-
-    public Observable<List<Quote>> getLiked()
-    {
-        return Observable.just(Collections.emptyList());
     }
 }

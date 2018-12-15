@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.category.detail;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public interface CategoryDetailContract
 {
@@ -10,7 +10,7 @@ public interface CategoryDetailContract
     {
         void showLoader();
         void hideLoader();
-        void showQuotes(List<Quote> quotes);
+        void showQuotes(List<QuoteInfo> quotes);
     }
 
     interface CategoryDetailPresenter
@@ -22,7 +22,7 @@ public interface CategoryDetailContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<Quote> quotes);
+            void onFinishLoad(List<QuoteInfo> quotes);
             void onLoadError(Throwable t);
         }
 

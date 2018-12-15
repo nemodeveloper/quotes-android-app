@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.quote.random;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public interface RandomQuoteListContract
 {
@@ -10,7 +10,7 @@ public interface RandomQuoteListContract
     {
         void showLoader();
         void hideLoader();
-        void showNextQuotes(List<Quote> quotes);
+        void showNextQuotes(List<QuoteInfo> quotes);
     }
 
     interface RandomQuoteListPresenter
@@ -22,7 +22,7 @@ public interface RandomQuoteListContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<Quote> quotes);
+            void onFinishLoad(List<QuoteInfo> quotes);
             void onLoadError(Throwable t);
         }
 

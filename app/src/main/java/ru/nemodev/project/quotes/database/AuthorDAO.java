@@ -8,14 +8,14 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 import io.reactivex.Single;
-import ru.nemodev.project.quotes.entity.internal.AuthorInternal;
+import ru.nemodev.project.quotes.entity.Author;
 
 @Dao
-public interface AuthorInternalDAO
+public interface AuthorDAO
 {
     @Query("SELECT * FROM authors")
-    Single<List<AuthorInternal>> getAll();
+    Single<List<Author>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void add(List<AuthorInternal> authorInternals);
+    void add(List<Author> authors);
 }

@@ -5,20 +5,20 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 
 import ru.nemodev.project.quotes.app.QuoteApp;
-import ru.nemodev.project.quotes.entity.internal.AuthorInternal;
-import ru.nemodev.project.quotes.entity.internal.CategoryInternal;
-import ru.nemodev.project.quotes.entity.internal.QuoteInternal;
+import ru.nemodev.project.quotes.entity.Author;
+import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.Quote;
 
-@Database(entities = {QuoteInternal.class, AuthorInternal.class, CategoryInternal.class}, version = 1)
+@Database(entities = {Quote.class, Author.class, Category.class}, version = 1)
 public abstract class AppDataBase extends RoomDatabase
 {
     private static final String DATA_BASE_NAME = "quotes.db";
 
     private static volatile AppDataBase instance;
 
-    public abstract QuoteInternalDAO quoteDAO();
-    public abstract AuthorInternalDAO authorDAO();
-    public abstract CategoryInternalDAO categoryDAO();
+    public abstract QuoteDAO quoteDAO();
+    public abstract AuthorDAO authorDAO();
+    public abstract CategoryDAO categoryDAO();
 
     public static AppDataBase getInstance()
     {

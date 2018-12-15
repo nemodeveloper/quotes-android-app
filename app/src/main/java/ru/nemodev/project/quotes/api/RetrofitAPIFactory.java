@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.service;
+package ru.nemodev.project.quotes.api;
 
 import android.support.annotation.NonNull;
 
@@ -8,11 +8,8 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-import ru.nemodev.project.quotes.service.author.AuthorService;
-import ru.nemodev.project.quotes.service.category.CategoryService;
-import ru.nemodev.project.quotes.service.quote.external.QuoteService;
 
-public class RetrofitServiceFactory
+public class RetrofitAPIFactory
 {
     private static final int CONNECT_TIMEOUT = 10;
     private static final int WRITE_TIMEOUT = 10;
@@ -23,11 +20,11 @@ public class RetrofitServiceFactory
     private static final String CATEGORY_ENDPOINT = BASE_ENDPOINT + "category/";
     private static final String AUTHOR_ENDPOINT = BASE_ENDPOINT + "author/";
 
-    private static final OkHttpClient okHttpClient = createHttpClient();
+    private static final OkHttpClient OK_HTTP_CLIENT = createHttpClient();
 
-    private static final QuoteService QUOTE_RETROFIT_SERVICE = buildRetrofit(QUOTE_ENDPOINT).create(QuoteService.class);
-    private static final CategoryService CATEGORY_RETROFIT_SERVICE = buildRetrofit(CATEGORY_ENDPOINT).create(CategoryService.class);
-    private static final AuthorService AUTHOR_RETROFIT_SERVICE = buildRetrofit(AUTHOR_ENDPOINT).create(AuthorService.class);
+    private static final QuoteAPI QUOTE_RETROFIT_API = buildRetrofit(QUOTE_ENDPOINT).create(QuoteAPI.class);
+    private static final CategoryAPI CATEGORY_RETROFIT_API = buildRetrofit(CATEGORY_ENDPOINT).create(CategoryAPI.class);
+    private static final AuthorAPI AUTHOR_RETROFIT_API = buildRetrofit(AUTHOR_ENDPOINT).create(AuthorAPI.class);
 
     @NonNull
     private static OkHttpClient createHttpClient()
@@ -46,22 +43,22 @@ public class RetrofitServiceFactory
                 .baseUrl(endpoint)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
-                .client(okHttpClient)
+                .client(OK_HTTP_CLIENT)
                 .build();
     }
 
-    public static QuoteService getQuoteService()
+    public static QuoteAPI getQuoteAPI()
     {
-        return QUOTE_RETROFIT_SERVICE;
+        return QUOTE_RETROFIT_API;
     }
 
-    public static CategoryService getCategoryService()
+    public static CategoryAPI getCategoryAPI()
     {
-        return CATEGORY_RETROFIT_SERVICE;
+        return CATEGORY_RETROFIT_API;
     }
 
-    public static AuthorService getAuthorService()
+    public static AuthorAPI getAuthorAPI()
     {
-        return AUTHOR_RETROFIT_SERVICE;
+        return AUTHOR_RETROFIT_API;
     }
 }

@@ -12,7 +12,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Author;
+import ru.nemodev.project.quotes.entity.Author;
 
 public class AuthorCardView extends CardView
 {

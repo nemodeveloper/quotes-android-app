@@ -1,9 +1,16 @@
 package ru.nemodev.project.quotes.utils;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.external.Quote;
+import ru.nemodev.project.quotes.api.dto.QuoteDTO;
+import ru.nemodev.project.quotes.entity.Quote;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public final class QuoteUtils
 {
@@ -11,36 +18,89 @@ public final class QuoteUtils
 
     private QuoteUtils() {}
 
-    public static String getAuthorName(Quote quote)
+    public static String getAuthorName(QuoteInfo quote)
     {
         return quote.getAuthor() == null
                 ? AndroidUtils.getTextById(R.string.author_unknown_name)
                 : quote.getAuthor().getFullName();
     }
 
-    public static String getQuoteSource(Quote quote, boolean inLine)
+    public static String getQuoteSource(QuoteInfo quoteInfo, boolean inLine)
     {
-        StringBuilder quoteInfo = new StringBuilder();
-        if (StringUtils.isNotBlank(quote.getSource()))
-            quoteInfo.append(quote.getSource());
-        if (StringUtils.isNotBlank(quote.getYear()))
-            quoteInfo.append(inLine ? " " : "\n").append(quote.getYear());
+        Quote quote = quoteInfo.getQuote();
 
-        return quoteInfo.toString();
+        StringBuilder result = new StringBuilder();
+        if (StringUtils.isNotBlank(quote.getSource()))
+            result.append(quote.getSource());
+        if (StringUtils.isNotBlank(quote.getYear()))
+            result.append(inLine ? " " : "\n").append(quote.getYear());
+
+        return result.toString();
     }
 
-    public static String getQuoteTextForShare(Quote quote)
+    public static String getQuoteTextForShare(QuoteInfo quoteInfo)
     {
-        StringBuilder quoteInfo = new StringBuilder(quote.getText());
+        StringBuilder result = new StringBuilder(quoteInfo.getQuote().getText());
 
-        String quoteAuthor = getAuthorName(quote);
+        String quoteAuthor = getAuthorName(quoteInfo);
         if (StringUtils.isNotBlank(quoteAuthor))
-            quoteInfo.append("\n\n").append(QUOTE_AUTHOR_SYMBOL).append(quoteAuthor);
+            result.append("\n\n").append(QUOTE_AUTHOR_SYMBOL).append(quoteAuthor);
 
-        String quoteSource = getQuoteSource(quote, false);
+        String quoteSource = getQuoteSource(quoteInfo, false);
         if (StringUtils.isNotBlank(quoteSource))
-            quoteInfo.append("\n").append(quoteSource);
+            result.append("\n").append(quoteSource);
 
-        return quoteInfo.toString();
+        return result.toString();
+    }
+
+    public static List<Quote> toQuotes(List<QuoteDTO> quoteDTOList)
+    {
+        if (CollectionUtils.isEmpty(quoteDTOList))
+            return Collections.emptyList();
+
+        List<Quote> quotes = new ArrayList<>(quoteDTOList.size());
+        for (QuoteDTO quoteDTO : quoteDTOList)
+        {
+            quotes.add(toQuote(quoteDTO));
+        }
+
+        return quotes;
+    }
+
+    public static Quote toQuote(QuoteDTO quoteDTO)
+    {
+        Quote quote = new Quote();
+        quote.setId(quoteDTO.getId());
+        quote.setAuthorId(quoteDTO.getAuthor().getId());
+        quote.setCategoryId(quoteDTO.getCategory().getId());
+        quote.setText(quoteDTO.getText());
+        quote.setSource(quoteDTO.getSource());
+        quote.setYear(quoteDTO.getYear());
+
+        return quote;
+    }
+
+    public static List<QuoteInfo> toQuotesInfo(List<QuoteDTO> quoteDTOList)
+    {
+        if (CollectionUtils.isEmpty(quoteDTOList))
+            return Collections.emptyList();
+
+        List<QuoteInfo> quotes = new ArrayList<>(quoteDTOList.size());
+        for (QuoteDTO quoteDTO : quoteDTOList)
+        {
+            quotes.add(toQuoteInfo(quoteDTO));
+        }
+
+        return quotes;
+    }
+
+    public static QuoteInfo toQuoteInfo(QuoteDTO quoteDTO)
+    {
+        QuoteInfo quoteInfo = new QuoteInfo();
+        quoteInfo.setQuote(toQuote(quoteDTO));
+        quoteInfo.setAuthor(AuthorUtils.convertAuthor(quoteDTO.getAuthor()));
+        quoteInfo.setCategory(CategoryUtils.convertCategory(quoteDTO.getCategory()));
+
+        return quoteInfo;
     }
 }
