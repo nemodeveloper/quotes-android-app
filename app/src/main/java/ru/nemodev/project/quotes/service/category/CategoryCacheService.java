@@ -6,10 +6,10 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
+import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.utils.CategoryUtils;
 
@@ -49,8 +49,7 @@ public class CategoryCacheService
             {
                 Observable<List<Category>> observable = RetrofitAPIFactory.getCategoryAPI().getAll()
                         .map(CategoryUtils::convertCategories)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                        .subscribeOn(Schedulers.io());
 
                 observable.subscribe(new Observer<List<Category>>()
                 {
@@ -62,6 +61,7 @@ public class CategoryCacheService
                     public void onNext(List<Category> categories)
                     {
                         categoryCache.put(CATEGORY_GET_ALL_CACHE_KEY , categories);
+                        saveToDataBase(categories);
                     }
 
                     @Override
@@ -78,5 +78,12 @@ public class CategoryCacheService
 
             return Observable.just(cachedAuthors);
         }
+    }
+
+    private void saveToDataBase(List<Category> categories)
+    {
+        Observable.just(categories)
+                .subscribeOn(Schedulers.io())
+                .subscribe(AppDataBase.getInstance().getCategoryDAO()::add);
     }
 }

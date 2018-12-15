@@ -6,10 +6,10 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
+import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.utils.AuthorUtils;
 
@@ -49,8 +49,7 @@ public class AuthorCacheService
             {
                 Observable<List<Author>> authorObservable = RetrofitAPIFactory.getAuthorAPI().getAll()
                         .map(AuthorUtils::convertAuthors)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                        .subscribeOn(Schedulers.io());
 
                 authorObservable.subscribe(new Observer<List<Author>>()
                 {
@@ -62,6 +61,7 @@ public class AuthorCacheService
                     public void onNext(List<Author> authors)
                     {
                         authorCache.put(AUTHOR_GET_ALL_CACHE_KEY, authors);
+                        saveToDataBase(authors);
                     }
 
                     @Override
@@ -78,5 +78,12 @@ public class AuthorCacheService
 
             return Observable.just(cachedAuthors);
         }
+    }
+
+    private void saveToDataBase(List<Author> authors)
+    {
+        Observable.just(authors)
+                .subscribeOn(Schedulers.io())
+                .subscribe(AppDataBase.getInstance().getAuthorDAO()::add);
     }
 }

@@ -1,5 +1,6 @@
 package ru.nemodev.project.quotes.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -10,6 +11,7 @@ public class Author implements Serializable
 {
     @PrimaryKey
     private Long id;
+    @ColumnInfo(name = "full_name")
     private String fullName;
 
     public Long getId()

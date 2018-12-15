@@ -16,9 +16,9 @@ public abstract class AppDataBase extends RoomDatabase
 
     private static volatile AppDataBase instance;
 
-    public abstract QuoteDAO quoteDAO();
-    public abstract AuthorDAO authorDAO();
-    public abstract CategoryDAO categoryDAO();
+    public abstract QuoteDAO getQuoteDAO();
+    public abstract AuthorDAO getAuthorDAO();
+    public abstract CategoryDAO getCategoryDAO();
 
     public static AppDataBase getInstance()
     {

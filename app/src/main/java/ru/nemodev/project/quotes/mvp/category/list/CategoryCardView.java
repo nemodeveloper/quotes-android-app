@@ -39,7 +39,7 @@ public class CategoryCardView extends CardView
         this.category = category;
 
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound("", ColorGenerator.MATERIAL.getRandomColor());
+                .buildRound("", ColorGenerator.MATERIAL.getColor(category.getId()));
 
         ImageView categoryImg = this.findViewById(R.id.categoryImg);
         categoryImg.setImageDrawable(drawable);

@@ -38,7 +38,7 @@ public class AuthorCardView extends CardView
         this.author = author;
 
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound("", ColorGenerator.MATERIAL.getRandomColor());
+                .buildRound("", ColorGenerator.MATERIAL.getColor(author.getId()));
 
         ImageView authorImage = this.findViewById(R.id.authorImg);
         authorImage.setImageDrawable(drawable);

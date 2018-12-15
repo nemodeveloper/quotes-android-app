@@ -53,7 +53,7 @@ public final class QuoteUtils
         return result.toString();
     }
 
-    public static List<Quote> toQuotes(List<QuoteDTO> quoteDTOList)
+    public static List<Quote> fromQuotesDTO(List<QuoteDTO> quoteDTOList)
     {
         if (CollectionUtils.isEmpty(quoteDTOList))
             return Collections.emptyList();
@@ -61,13 +61,13 @@ public final class QuoteUtils
         List<Quote> quotes = new ArrayList<>(quoteDTOList.size());
         for (QuoteDTO quoteDTO : quoteDTOList)
         {
-            quotes.add(toQuote(quoteDTO));
+            quotes.add(fromQuoteDTO(quoteDTO));
         }
 
         return quotes;
     }
 
-    public static Quote toQuote(QuoteDTO quoteDTO)
+    public static Quote fromQuoteDTO(QuoteDTO quoteDTO)
     {
         Quote quote = new Quote();
         quote.setId(quoteDTO.getId());
@@ -97,10 +97,29 @@ public final class QuoteUtils
     public static QuoteInfo toQuoteInfo(QuoteDTO quoteDTO)
     {
         QuoteInfo quoteInfo = new QuoteInfo();
-        quoteInfo.setQuote(toQuote(quoteDTO));
+        quoteInfo.setQuote(fromQuoteDTO(quoteDTO));
         quoteInfo.setAuthor(AuthorUtils.convertAuthor(quoteDTO.getAuthor()));
         quoteInfo.setCategory(CategoryUtils.convertCategory(quoteDTO.getCategory()));
 
         return quoteInfo;
+    }
+
+    public static List<Quote> fromQuotesInfo(List<QuoteInfo> quoteInfoList)
+    {
+        if (CollectionUtils.isEmpty(quoteInfoList))
+            return Collections.emptyList();
+
+        List<Quote> quotes = new ArrayList<>(quoteInfoList.size());
+        for (QuoteInfo quoteInfo : quoteInfoList)
+        {
+            quotes.add(fromQuoteInfo(quoteInfo));
+        }
+
+        return quotes;
+    }
+
+    public static Quote fromQuoteInfo(QuoteInfo quoteInfo)
+    {
+        return quoteInfo.getQuote();
     }
 }
