@@ -1,8 +1,8 @@
 package ru.nemodev.project.quotes.app;
 
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
 
-public class QuoteApp extends MultiDexApplication
+public class QuoteApp extends Application
 {
     private static QuoteApp instance;
 

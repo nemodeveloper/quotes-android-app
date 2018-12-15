@@ -9,10 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.external.Author;
 import ru.nemodev.project.quotes.entity.external.Category;
@@ -20,7 +22,6 @@ import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
 import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;
 import ru.nemodev.project.quotes.mvp.category.list.CategoryListFragment;
-import ru.nemodev.project.quotes.mvp.quote.like.QuoteByLikeFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        initFabricIO();
         setContentView(R.layout.activity_main);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -85,11 +87,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_item_author:
             {
                 openFragment(new AuthorListFragment());
-                break;
-            }
-            case R.id.nav_item_like:
-            {
-                openFragment(new QuoteByLikeFragment());
                 break;
             }
             case R.id.nav_item_share:
@@ -151,5 +148,10 @@ public class MainActivity extends AppCompatActivity
         MobileAds.initialize(this, getResources().getString(R.string.ads_app_id));
         AdView adView = findViewById(R.id.adView);
         adView.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void initFabricIO()
+    {
+        Fabric.with(this, new Crashlytics());
     }
 }

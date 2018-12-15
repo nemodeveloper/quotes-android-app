@@ -94,6 +94,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
+    // TODO делать dispose при смене фрагмента иначе многократно приходят уведомления при отсутствии инета
     private void connectToNetworkEvents()
     {
         NetworkUtils.getNetworkObservable()

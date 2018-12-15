@@ -67,16 +67,6 @@
             android:layout_below="@+id/quoteText"
             android:layout_centerVertical="true">
             <ImageView
-                android:id="@+id/likeQuote"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_quote_unlike"
-                android:background="@null"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/shareQuote"/>
-            <ImageView
                 android:id="@+id/shareQuote"
                 android:layout_width="35dp"
                 android:layout_height="35dp"

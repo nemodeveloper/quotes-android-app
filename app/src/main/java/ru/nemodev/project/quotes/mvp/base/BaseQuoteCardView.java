@@ -64,7 +64,7 @@ public class BaseQuoteCardView extends CardView
 
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(quote.getAuthor() == null ? "?" : authorNameText.substring(0, 1),
-                        ColorGenerator.MATERIAL.getRandomColor());
+                        ColorGenerator.MATERIAL.getColor(quote.getId()));
 
         ImageView authorImage = this.findViewById(R.id.authorImg);
         authorImage.setImageDrawable(drawable);
@@ -102,12 +102,6 @@ public class BaseQuoteCardView extends CardView
     protected void showActions()
     {
         showCategoryAction();
-
-        ImageView likeButton = findViewById(R.id.likeQuote);
-        likeButton.setOnClickListener(v ->
-        {
-
-        });
 
         ImageView shareButton = findViewById(R.id.shareQuote);
         shareButton.setOnClickListener(v ->
