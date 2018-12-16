@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
-import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Category;
@@ -29,6 +28,8 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     private IndexFastScrollRecyclerView categoryLoadRV;
     private ProgressBar progressBar;
     private CategoryListContract.CategoryListPresenter presenter;
+
+    private Disposable internetEventsDisposable;
 
     @Nullable
     @Override
@@ -79,27 +80,21 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
 
     private void connectToNetworkEvents()
     {
-        NetworkUtils.getNetworkObservable()
-                .subscribe(new Observer<Connectivity>()
+        disconnectFromNetworkEvents();
+        internetEventsDisposable = NetworkUtils.getNetworkObservable()
+                .subscribe(connectivity ->
                 {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Connectivity connectivity)
-                    {
-                        if (connectivity.state() == NetworkInfo.State.CONNECTED)
-                            presenter.loadCategory();
-                        else
-                            AndroidUtils.showToastMessage(R.string.connect_off_message);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
+                    if (connectivity.state() == NetworkInfo.State.CONNECTED)
+                        presenter.loadCategory();
+                    else
+                        AndroidUtils.showToastMessage(R.string.not_full_categories_message);
                 });
+    }
+
+    private void disconnectFromNetworkEvents()
+    {
+        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
+            internetEventsDisposable.dispose();
     }
 
     @Override
@@ -117,11 +112,35 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     @Override
     public void showCategories(List<Category> categories)
     {
-        categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
+        if (CollectionUtils.isNotEmpty(categories))
         {
-            MainActivity mainActivity1 = (MainActivity) getActivity();
-            mainActivity1.openQuoteFragment(item);
-        }));
-        categoryLoadRV.setIndexBarVisibility(true);
+            categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
+            {
+                MainActivity mainActivity1 = (MainActivity) getActivity();
+                mainActivity1.openQuoteFragment(item);
+            }));
+            categoryLoadRV.setIndexBarVisibility(true);
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        disconnectFromNetworkEvents();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause()
+    {
+        disconnectFromNetworkEvents();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        connectToNetworkEvents();
+        super.onResume();
     }
 }

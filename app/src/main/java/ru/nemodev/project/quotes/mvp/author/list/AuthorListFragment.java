@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
-import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Author;
@@ -30,6 +29,8 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private IndexFastScrollRecyclerView authorLoadRV;
     private ProgressBar progressBar;
     private AuthorListContract.AuthorListPresenter presenter;
+
+    private Disposable internetEventsDisposable;
 
     @Nullable
     @Override
@@ -81,27 +82,21 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     // TODO полумать как обыграть события сети более красиво в рамках MVP
     private void connectToNetworkEvents()
     {
-        NetworkUtils.getNetworkObservable()
-                .subscribe(new Observer<Connectivity>()
+        disconnectFromNetworkEvents();
+        internetEventsDisposable = NetworkUtils.getNetworkObservable()
+                .subscribe(connectivity ->
                 {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Connectivity connectivity)
-                    {
-                        if (connectivity.state() == NetworkInfo.State.CONNECTED)
-                            presenter.loadAuthors();
-                        else
-                            AndroidUtils.showToastMessage(R.string.connect_off_message);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
+                    if (connectivity.state() == NetworkInfo.State.CONNECTED)
+                        presenter.loadAuthors();
+                    else
+                        AndroidUtils.showToastMessage(R.string.not_full_authors_message);
                 });
+    }
+
+    private void disconnectFromNetworkEvents()
+    {
+        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
+            internetEventsDisposable.dispose();
     }
 
     @Override
@@ -119,12 +114,36 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     @Override
     public void showAuthors(List<Author> authors)
     {
-        authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
+        if (CollectionUtils.isNotEmpty(authors))
         {
-            MainActivity mainActivity1 = (MainActivity) getActivity();
-            mainActivity1.openQuoteFragment(item);
-        }));
+            authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
+            {
+                MainActivity mainActivity1 = (MainActivity) getActivity();
+                mainActivity1.openQuoteFragment(item);
+            }));
 
-        authorLoadRV.setIndexBarVisibility(true);
+            authorLoadRV.setIndexBarVisibility(true);
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        disconnectFromNetworkEvents();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause()
+    {
+        disconnectFromNetworkEvents();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        connectToNetworkEvents();
+        super.onResume();
     }
 }

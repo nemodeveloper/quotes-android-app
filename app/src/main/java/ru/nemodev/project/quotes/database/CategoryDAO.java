@@ -13,7 +13,7 @@ import ru.nemodev.project.quotes.entity.Category;
 @Dao
 public interface CategoryDAO
 {
-    @Query("SELECT * FROM categories")
+    @Query("SELECT * FROM categories ORDER BY name")
     Single<List<Category>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

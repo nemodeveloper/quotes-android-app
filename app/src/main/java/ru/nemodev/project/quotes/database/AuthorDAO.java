@@ -13,7 +13,7 @@ import ru.nemodev.project.quotes.entity.Author;
 @Dao
 public interface AuthorDAO
 {
-    @Query("SELECT * FROM authors")
+    @Query("SELECT * FROM authors ORDER BY full_name")
     Single<List<Author>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

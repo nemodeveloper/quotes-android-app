@@ -2,14 +2,8 @@ package ru.nemodev.project.quotes.mvp.category.detail;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 
@@ -38,18 +32,18 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadQuotes(categoryId, this);
+        model.loadQuotes(categoryId, this, false);
     }
 
     @Override
-    public void onFinishLoad(List<QuoteInfo> quotes)
+    public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
     {
         Collections.shuffle(quotes);
 
         view.showQuotes(quotes);
         view.hideLoader();
 
-        isAllDataLoaded.set(true);
+        isAllDataLoaded.set(!fromCache);
         isDataLoading.set(false);
     }
 
@@ -57,26 +51,6 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
     public void onLoadError(Throwable t)
     {
         isDataLoading.set(false);
-
-        Observable.timer(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>()
-                {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Long delay)
-                    {
-                        loadQuotes();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
-                });
+        model.loadQuotes(categoryId, this, true);
     }
 }

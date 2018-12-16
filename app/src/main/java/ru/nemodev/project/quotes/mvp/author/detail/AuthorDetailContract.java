@@ -22,10 +22,10 @@ public interface AuthorDetailContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<QuoteInfo> quotes);
+            void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache);
             void onLoadError(Throwable t);
         }
 
-        void loadQuotes(Long authorId, OnFinishLoadListener onFinishLoadListener);
+        void loadQuotes(Long authorId, OnFinishLoadListener onFinishLoadListener, boolean fromCache);
     }
 }

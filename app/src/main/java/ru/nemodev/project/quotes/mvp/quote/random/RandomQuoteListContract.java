@@ -26,6 +26,6 @@ public interface RandomQuoteListContract
             void onLoadError(Throwable t);
         }
 
-        void loadQuotes(OnFinishLoadListener onFinishLoadListener);
+        void loadQuotes(OnFinishLoadListener onFinishLoadListener, boolean fromCache);
     }
 }

@@ -22,10 +22,10 @@ public interface CategoryDetailContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<QuoteInfo> quotes);
+            void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache);
             void onLoadError(Throwable t);
         }
 
-        void loadQuotes(Long categoryId, OnFinishLoadListener onFinishLoadListener);
+        void loadQuotes(Long categoryId, OnFinishLoadListener onFinishLoadListener, boolean fromCache);
     }
 }

@@ -22,10 +22,10 @@ public interface CategoryListContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<Category> categories);
+            void onFinishLoad(List<Category> categories, boolean fromCache);
             void onLoadError(Throwable t);
         }
 
-        void loadCategories(OnFinishLoadListener onFinishLoadListener);
+        void loadCategories(OnFinishLoadListener onFinishLoadListener, boolean fromCache);
     }
 }

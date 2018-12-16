@@ -11,11 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
@@ -34,6 +33,8 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     private ProgressBar progressBar;
 
     private AuthorDetailContract.AuthorDetailPresenter presenter;
+
+    private Disposable internetEventsDisposable;
 
     @Nullable
     @Override
@@ -78,27 +79,21 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
 
     private void connectToNetworkEvents()
     {
-        NetworkUtils.getNetworkObservable()
-                .subscribe(new Observer<Connectivity>()
+        disconnectFromNetworkEvents();
+        internetEventsDisposable = NetworkUtils.getNetworkObservable()
+                .subscribe(connectivity ->
                 {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Connectivity connectivity)
-                    {
-                        if (connectivity.state() == NetworkInfo.State.CONNECTED)
-                            presenter.loadQuotes();
-                        else
-                            AndroidUtils.showToastMessage(R.string.connect_off_message);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
+                    if (connectivity.state() == NetworkInfo.State.CONNECTED)
+                        presenter.loadQuotes();
+                    else
+                        AndroidUtils.showToastMessage(R.string.not_full_quotes_message);
                 });
+    }
+
+    private void disconnectFromNetworkEvents()
+    {
+        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
+            internetEventsDisposable.dispose();
     }
 
     @Override
@@ -117,6 +112,28 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     public void showQuotes(List<QuoteInfo> quotes)
     {
         // TODO прокидывать OnClickQuoteActionListener вместо Context
-        quoteRV.setAdapter(new AuthorQuotesAdapter(getActivity(), quotes));
+        if (CollectionUtils.isNotEmpty(quotes))
+            quoteRV.setAdapter(new AuthorQuotesAdapter(getActivity(), quotes));
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        disconnectFromNetworkEvents();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause()
+    {
+        disconnectFromNetworkEvents();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        connectToNetworkEvents();
+        super.onResume();
     }
 }

@@ -152,8 +152,7 @@ public class QuoteCacheService
     private void saveToDataBase(List<QuoteInfo> quoteInfoList)
     {
         Observable.just(quoteInfoList)
-                .map(QuoteUtils::fromQuotesInfo)
                 .observeOn(Schedulers.io())
-                .subscribe(AppDataBase.getInstance().getQuoteDAO()::add);
+                .subscribe(AppDataBase.getInstance().getQuoteDAO()::addQuoteInfo);
     }
 }

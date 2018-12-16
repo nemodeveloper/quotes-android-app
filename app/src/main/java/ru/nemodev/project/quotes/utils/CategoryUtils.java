@@ -4,10 +4,13 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.nemodev.project.quotes.api.dto.CategoryDTO;
 import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public final class CategoryUtils
 {
@@ -34,5 +37,16 @@ public final class CategoryUtils
         category.setName(categoryDTO.getName());
 
         return category;
+    }
+
+    public static List<Category> getCategories(List<QuoteInfo> quoteInfoList)
+    {
+        Map<Long, Category> authorMap = new HashMap<>();
+        for (QuoteInfo quoteInfo : quoteInfoList)
+        {
+            authorMap.put(quoteInfo.getCategory().getId(), quoteInfo.getCategory());
+        }
+
+        return new ArrayList<>(authorMap.values());
     }
 }

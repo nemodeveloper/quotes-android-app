@@ -22,10 +22,10 @@ public interface AuthorListContract
     {
         interface OnFinishLoadListener
         {
-            void onFinishLoad(List<Author> authors);
+            void onFinishLoad(List<Author> authors, boolean fromCache);
             void onLoadError(Throwable t);
         }
 
-        void loadAuthors(OnFinishLoadListener onFinishLoadListener);
+        void loadAuthors(OnFinishLoadListener onFinishLoadListener, boolean fromCache);
     }
 }

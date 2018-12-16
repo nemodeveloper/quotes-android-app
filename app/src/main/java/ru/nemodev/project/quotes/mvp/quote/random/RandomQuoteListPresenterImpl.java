@@ -1,14 +1,8 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 
@@ -35,7 +29,7 @@ public class RandomQuoteListPresenterImpl implements RandomQuoteListContract.Ran
             isFirstDataLoading.set(false);
         }
 
-        model.loadQuotes(this);
+        model.loadQuotes(this, false);
     }
 
     @Override
@@ -48,25 +42,6 @@ public class RandomQuoteListPresenterImpl implements RandomQuoteListContract.Ran
     @Override
     public void onLoadError(Throwable t)
     {
-        Observable.timer(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>()
-                {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Long delay)
-                    {
-                        loadNextQuotes();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
-                });
+        model.loadQuotes(this, true);
     }
 }

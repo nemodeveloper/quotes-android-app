@@ -4,10 +4,13 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.nemodev.project.quotes.api.dto.AuthorDTO;
 import ru.nemodev.project.quotes.entity.Author;
+import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public final class AuthorUtils
 {
@@ -35,4 +38,16 @@ public final class AuthorUtils
 
         return author;
     }
+
+    public static List<Author> getAuthors(List<QuoteInfo> quoteInfoList)
+    {
+        Map<Long, Author> authorMap = new HashMap<>();
+        for (QuoteInfo quoteInfo : quoteInfoList)
+        {
+            authorMap.put(quoteInfo.getAuthor().getId(), quoteInfo.getAuthor());
+        }
+
+        return new ArrayList<>(authorMap.values());
+    }
+
 }

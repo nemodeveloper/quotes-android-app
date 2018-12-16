@@ -4,6 +4,8 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -42,7 +44,6 @@ public class QuoteInfo implements Serializable
     public void setAuthors(List<Author> authors)
     {
         this.authors = authors;
-        this.author = authors.get(0);
     }
 
     public List<Category> getCategories()
@@ -53,11 +54,13 @@ public class QuoteInfo implements Serializable
     public void setCategories(List<Category> categories)
     {
         this.categories = categories;
-        this.category = categories.get(0);
     }
 
     public Author getAuthor()
     {
+        if (author == null && CollectionUtils.isNotEmpty(authors))
+            author = authors.get(0);
+
         return author;
     }
 
@@ -68,6 +71,9 @@ public class QuoteInfo implements Serializable
 
     public Category getCategory()
     {
+        if (category == null && CollectionUtils.isNotEmpty(categories))
+            category = categories.get(0);
+
         return category;
     }
 

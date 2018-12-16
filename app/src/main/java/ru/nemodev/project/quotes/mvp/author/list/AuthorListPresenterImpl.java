@@ -1,14 +1,8 @@
 package ru.nemodev.project.quotes.mvp.author.list;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.entity.Author;
 
 
@@ -36,16 +30,16 @@ public class AuthorListPresenterImpl implements AuthorListContract.AuthorListPre
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadAuthors(this);
+        model.loadAuthors(this, false);
     }
 
     @Override
-    public void onFinishLoad(List<Author> authors)
+    public void onFinishLoad(List<Author> authors, boolean fromCache)
     {
         view.showAuthors(authors);
         view.hideLoader();
 
-        isAllDataLoaded.set(true);
+        isAllDataLoaded.set(!fromCache);
         isDataLoading.set(false);
     }
 
@@ -53,26 +47,6 @@ public class AuthorListPresenterImpl implements AuthorListContract.AuthorListPre
     public void onLoadError(Throwable t)
     {
         isDataLoading.set(false);
-
-        Observable.timer(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>()
-                {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Long delay)
-                    {
-                        loadAuthors();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) { }
-
-                    @Override
-                    public void onComplete() { }
-                });
+        model.loadAuthors(this, true);
     }
 }

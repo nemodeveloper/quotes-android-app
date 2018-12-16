@@ -34,7 +34,7 @@ public final class AndroidUtils
     {
         AndroidUtils.openShareDialog(context,
                 AndroidUtils.getTextById(R.string.tell_about_app_title),
-                AndroidUtils.getTextById(R.string.play_market_app_link) + context.getPackageName());
+                AndroidUtils.getTextById(R.string.play_market_app_http_link) + context.getPackageName());
     }
 
     public static void openAppByURI(Activity activity, String uri)
