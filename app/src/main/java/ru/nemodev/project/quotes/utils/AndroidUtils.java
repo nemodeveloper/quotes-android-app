@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.utils;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,7 +40,32 @@ public final class AndroidUtils
 
     public static void openAppByURI(Activity activity, String uri)
     {
-        activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+        startActivity(activity, new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+    }
+
+    public static void openAppRatePage(Activity activity)
+    {
+        String packageName = activity.getPackageName();
+
+        Uri uri = Uri.parse(getTextById(R.string.play_market_app_link) + packageName);
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                | Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try
+        {
+            startActivity(activity, goToMarket);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            startActivity(activity, new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(getTextById(R.string.play_market_app_http_link) + packageName)));
+        }
+    }
+
+    private static void startActivity(Activity activity, Intent intent)
+    {
+        activity.startActivity(intent);
     }
 
     public static void showToastMessage(int messageResId)

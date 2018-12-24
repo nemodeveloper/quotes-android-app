@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -28,6 +29,8 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private View root;
     private IndexFastScrollRecyclerView authorLoadRV;
     private ProgressBar progressBar;
+    private TextView notFullContentMessage;
+
     private AuthorListContract.AuthorListPresenter presenter;
 
     private Disposable internetEventsDisposable;
@@ -44,6 +47,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         initToolbar(root);
         initRV(root);
         initProgressBar();
+        initNotFullContentMessageBlock();
 
         presenter = new AuthorListPresenterImpl(this);
         presenter.loadAuthors();
@@ -87,10 +91,21 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
                 .subscribe(connectivity ->
                 {
                     if (connectivity.state() == NetworkInfo.State.CONNECTED)
+                    {
                         presenter.loadAuthors();
+                        setVisibleNotFullContentMessage(false);
+                    }
                     else
-                        AndroidUtils.showToastMessage(R.string.not_full_authors_message);
+                    {
+                        setVisibleNotFullContentMessage(true);
+                    }
                 });
+    }
+
+    private void initNotFullContentMessageBlock()
+    {
+        notFullContentMessage = root.findViewById(R.id.not_full_content_message);
+        notFullContentMessage.setOnClickListener(view -> setVisibleNotFullContentMessage(false));
     }
 
     private void disconnectFromNetworkEvents()
@@ -124,6 +139,14 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
 
             authorLoadRV.setIndexBarVisibility(true);
         }
+    }
+
+    private void setVisibleNotFullContentMessage(boolean isVisible)
+    {
+        if (isVisible)
+            notFullContentMessage.setVisibility(View.VISIBLE);
+        else
+            notFullContentMessage.setVisibility(View.GONE);
     }
 
     @Override

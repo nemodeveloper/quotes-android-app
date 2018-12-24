@@ -26,8 +26,9 @@
     <!--<string name="like_title">"Избранные"</string>-->
 
     <string name="menu_item_others">Другое</string>
-    <string name="menu_item_share">Поделиться</string>
     <string name="menu_item_telegram_channel">Телеграм канал</string>
+    <string name="menu_item_share">Поделиться</string>
+    <string name="menu_item_rate_app">Оценить приложение</string>
 
     <!--  -->
     <string name="share_quote_dialog_title">Поделиться цитатой</string>
@@ -36,8 +37,8 @@
     <string name="author_unknown_name">Автор не известен</string>
 
     <string name="connect_off_message">Для корректной работы приложения необходимо подключение к сети интернет!</string>
-    <string name="not_full_quotes_message">Для полного списка цитат необходимо подключение к сети интернет!</string>
-    <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет!</string>
-    <string name="not_full_categories_message">Для полного списка категорий необходимо подключение к сети интернет!</string>
+    <string name="not_full_quotes_message">Для полного списка цитат необходимо подключение к сети интернет…</string>
+    <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет…</string>
+    <string name="not_full_categories_message">Для полного списка категорий необходимо подключение к сети интернет…</string>
 
 </resources>

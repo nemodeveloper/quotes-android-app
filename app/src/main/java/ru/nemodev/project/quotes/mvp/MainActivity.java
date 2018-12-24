@@ -34,19 +34,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        initFabricIO();
         setContentView(R.layout.activity_main);
 
-        drawer = findViewById(R.id.drawer_layout);
-        // Обработка пунктов меню
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Показываем первоначальный контент
-        navigationView.getMenu().getItem(0).setChecked(true);
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-
-        //Показываем рекламу
+        initFabricIO();
+        initNavigationMenu();
         initAdb();
     }
 
@@ -56,12 +47,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if (getSupportFragmentManager().getBackStackEntryCount() == 1)
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1)
         {
             finish();
-        }
-        else
+        } else
         {
             super.onBackPressed();
         }
@@ -97,6 +86,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_item_telegram_channel:
             {
                 AndroidUtils.openAppByURI(this, AndroidUtils.getTextById(R.string.telegram_channel_uri));
+                break;
+            }
+            case R.id.nav_item_rate_app:
+            {
+                AndroidUtils.openAppRatePage(this);
                 break;
             }
         }
@@ -141,6 +135,18 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.viewContainer, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void initNavigationMenu()
+    {
+        drawer = findViewById(R.id.drawer_layout);
+
+        // Обработка пунктов меню
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
     private void initAdb()
