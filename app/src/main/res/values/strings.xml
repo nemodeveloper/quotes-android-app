@@ -2,6 +2,8 @@
 
     <!-- Технические -->
     <string name="telegram_channel_uri">tg://resolve?domain=quotemuse</string>
+    <string name="telegram_app_not_found">Приложение Telegram не найдено на устройстве!</string>
+
     <string name="play_market_app_http_link">https://play.google.com/store/apps/details?id=</string>
     <string name="play_market_app_link">market://details?id=</string>
 
@@ -26,16 +28,17 @@
     <!--<string name="like_title">"Избранные"</string>-->
 
     <string name="menu_item_others">Другое</string>
-    <string name="menu_item_telegram_channel">Телеграм канал</string>
+    <string name="menu_item_telegram_channel">Telegram канал</string>
     <string name="menu_item_share">Поделиться</string>
     <string name="menu_item_rate_app">Оценить приложение</string>
 
-    <!--  -->
+    <!-- Диалоги отправки контента -->
     <string name="share_quote_dialog_title">Поделиться цитатой</string>
     <string name="tell_about_app_title">Рассказать о приложении</string>
 
     <string name="author_unknown_name">Автор не известен</string>
 
+    <!-- not full quote info warning message -->
     <string name="connect_off_message">Для корректной работы приложения необходимо подключение к сети интернет!</string>
     <string name="not_full_quotes_message">Для полного списка цитат необходимо подключение к сети интернет…</string>
     <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет…</string>

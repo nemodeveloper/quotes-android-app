@@ -2,18 +2,20 @@ package ru.nemodev.project.quotes.api;
 
 import android.support.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitAPIFactory
 {
-    private static final int CONNECT_TIMEOUT = 10;
-    private static final int WRITE_TIMEOUT = 10;
-    private static final int READ_TIMEOUT = 10;
+    private static final int CONNECT_TIMEOUT = 5;
+    private static final int WRITE_TIMEOUT = 5;
+    private static final int READ_TIMEOUT = 5;
 
     private static final String BASE_ENDPOINT = "https://quoteformuse.ru/quotes/rest/v1/";
     private static final String QUOTE_ENDPOINT = BASE_ENDPOINT + "quote/";
@@ -30,6 +32,7 @@ public class RetrofitAPIFactory
     private static OkHttpClient createHttpClient()
     {
         return new OkHttpClient.Builder()
+                .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)

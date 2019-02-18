@@ -98,6 +98,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
+    // TODO перейти на SnackBar
     private void initNotFullContentMessageBlock()
     {
         notFullContentMessage = root.findViewById(R.id.not_full_content_message);

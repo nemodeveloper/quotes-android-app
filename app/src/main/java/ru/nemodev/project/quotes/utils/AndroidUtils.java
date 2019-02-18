@@ -38,23 +38,36 @@ public final class AndroidUtils
                 AndroidUtils.getTextById(R.string.play_market_app_http_link) + context.getPackageName());
     }
 
-    public static void openAppByURI(Activity activity, String uri)
+    public static void openAppByURI(Activity activity, String rawURI)
     {
-        startActivity(activity, new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+        Uri uri = Uri.parse(rawURI);
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW, uri);
+        viewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                | Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+
+        startActivity(activity, viewIntent);
+    }
+
+    public static void openTelegramChannel(Activity activity)
+    {
+        try
+        {
+            openAppByURI(activity, getTextById(R.string.telegram_channel_uri));
+        }
+        catch (ActivityNotFoundException e)
+        {
+            showToastMessage(R.string.telegram_app_not_found);
+        }
     }
 
     public static void openAppRatePage(Activity activity)
     {
         String packageName = activity.getPackageName();
 
-        Uri uri = Uri.parse(getTextById(R.string.play_market_app_link) + packageName);
-        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-                | Intent.FLAG_ACTIVITY_NEW_DOCUMENT
-                | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         try
         {
-            startActivity(activity, goToMarket);
+            openAppByURI(activity, getTextById(R.string.play_market_app_link) + packageName);
         }
         catch (ActivityNotFoundException e)
         {

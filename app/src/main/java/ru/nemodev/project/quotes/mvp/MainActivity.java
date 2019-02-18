@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.nav_item_telegram_channel:
             {
-                AndroidUtils.openAppByURI(this, AndroidUtils.getTextById(R.string.telegram_channel_uri));
+                AndroidUtils.openTelegramChannel(this);
                 break;
             }
             case R.id.nav_item_rate_app:
