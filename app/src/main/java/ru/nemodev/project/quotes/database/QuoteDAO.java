@@ -19,8 +19,8 @@ import ru.nemodev.project.quotes.utils.QuoteUtils;
 public abstract class QuoteDAO
 {
     @Transaction
-    @Query("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 200")
-    public abstract Single<List<QuoteInfo>> getRandom();
+    @Query("SELECT * FROM quotes ORDER BY RANDOM() LIMIT :count")
+    public abstract Single<List<QuoteInfo>> getRandom(int count);
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -14,7 +14,7 @@ import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public final class QuoteUtils
 {
-    private static final String QUOTE_AUTHOR_SYMBOL = "©";
+    public static final String QUOTE_AUTHOR_SYMBOL = "©";
 
     private QuoteUtils() {}
 

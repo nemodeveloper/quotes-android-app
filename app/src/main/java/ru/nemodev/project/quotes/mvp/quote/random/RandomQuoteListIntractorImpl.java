@@ -1,7 +1,7 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
@@ -15,17 +15,17 @@ import ru.nemodev.project.quotes.service.quote.QuoteCacheService;
 public class RandomQuoteListIntractorImpl implements RandomQuoteListContract.RandomQuoteListIntractor
 {
     @Override
-    public void loadQuotes(OnFinishLoadListener onFinishLoadListener, boolean fromCache)
+    public void loadQuotes(OnFinishLoadListener onFinishLoadListener, Map<String, String> params, boolean fromCache)
     {
         if (fromCache)
-            loadFromCache(onFinishLoadListener);
+            loadFromCache(onFinishLoadListener, params);
         else
-            loadFromGate(onFinishLoadListener);
+            loadFromGate(onFinishLoadListener, params);
     }
 
-    private void loadFromGate(OnFinishLoadListener onFinishLoadListener)
+    private void loadFromGate(OnFinishLoadListener onFinishLoadListener, Map<String, String> params)
     {
-        QuoteCacheService.getInstance().getRandom(Collections.singletonMap("count", "200"))
+        QuoteCacheService.getInstance().getRandom(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<QuoteInfo>>()
@@ -50,9 +50,9 @@ public class RandomQuoteListIntractorImpl implements RandomQuoteListContract.Ran
                 });
     }
 
-    private void loadFromCache(OnFinishLoadListener onFinishLoadListener)
+    private void loadFromCache(OnFinishLoadListener onFinishLoadListener, Map<String, String> params)
     {
-        AppDataBase.getInstance().getQuoteDAO().getRandom()
+        AppDataBase.getInstance().getQuoteDAO().getRandom(Integer.parseInt(params.get("count")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<QuoteInfo>>()
