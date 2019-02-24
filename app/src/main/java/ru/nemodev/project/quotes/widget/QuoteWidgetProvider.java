@@ -85,7 +85,6 @@ public class QuoteWidgetProvider extends AppWidgetProvider
     {
         super.onReceive(context, intent);
 
-        // TODO подобрать картинку кнопки для обновления
         if (UPDATE_WIDGET_BUTTON_ACTION.equals(intent.getAction()))
         {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

@@ -15,6 +15,7 @@
 
     <color name="notFullContentBackground">#828282</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <!-- Fast search index bar RV -->
     <color name="search_bar_background">#666666</color>
