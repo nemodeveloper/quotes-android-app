@@ -4,7 +4,11 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -30,6 +34,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private IndexFastScrollRecyclerView authorLoadRV;
     private ProgressBar progressBar;
     private TextView notFullContentMessage;
+    private SearchView searchView;
 
     private AuthorListContract.AuthorListPresenter presenter;
 
@@ -62,6 +67,69 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     {
         super.initToolbar(root);
         toolbar.setTitle(AndroidUtils.getTextById(R.string.author_title));
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        if (!isCanSearch())
+        {
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+        else
+        {
+            inflater.inflate(R.menu.menu_author_bar, menu);
+
+            searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setQueryHint(AndroidUtils.getTextById(R.string.author_search_hint));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+            {
+                @Override
+                public boolean onQueryTextSubmit(String query)
+                {
+                    searchAuthor(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query)
+                {
+                    searchAuthor(query);
+                    return false;
+                }
+            });
+        }
+    }
+
+    private boolean isCanSearch()
+    {
+        AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
+        return adapter != null && adapter.getItemCount() != 0;
+    }
+
+    private void searchAuthor(String search)
+    {
+        if (!isCanSearch())
+            return;
+
+        AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
+        adapter.getFilter().filter(search);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if (id == R.id.action_search)
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initRV(View root)
@@ -133,11 +201,12 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         {
             authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
             {
+                searchView.clearFocus();
                 MainActivity mainActivity1 = (MainActivity) getActivity();
                 mainActivity1.openQuoteFragment(item);
             }));
-
             authorLoadRV.setIndexBarVisibility(true);
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -147,6 +216,13 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             notFullContentMessage.setVisibility(View.VISIBLE);
         else
             notFullContentMessage.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu()
+    {
+        searchView.clearFocus();
+        super.onDestroyOptionsMenu();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.nemodev.project.quotes.R;
@@ -27,6 +28,23 @@ public class AuthorRVAdapter extends FastSearchRVAdapter<Author, AuthorRVAdapter
     protected String getSearchSectionName(Author item)
     {
         return item.getFullName().substring(0, 1).toUpperCase();
+    }
+
+    @Override
+    protected List<Author> getFilteredData(String rawSearch)
+    {
+        String searchLowerCase = rawSearch.toLowerCase();
+
+        List<Author> filteredAuthors = new ArrayList<>();
+        for (Author author : data)
+        {
+            if (author.getFullName().toLowerCase().contains(searchLowerCase))
+            {
+                filteredAuthors.add(author);
+            }
+        }
+
+        return filteredAuthors;
     }
 
     public static class AuthorViewHolder extends RecyclerView.ViewHolder

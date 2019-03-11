@@ -4,7 +4,11 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -29,6 +33,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     private IndexFastScrollRecyclerView categoryLoadRV;
     private ProgressBar progressBar;
     private TextView notFullContentMessage;
+    private SearchView searchView;
 
     private CategoryListContract.CategoryListPresenter presenter;
 
@@ -61,6 +66,69 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     {
         super.initToolbar(root);
         toolbar.setTitle((AndroidUtils.getTextById(R.string.category_title)));
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        if (!isCanSearch())
+        {
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+        else
+        {
+            inflater.inflate(R.menu.menu_category_bar, menu);
+
+            searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setQueryHint(AndroidUtils.getTextById(R.string.category_search_hint));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+            {
+                @Override
+                public boolean onQueryTextSubmit(String query)
+                {
+                    searchCategory(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query)
+                {
+                    searchCategory(query);
+                    return false;
+                }
+            });
+        }
+    }
+
+    private boolean isCanSearch()
+    {
+        CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
+        return adapter != null && adapter.getItemCount() != 0;
+    }
+
+    private void searchCategory(String search)
+    {
+        if (!isCanSearch())
+            return;
+
+        CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
+        adapter.getFilter().filter(search);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if (id == R.id.action_search)
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initRV(View root)
@@ -131,10 +199,12 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         {
             categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
             {
+                searchView.clearFocus();
                 MainActivity mainActivity1 = (MainActivity) getActivity();
                 mainActivity1.openQuoteFragment(item);
             }));
             categoryLoadRV.setIndexBarVisibility(true);
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -144,6 +214,13 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             notFullContentMessage.setVisibility(View.VISIBLE);
         else
             notFullContentMessage.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu()
+    {
+        searchView.clearFocus();
+        super.onDestroyOptionsMenu();
     }
 
     @Override

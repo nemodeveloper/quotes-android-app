@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.mvp.MainActivity;
 
 public abstract class BaseToolbarFragment extends Fragment
 {
@@ -17,6 +18,9 @@ public abstract class BaseToolbarFragment extends Fragment
     {
         toolbar = root.findViewById(R.id.toolbar);
 
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setSupportActionBar(toolbar);
+
         if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1)
         {
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -24,7 +28,7 @@ public abstract class BaseToolbarFragment extends Fragment
         }
         else
         {
-            // Инициализируем иконку меню
+            mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             drawer = getActivity().findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
