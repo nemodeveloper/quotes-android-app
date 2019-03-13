@@ -28,7 +28,9 @@ public abstract class AppDataBase extends RoomDatabase
             {
                 if (instance == null)
                 {
-                    instance = Room.databaseBuilder(QuoteApp.getInstance(), AppDataBase.class, DATA_BASE_NAME).build();
+                    instance = Room.databaseBuilder(QuoteApp.getInstance(), AppDataBase.class, DATA_BASE_NAME)
+                            .addMigrations(DataBaseMigration.MIGRATION_1_2)
+                            .build();
                 }
             }
         }

@@ -131,6 +131,7 @@ public class QuoteCacheService
                     @Override
                     public void onNext(List<QuoteInfo> quotes)
                     {
+                        // TODO обновлять liked поля из БД иначе будут перетирания данными от сервера - всегда false
                         quoteCache.put(byCategoryKey, quotes);
                         saveToDataBase(quotes);
                     }

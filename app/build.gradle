@@ -33,6 +33,13 @@ android {
         versionName "1.2.0"
         multiDexEnabled false
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         debug {
@@ -53,6 +60,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     productFlavors {
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 }
 

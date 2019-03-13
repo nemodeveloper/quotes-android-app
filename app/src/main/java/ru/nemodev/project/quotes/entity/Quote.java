@@ -11,13 +11,18 @@ public class Quote implements Serializable
 {
     @PrimaryKey
     private Long id;
+
     @ColumnInfo(name = "category_id")
     private Long categoryId;
     private String text;
+
     @ColumnInfo(name = "author_id")
     private Long authorId;
     private String source;
     private String year;
+
+    @ColumnInfo(name = "liked")
+    private Boolean liked;
 
     public Long getId()
     {
@@ -77,5 +82,15 @@ public class Quote implements Serializable
     public void setYear(String year)
     {
         this.year = year;
+    }
+
+    public Boolean getLiked()
+    {
+        return liked;
+    }
+
+    public void setLiked(Boolean liked)
+    {
+        this.liked = liked;
     }
 }

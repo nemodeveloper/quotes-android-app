@@ -39,8 +39,12 @@ public abstract class QuoteDAO
     @Transaction
     public void addQuoteInfo(List<QuoteInfo> quoteInfoList)
     {
-        add(QuoteUtils.fromQuotesInfo(quoteInfoList));
         AppDataBase.getInstance().getCategoryDAO().add(CategoryUtils.getCategories(quoteInfoList));
         AppDataBase.getInstance().getAuthorDAO().add(AuthorUtils.getAuthors(quoteInfoList));
+        add(QuoteUtils.fromQuotesInfo(quoteInfoList));
     }
+
+    @Transaction
+    @Query("UPDATE quotes SET liked = :liked WHERE id = :id")
+    public abstract void like(Long id, boolean liked);
 }
