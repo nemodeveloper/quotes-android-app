@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.mvp.quote.random;
+package ru.nemodev.project.quotes.mvp.quote;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
 import ru.nemodev.project.quotes.service.quote.QuoteCacheService;
 
 public class QuoteIntractorImpl implements QuoteIntractor
@@ -20,16 +19,16 @@ public class QuoteIntractorImpl implements QuoteIntractor
     {
         if (fromCache)
         {
-            QuoteCacheService.getInstance().getRandom(params)
+            AppDataBase.getInstance().getQuoteDAO().getRandom(Integer.parseInt(params.get("count")))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<QuoteInfo>>()
+                    .subscribe(new SingleObserver<List<QuoteInfo>>()
                     {
                         @Override
                         public void onSubscribe(Disposable d) { }
 
                         @Override
-                        public void onNext(List<QuoteInfo> quoteInfoList)
+                        public void onSuccess(List<QuoteInfo> quoteInfoList)
                         {
                             onFinishLoadListener.onFinishLoad(quoteInfoList, true);
                         }
@@ -39,9 +38,6 @@ public class QuoteIntractorImpl implements QuoteIntractor
                         {
                             onFinishLoadListener.onLoadError(e, true);
                         }
-
-                        @Override
-                        public void onComplete() { }
                     });
         }
         else

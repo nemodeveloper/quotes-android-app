@@ -25,7 +25,11 @@ public final class DataBaseMigration
                     "SELECT id, category_id, text, author_id, source, year, 0 FROM quotes");
 
             database.execSQL("DROP TABLE quotes");
+
             database.execSQL("ALTER TABLE temp_quotes RENAME TO quotes");
+            database.execSQL("CREATE INDEX index_quotes_liked ON quotes (liked)");
+            database.execSQL("CREATE INDEX index_quotes_category_id ON quotes (category_id)");
+            database.execSQL("CREATE INDEX index_quotes_author_id ON quotes (author_id)");
         }
     };
 

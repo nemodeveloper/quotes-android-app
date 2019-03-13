@@ -16,7 +16,7 @@ import java.util.List;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
-import ru.nemodev.project.quotes.mvp.quote.random.QuoteIntractorImpl;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 

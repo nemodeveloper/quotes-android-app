@@ -2,12 +2,18 @@ package ru.nemodev.project.quotes.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-@Entity(tableName = "quotes")
+@Entity(tableName = "quotes",
+        indices = {
+            @Index("liked"),
+            @Index("category_id"),
+            @Index("author_id")
+        })
 public class Quote implements Serializable
 {
     @PrimaryKey

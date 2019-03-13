@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "765d986f808f211508cf0d72811c8e30",
+    "identityHash": "86e52bcb494c009e3344a4b7c420493a",
     "entities": [
       {
         "tableName": "quotes",
@@ -57,7 +57,32 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_quotes_liked",
+            "unique": false,
+            "columnNames": [
+              "liked"
+            ],
+            "createSql": "CREATE  INDEX `index_quotes_liked` ON `${TABLE_NAME}` (`liked`)"
+          },
+          {
+            "name": "index_quotes_category_id",
+            "unique": false,
+            "columnNames": [
+              "category_id"
+            ],
+            "createSql": "CREATE  INDEX `index_quotes_category_id` ON `${TABLE_NAME}` (`category_id`)"
+          },
+          {
+            "name": "index_quotes_author_id",
+            "unique": false,
+            "columnNames": [
+              "author_id"
+            ],
+            "createSql": "CREATE  INDEX `index_quotes_author_id` ON `${TABLE_NAME}` (`author_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -115,7 +140,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"765d986f808f211508cf0d72811c8e30\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"86e52bcb494c009e3344a4b7c420493a\")"
     ]
   }
 }

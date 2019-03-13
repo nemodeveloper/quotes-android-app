@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
-import ru.nemodev.project.quotes.mvp.quote.random.QuoteIntractorImpl;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
 
 
 public class CategoryDetailPresenterImpl implements
