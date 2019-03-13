@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
 import java.util.List;
-import java.util.Map;
 
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
@@ -17,16 +16,5 @@ public interface RandomQuoteListContract
     interface RandomQuoteListPresenter
     {
         void loadNextQuotes();
-    }
-
-    interface RandomQuoteListIntractor
-    {
-        interface OnFinishLoadListener
-        {
-            void onFinishLoad(List<QuoteInfo> quotes);
-            void onLoadError(Throwable t);
-        }
-
-        void loadQuotes(OnFinishLoadListener onFinishLoadListener, Map<String, String> params, boolean fromCache);
     }
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.api.dto.QuoteDTO;
@@ -53,7 +54,7 @@ public final class QuoteUtils
         return result.toString();
     }
 
-    public static List<Quote> fromQuotesDTO(List<QuoteDTO> quoteDTOList)
+    public static List<Quote> fromQuotesDTO(List<QuoteDTO> quoteDTOList, Set<Long> likedQuoteIds)
     {
         if (CollectionUtils.isEmpty(quoteDTOList))
             return Collections.emptyList();
@@ -61,13 +62,13 @@ public final class QuoteUtils
         List<Quote> quotes = new ArrayList<>(quoteDTOList.size());
         for (QuoteDTO quoteDTO : quoteDTOList)
         {
-            quotes.add(fromQuoteDTO(quoteDTO));
+            quotes.add(fromQuoteDTO(quoteDTO, likedQuoteIds.contains(quoteDTO.getId())));
         }
 
         return quotes;
     }
 
-    public static Quote fromQuoteDTO(QuoteDTO quoteDTO)
+    public static Quote fromQuoteDTO(QuoteDTO quoteDTO, boolean liked)
     {
         Quote quote = new Quote();
         quote.setId(quoteDTO.getId());
@@ -76,12 +77,23 @@ public final class QuoteUtils
         quote.setText(quoteDTO.getText());
         quote.setSource(quoteDTO.getSource());
         quote.setYear(quoteDTO.getYear());
-        quote.setLiked(Boolean.FALSE);
+        quote.setLiked(liked);
 
         return quote;
     }
 
-    public static List<QuoteInfo> toQuotesInfo(List<QuoteDTO> quoteDTOList)
+    public static List<Long> getQuoteIds(List<QuoteDTO> quoteDTOList)
+    {
+        List<Long> quoteIds = new ArrayList<>(quoteDTOList.size());
+        for (QuoteDTO quoteDTO : quoteDTOList)
+        {
+            quoteIds.add(quoteDTO.getId());
+        }
+
+        return quoteIds;
+    }
+
+    public static List<QuoteInfo> toQuotesInfo(List<QuoteDTO> quoteDTOList, Set<Long> likedQuoteIds)
     {
         if (CollectionUtils.isEmpty(quoteDTOList))
             return Collections.emptyList();
@@ -89,16 +101,16 @@ public final class QuoteUtils
         List<QuoteInfo> quotes = new ArrayList<>(quoteDTOList.size());
         for (QuoteDTO quoteDTO : quoteDTOList)
         {
-            quotes.add(toQuoteInfo(quoteDTO));
+            quotes.add(toQuoteInfo(quoteDTO, likedQuoteIds.contains(quoteDTO.getId())));
         }
 
         return quotes;
     }
 
-    public static QuoteInfo toQuoteInfo(QuoteDTO quoteDTO)
+    public static QuoteInfo toQuoteInfo(QuoteDTO quoteDTO, boolean liked)
     {
         QuoteInfo quoteInfo = new QuoteInfo();
-        quoteInfo.setQuote(fromQuoteDTO(quoteDTO));
+        quoteInfo.setQuote(fromQuoteDTO(quoteDTO, liked));
         quoteInfo.setAuthor(AuthorUtils.convertAuthor(quoteDTO.getAuthor()));
         quoteInfo.setCategory(CategoryUtils.convertCategory(quoteDTO.getCategory()));
 

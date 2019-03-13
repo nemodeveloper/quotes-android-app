@@ -3,6 +3,7 @@ package ru.nemodev.project.quotes.service.quote;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
+import ru.nemodev.project.quotes.api.dto.QuoteDTO;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
@@ -50,7 +52,7 @@ public class QuoteCacheService
     public Observable<List<QuoteInfo>> getRandom(Map<String, String> queryParams)
     {
         Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getRandom(queryParams)
-                .map(QuoteUtils::toQuotesInfo)
+                .map(this::toLikedQuoteInfo)
                 .subscribeOn(Schedulers.io());
 
         observable.subscribe(new Observer<List<QuoteInfo>>()
@@ -87,7 +89,7 @@ public class QuoteCacheService
             if (quotesByAuthor == null)
             {
                 Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByAuthor(authorId)
-                        .map(QuoteUtils::toQuotesInfo)
+                        .map(this::toLikedQuoteInfo)
                         .subscribeOn(Schedulers.io());
 
                 observable.subscribe(new Observer<List<QuoteInfo>>()
@@ -129,7 +131,7 @@ public class QuoteCacheService
             if (quotesByCategory == null)
             {
                 Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByCategory(categoryId)
-                        .map(QuoteUtils::toQuotesInfo)
+                        .map(this::toLikedQuoteInfo)
                         .subscribeOn(Schedulers.io());
 
                 observable.subscribe(new Observer<List<QuoteInfo>>()
@@ -140,7 +142,6 @@ public class QuoteCacheService
                     @Override
                     public void onNext(List<QuoteInfo> quotes)
                     {
-                        // TODO обновлять liked поля из БД иначе будут перетирания данными от сервера - всегда false
                         quoteCache.put(byCategoryKey, quotes);
                         saveToDataBase(quotes);
                     }
@@ -160,6 +161,12 @@ public class QuoteCacheService
 
             return Observable.just(quotesByCategory);
         }
+    }
+
+    private List<QuoteInfo> toLikedQuoteInfo(List<QuoteDTO> quotes)
+    {
+        return QuoteUtils.toQuotesInfo(quotes,
+                new HashSet<>(AppDataBase.getInstance().getQuoteDAO().getLiked(QuoteUtils.getQuoteIds(quotes))));
     }
 
     private void saveToDataBase(List<QuoteInfo> quoteInfoList)

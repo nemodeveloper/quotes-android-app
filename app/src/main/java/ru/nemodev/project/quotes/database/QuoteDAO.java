@@ -47,4 +47,8 @@ public abstract class QuoteDAO
     @Transaction
     @Query("UPDATE quotes SET liked = :liked WHERE id = :id")
     public abstract void like(Long id, boolean liked);
+
+    @Transaction
+    @Query("SELECT id FROM quotes WHERE id IN (:quotesForCheck) AND liked = 1")
+    public abstract List<Long> getLiked(List<Long> quotesForCheck);
 }
