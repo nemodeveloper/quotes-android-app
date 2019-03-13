@@ -2,8 +2,14 @@ package ru.nemodev.project.quotes.api;
 
 import android.support.annotation.NonNull;
 
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -31,12 +37,43 @@ public class RetrofitAPIFactory
     @NonNull
     private static OkHttpClient createHttpClient()
     {
-        return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .build();
+        final TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager()
+                {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType)
+                    { }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType)
+                    { }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers()
+                    {
+                        return new X509Certificate[]{};
+                    }
+                }
+        };
+
+        try
+        {
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new SecureRandom());
+
+            return new OkHttpClient.Builder()
+                    .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
+                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                    .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
+                    .hostnameVerifier((hostname, session) -> true)
+                    .build();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @NonNull

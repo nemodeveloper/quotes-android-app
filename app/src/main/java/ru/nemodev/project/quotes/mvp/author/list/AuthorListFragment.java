@@ -107,7 +107,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private boolean isCanSearch()
     {
         AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
-        return adapter != null && adapter.getItemCount() != 0;
+        return adapter != null;
     }
 
     private void searchAuthor(String search)
@@ -221,7 +221,10 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     @Override
     public void onDestroyOptionsMenu()
     {
-        searchView.clearFocus();
+        if (searchView != null)
+        {
+            searchView.clearFocus();
+        }
         super.onDestroyOptionsMenu();
     }
 

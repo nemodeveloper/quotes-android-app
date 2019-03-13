@@ -106,7 +106,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     private boolean isCanSearch()
     {
         CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
-        return adapter != null && adapter.getItemCount() != 0;
+        return adapter != null;
     }
 
     private void searchCategory(String search)
@@ -219,7 +219,10 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     @Override
     public void onDestroyOptionsMenu()
     {
-        searchView.clearFocus();
+        if (searchView != null)
+        {
+            searchView.clearFocus();
+        }
         super.onDestroyOptionsMenu();
     }
 
