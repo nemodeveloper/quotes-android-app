@@ -76,6 +76,7 @@ public final class QuoteUtils
         quote.setText(quoteDTO.getText());
         quote.setSource(quoteDTO.getSource());
         quote.setYear(quoteDTO.getYear());
+        quote.setLiked(Boolean.FALSE);
 
         return quote;
     }

@@ -101,6 +101,22 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
                     return false;
                 }
             });
+            searchView.setOnSearchClickListener(v ->
+            {
+                authorLoadRV.setIndexBarVisibility(false);
+
+                AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
+                adapter.setAnimationEnable(false);
+            });
+            searchView.setOnCloseListener(() ->
+            {
+                authorLoadRV.setIndexBarVisibility(true);
+
+                AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
+                adapter.setAnimationEnable(true);
+
+                return false;
+            });
         }
     }
 

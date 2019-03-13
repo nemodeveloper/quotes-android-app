@@ -76,9 +76,9 @@ public class AuthorRVAdapter extends FastSearchRVAdapter<Author, AuthorRVAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AuthorViewHolder holder, int position)
+    protected void doOnBindViewHolder(@NonNull AuthorViewHolder authorViewHolder, int position)
     {
-        holder.setAuthor(getItem(position));
-        holder.authorCardView.setOnClickListener(view -> onItemClickRVListener.onItemClick(holder.getAuthor()));
+        authorViewHolder.setAuthor(getItem(position));
+        authorViewHolder.authorCardView.setOnClickListener(view -> onItemClickRVListener.onItemClick(authorViewHolder.getAuthor()));
     }
 }

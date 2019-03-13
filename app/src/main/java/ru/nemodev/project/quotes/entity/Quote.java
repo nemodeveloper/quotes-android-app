@@ -3,6 +3,7 @@ package ru.nemodev.project.quotes.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -13,15 +14,20 @@ public class Quote implements Serializable
     private Long id;
 
     @ColumnInfo(name = "category_id")
+    @NonNull
     private Long categoryId;
+
+    @NonNull
     private String text;
 
     @ColumnInfo(name = "author_id")
+    @NonNull
     private Long authorId;
     private String source;
     private String year;
 
     @ColumnInfo(name = "liked")
+    @NonNull
     private Boolean liked;
 
     public Long getId()

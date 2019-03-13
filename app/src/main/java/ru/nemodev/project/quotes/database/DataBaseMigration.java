@@ -11,7 +11,21 @@ public final class DataBaseMigration
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database)
         {
-            database.execSQL("ALTER TABLE quotes ADD COLUMN liked INTEGER NOT NULL DEFAULT 0");
+            database.execSQL("CREATE TABLE IF NOT EXISTS temp_quotes (" +
+                    "id INTEGER, " +
+                    "category_id INTEGER NOT NULL, " +
+                    "text TEXT NOT NULL, " +
+                    "author_id INTEGER NOT NULL, " +
+                    "source TEXT, " +
+                    "`year` TEXT, " +
+                    "`liked` INTEGER NOT NULL DEFAULT 0, " +
+                    "PRIMARY KEY(`id`))");
+
+            database.execSQL("INSERT INTO temp_quotes (id, category_id, text, author_id, source, year, liked)" +
+                    "SELECT id, category_id, text, author_id, source, year, 0 FROM quotes");
+
+            database.execSQL("DROP TABLE quotes");
+            database.execSQL("ALTER TABLE temp_quotes RENAME TO quotes");
         }
     };
 

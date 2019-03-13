@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "df1721773954d77a744f1906b93b1731",
+    "version": 2,
+    "identityHash": "765d986f808f211508cf0d72811c8e30",
     "entities": [
       {
         "tableName": "quotes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `category_id` INTEGER, `text` TEXT, `author_id` INTEGER, `source` TEXT, `year` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `category_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `author_id` INTEGER NOT NULL, `source` TEXT, `year` TEXT, `liked` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,19 +18,19 @@
             "fieldPath": "categoryId",
             "columnName": "category_id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "text",
             "columnName": "text",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "authorId",
             "columnName": "author_id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "source",
@@ -43,6 +43,12 @@
             "columnName": "year",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "liked",
+            "columnName": "liked",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -109,7 +115,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"df1721773954d77a744f1906b93b1731\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"765d986f808f211508cf0d72811c8e30\")"
     ]
   }
 }

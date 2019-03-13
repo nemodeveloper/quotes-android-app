@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
+import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends SimpleRVAdapter<T, VH> implements SectionIndexer, Filterable
+        extends AnimationRVAdapter<T, VH> implements SectionIndexer, Filterable
 {
     private List<Integer> sectionPositions;
     protected List<T> filteredData;

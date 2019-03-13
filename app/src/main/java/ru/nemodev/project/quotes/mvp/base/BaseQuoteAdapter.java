@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
+import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
-public abstract class BaseQuoteAdapter extends SimpleRVAdapter<QuoteInfo, BaseQuoteAdapter.BaseQuoteViewHolder>
+public abstract class BaseQuoteAdapter extends AnimationRVAdapter<QuoteInfo, BaseQuoteAdapter.BaseQuoteViewHolder>
 {
     private final FragmentActivity fragmentActivity;
 
@@ -48,9 +48,9 @@ public abstract class BaseQuoteAdapter extends SimpleRVAdapter<QuoteInfo, BaseQu
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseQuoteViewHolder holder, int position)
+    protected void doOnBindViewHolder(@NonNull BaseQuoteViewHolder baseQuoteViewHolder, int position)
     {
-        holder.setQuote(getItem(position));
+        baseQuoteViewHolder.setQuote(getItem(position));
     }
 
     protected abstract int getCardViewLayoutId();
