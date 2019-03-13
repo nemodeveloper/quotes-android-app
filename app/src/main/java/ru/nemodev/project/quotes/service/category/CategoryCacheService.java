@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.service.category;
 
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import ru.nemodev.project.quotes.utils.CategoryUtils;
 
 public class CategoryCacheService
 {
+    private static final String LOG_TAG = CategoryCacheService.class.getSimpleName();
+
     private static final String CATEGORY_GET_ALL_CACHE_KEY = "CATEGORY_GET_ALL";
 
     private static volatile CategoryCacheService instance;
@@ -66,7 +69,9 @@ public class CategoryCacheService
 
                     @Override
                     public void onError(Throwable e)
-                    { }
+                    {
+                        Log.e(LOG_TAG, "Ошибка сохранения категорий в кеш!", e);
+                    }
 
                     @Override
                     public void onComplete()
@@ -82,8 +87,6 @@ public class CategoryCacheService
 
     private void saveToDataBase(List<Category> categories)
     {
-        Observable.just(categories)
-                .subscribeOn(Schedulers.io())
-                .subscribe(AppDataBase.getInstance().getCategoryDAO()::add);
+        AppDataBase.getInstance().getCategoryDAO().add(categories);
     }
 }

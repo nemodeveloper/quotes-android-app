@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.service.author;
 
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import ru.nemodev.project.quotes.utils.AuthorUtils;
 
 public class AuthorCacheService
 {
+    private static final String LOG_TAG = AuthorCacheService.class.getSimpleName();
+
     private static final String AUTHOR_GET_ALL_CACHE_KEY = "AUTHOR_GET_ALL";
 
     private static volatile AuthorCacheService instance;
@@ -66,7 +69,9 @@ public class AuthorCacheService
 
                     @Override
                     public void onError(Throwable e)
-                    { }
+                    {
+                        Log.e(LOG_TAG, "Ошибка сохранения авторов в кеш!", e);
+                    }
 
                     @Override
                     public void onComplete()
@@ -82,8 +87,6 @@ public class AuthorCacheService
 
     private void saveToDataBase(List<Author> authors)
     {
-        Observable.just(authors)
-                .subscribeOn(Schedulers.io())
-                .subscribe(AppDataBase.getInstance().getAuthorDAO()::add);
+        AppDataBase.getInstance().getAuthorDAO().add(authors);
     }
 }

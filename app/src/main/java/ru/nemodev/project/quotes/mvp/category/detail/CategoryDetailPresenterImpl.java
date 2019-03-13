@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
+import ru.nemodev.project.quotes.mvp.quote.random.QuoteIntractorImpl;
 
 
-public class CategoryDetailPresenterImpl implements CategoryDetailContract.CategoryDetailPresenter, CategoryDetailContract.CategoryDetailIntractor.OnFinishLoadListener
+public class CategoryDetailPresenterImpl implements
+        CategoryDetailContract.CategoryDetailPresenter,
+        QuoteIntractor.OnFinishLoadListener
 {
     private final CategoryDetailContract.CategoryDetailView view;
-    private final CategoryDetailContract.CategoryDetailIntractor model;
+    private final QuoteIntractor quoteIntractor;
     private final Long categoryId;
 
     private volatile AtomicBoolean isAllDataLoaded = new AtomicBoolean(false);
@@ -20,7 +24,7 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
     {
         this.categoryId = categoryId;
         this.view = view;
-        this.model = new CategoryDetailIntractorImpl();
+        this.quoteIntractor = new QuoteIntractorImpl();
     }
 
     @Override
@@ -32,7 +36,7 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadQuotes(categoryId, this, false);
+        quoteIntractor.loadByCategory(this, categoryId, false);
     }
 
     @Override
@@ -48,9 +52,9 @@ public class CategoryDetailPresenterImpl implements CategoryDetailContract.Categ
     }
 
     @Override
-    public void onLoadError(Throwable t)
+    public void onLoadError(Throwable t, boolean fromCache)
     {
         isDataLoading.set(false);
-        model.loadQuotes(categoryId, this, true);
+        quoteIntractor.loadByCategory(this, categoryId, true);
     }
 }

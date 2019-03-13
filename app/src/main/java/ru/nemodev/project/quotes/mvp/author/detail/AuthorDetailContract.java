@@ -17,15 +17,4 @@ public interface AuthorDetailContract
     {
         void loadQuotes();
     }
-
-    interface AuthorDetailIntractor
-    {
-        interface OnFinishLoadListener
-        {
-            void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache);
-            void onLoadError(Throwable t);
-        }
-
-        void loadQuotes(Long authorId, OnFinishLoadListener onFinishLoadListener, boolean fromCache);
-    }
 }

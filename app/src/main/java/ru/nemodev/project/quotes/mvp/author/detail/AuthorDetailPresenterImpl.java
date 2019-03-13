@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
+import ru.nemodev.project.quotes.mvp.quote.random.QuoteIntractorImpl;
 
 
-public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDetailPresenter, AuthorDetailContract.AuthorDetailIntractor.OnFinishLoadListener
+public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDetailPresenter, QuoteIntractor.OnFinishLoadListener
 {
     private final AuthorDetailContract.AuthorDetailView view;
-    private final AuthorDetailContract.AuthorDetailIntractor model;
+    private final QuoteIntractor quoteIntractor;
     private final Long authorId;
 
     private volatile AtomicBoolean isAllDataLoaded = new AtomicBoolean(false);
@@ -20,7 +22,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
     {
         this.authorId = authorId;
         this.view = view;
-        this.model = new AuthorDetailIntractorImpl();
+        this.quoteIntractor = new QuoteIntractorImpl();
     }
 
     @Override
@@ -32,7 +34,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadQuotes(authorId, this, false);
+        quoteIntractor.loadByAuthor(this, authorId,  false);
     }
 
     @Override
@@ -48,9 +50,9 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
     }
 
     @Override
-    public void onLoadError(Throwable t)
+    public void onLoadError(Throwable t, boolean fromCache)
     {
         isDataLoading.set(false);
-        model.loadQuotes(authorId, this, true);
+        quoteIntractor.loadByAuthor(this, authorId, true);
     }
 }

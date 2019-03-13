@@ -6,22 +6,24 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
 
 
-public class RandomQuoteListPresenterImpl implements RandomQuoteListContract.RandomQuoteListPresenter,
-        RandomQuoteListContract.RandomQuoteListIntractor.OnFinishLoadListener
+public class RandomQuoteListPresenterImpl implements
+        RandomQuoteListContract.RandomQuoteListPresenter,
+        QuoteIntractor.OnFinishLoadListener
 {
     private static final Map<String, String> randomLoadParams = Collections.singletonMap("count", "200");
 
     private final RandomQuoteListContract.RandomQuoteListView view;
-    private final RandomQuoteListContract.RandomQuoteListIntractor model;
+    private final QuoteIntractor quoteIntractor;
 
     private volatile AtomicBoolean isFirstDataLoading = new AtomicBoolean(true);
 
     public RandomQuoteListPresenterImpl(RandomQuoteListContract.RandomQuoteListView view)
     {
         this.view = view;
-        this.model = new RandomQuoteListIntractorImpl();
+        this.quoteIntractor = new QuoteIntractorImpl();
     }
 
     @Override
@@ -33,19 +35,19 @@ public class RandomQuoteListPresenterImpl implements RandomQuoteListContract.Ran
             isFirstDataLoading.set(false);
         }
 
-        model.loadQuotes(this, randomLoadParams, false);
+        quoteIntractor.loadRandom(this, randomLoadParams, false);
     }
 
     @Override
-    public void onFinishLoad(List<QuoteInfo> quotes)
+    public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
     {
         view.showNextQuotes(quotes);
         view.hideLoader();
     }
 
     @Override
-    public void onLoadError(Throwable t)
+    public void onLoadError(Throwable t, boolean fromCache)
     {
-        model.loadQuotes(this, randomLoadParams, true);
+        quoteIntractor.loadRandom(this, randomLoadParams, true);
     }
 }

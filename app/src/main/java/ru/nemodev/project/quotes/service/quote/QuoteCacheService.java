@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.service.quote;
 
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,8 @@ import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class QuoteCacheService
 {
+    private static final String LOG_TAG = QuoteCacheService.class.getSimpleName();
+
     private static volatile QuoteCacheService instance;
 
     private static final String GET_BY_AUTHOR_PREF_KEY = "getByAuthor_";
@@ -62,7 +65,10 @@ public class QuoteCacheService
             }
 
             @Override
-            public void onError(Throwable e) { }
+            public void onError(Throwable e)
+            {
+                Log.e(LOG_TAG, "Ошибка сохранения случайных цитат в кеш!", e);
+            }
 
             @Override
             public void onComplete() { }
@@ -97,7 +103,10 @@ public class QuoteCacheService
                     }
 
                     @Override
-                    public void onError(Throwable e) { }
+                    public void onError(Throwable e)
+                    {
+                        Log.e(LOG_TAG, "Ошибка сохранения цитат по автору в кеш!", e);
+                    }
 
                     @Override
                     public void onComplete() { }
@@ -137,7 +146,10 @@ public class QuoteCacheService
                     }
 
                     @Override
-                    public void onError(Throwable e) { }
+                    public void onError(Throwable e)
+                    {
+                        Log.e(LOG_TAG, "Ошибка сохранения цитат по категории в кеш!", e);
+                    }
 
                     @Override
                     public void onComplete() { }
@@ -152,8 +164,6 @@ public class QuoteCacheService
 
     private void saveToDataBase(List<QuoteInfo> quoteInfoList)
     {
-        Observable.just(quoteInfoList)
-                .observeOn(Schedulers.io())
-                .subscribe(AppDataBase.getInstance().getQuoteDAO()::addQuoteInfo);
+        AppDataBase.getInstance().getQuoteDAO().addQuoteInfo(quoteInfoList);
     }
 }

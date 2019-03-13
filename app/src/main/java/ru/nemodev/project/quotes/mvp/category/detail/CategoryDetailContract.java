@@ -17,15 +17,4 @@ public interface CategoryDetailContract
     {
         void loadQuotes();
     }
-
-    interface CategoryDetailIntractor
-    {
-        interface OnFinishLoadListener
-        {
-            void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache);
-            void onLoadError(Throwable t);
-        }
-
-        void loadQuotes(Long categoryId, OnFinishLoadListener onFinishLoadListener, boolean fromCache);
-    }
 }

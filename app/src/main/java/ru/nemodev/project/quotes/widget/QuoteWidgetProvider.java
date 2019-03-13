@@ -15,8 +15,8 @@ import java.util.List;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListContract;
-import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListIntractorImpl;
+import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
+import ru.nemodev.project.quotes.mvp.quote.random.QuoteIntractorImpl;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 
@@ -24,7 +24,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
 {
     private static final String UPDATE_WIDGET_BUTTON_ACTION = "UPDATE_WIDGET_BUTTON_ACTION";
 
-    private static final RandomQuoteListContract.RandomQuoteListIntractor quoteLoader = new RandomQuoteListIntractorImpl();
+    private static final QuoteIntractor quoteLoader = new QuoteIntractorImpl();
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
@@ -45,10 +45,10 @@ public class QuoteWidgetProvider extends AppWidgetProvider
 
     private void updateQuote(final AppWidgetManager appWidgetManager, final int appWidgetId, final RemoteViews remoteViews, final boolean fromCache)
     {
-        quoteLoader.loadQuotes(new RandomQuoteListContract.RandomQuoteListIntractor.OnFinishLoadListener()
+        quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
         {
             @Override
-            public void onFinishLoad(List<QuoteInfo> quotes)
+            public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
             {
                 if (CollectionUtils.isNotEmpty(quotes))
                 {
@@ -66,7 +66,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
             }
 
             @Override
-            public void onLoadError(Throwable t)
+            public void onLoadError(Throwable t, boolean fromCache)
             {
                 if (!fromCache)
                 {
