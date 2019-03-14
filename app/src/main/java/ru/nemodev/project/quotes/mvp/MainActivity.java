@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
                 openFragment(new AuthorListFragment());
                 break;
             }
-            case R.id.nav_item_liked:
+            case R.id.nav_item_like:
             {
                 openFragment(new LikedQuoteListFragment());
                 break;

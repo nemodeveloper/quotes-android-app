@@ -3,7 +3,4 @@
     <item name="ic_menu_category" type="drawable">@drawable/category</item>
     <item name="ic_menu_author" type="drawable">@drawable/author</item>
     <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
-
-    <item name="ic_share_quote" type="drawable">@drawable/share_quote</item>
-
 </resources>

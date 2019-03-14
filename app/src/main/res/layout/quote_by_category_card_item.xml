@@ -72,16 +72,17 @@
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_share_quote"
+                android:src="@drawable/ic_unlike"
                 android:background="@null"
-                android:layout_toLeftOf="@id/shareQuote"/>
+                android:layout_marginEnd="@dimen/quote_like_margin_right"
+                android:layout_toStartOf="@id/shareQuote"/>
             <ImageView
                 android:id="@+id/shareQuote"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_share_quote"
+                android:src="@drawable/ic_share"
                 android:background="@null"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>

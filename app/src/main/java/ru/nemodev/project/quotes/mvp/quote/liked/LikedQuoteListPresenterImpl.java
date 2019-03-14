@@ -15,7 +15,7 @@ public class LikedQuoteListPresenterImpl implements
     private final LikedQuoteListContract.LikedQuoteListView view;
     private final QuoteIntractor quoteIntractor;
 
-    private volatile AtomicBoolean isAllDataLoad = new AtomicBoolean(false);
+    private volatile AtomicBoolean isDataLoading = new AtomicBoolean(false);
 
     public LikedQuoteListPresenterImpl(LikedQuoteListContract.LikedQuoteListView view)
     {
@@ -26,9 +26,10 @@ public class LikedQuoteListPresenterImpl implements
     @Override
     public void loadLikedQuotes()
     {
-        if (isAllDataLoad.get())
+        if (isDataLoading.get())
             return;
 
+        isDataLoading.set(true);
         view.showLoader();
         quoteIntractor.loadLiked(this);
     }
@@ -39,12 +40,13 @@ public class LikedQuoteListPresenterImpl implements
         view.showLikedQuotes(quotes);
         view.hideLoader();
 
-        isAllDataLoad.set(true);
+        isDataLoading.set(false);
     }
 
     @Override
     public void onLoadError(Throwable t, boolean fromCache)
     {
         view.hideLoader();
+        isDataLoading.set(false);
     }
 }

@@ -37,7 +37,7 @@ public class BaseQuoteCardView extends CardView
 
     protected FragmentActivity fragmentActivity;
     protected QuoteInfo quote;
-    protected OnLikeQuoteEvent onLikeQuoteEvent;
+    protected OnLikeQuoteListener onLikeQuoteListener;
 
     public BaseQuoteCardView(@NonNull Context context)
     {
@@ -68,9 +68,9 @@ public class BaseQuoteCardView extends CardView
         showActions();
     }
 
-    public void setOnLikeQuoteEvent(OnLikeQuoteEvent onLikeQuoteEvent)
+    public void setOnLikeQuoteListener(OnLikeQuoteListener onLikeQuoteListener)
     {
-        this.onLikeQuoteEvent = onLikeQuoteEvent;
+        this.onLikeQuoteListener = onLikeQuoteListener;
     }
 
     protected void showAuthor()
@@ -126,21 +126,26 @@ public class BaseQuoteCardView extends CardView
                         AndroidUtils.getTextById(R.string.share_quote_dialog_title),
                         QuoteUtils.getQuoteTextForShare(quote)));
 
-        ImageView likeButton = findViewById(R.id.likeQuote);
-        if (onLikeQuoteEvent == null)
+        final ImageView likeButton = findViewById(R.id.likeQuote);
+        if (quote.getQuote().getLiked())
+            likeButton.setImageResource(R.drawable.ic_like);
+        else
+            likeButton.setImageResource(R.drawable.ic_unlike);
+
+        if (onLikeQuoteListener == null)
         {
-            onLikeQuoteEvent = new OnLikeQuoteEvent()
+            onLikeQuoteListener = new OnLikeQuoteListener()
             {
                 @Override
                 public void like()
                 {
-
+                    likeButton.setImageResource(R.drawable.ic_like);
                 }
 
                 @Override
                 public void unLike()
                 {
-
+                    likeButton.setImageResource(R.drawable.ic_unlike);
                 }
             };
         }
@@ -166,9 +171,9 @@ public class BaseQuoteCardView extends CardView
                 public void onNext(Quote quote)
                 {
                     if (quote.getLiked())
-                        onLikeQuoteEvent.like();
+                        onLikeQuoteListener.like();
                     else
-                        onLikeQuoteEvent.unLike();
+                        onLikeQuoteListener.unLike();
                 }
 
                 @Override
@@ -194,7 +199,7 @@ public class BaseQuoteCardView extends CardView
         });
     }
 
-    public interface OnLikeQuoteEvent
+    public interface OnLikeQuoteListener
     {
         void like();
         void unLike();

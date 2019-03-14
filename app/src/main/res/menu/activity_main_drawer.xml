@@ -17,8 +17,8 @@
             android:icon="@drawable/category"
             android:title="@string/category_title" />
         <item
-            android:id="@+id/nav_item_liked"
-            android:icon="@drawable/category"
+            android:id="@+id/nav_item_like"
+            android:icon="@drawable/ic_menu_like"
             android:title="@string/like_title" />
     </group>
 

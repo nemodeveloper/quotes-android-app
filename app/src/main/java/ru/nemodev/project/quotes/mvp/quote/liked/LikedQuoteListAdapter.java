@@ -26,7 +26,9 @@ public class LikedQuoteListAdapter extends BaseQuoteAdapter
     @Override
     protected void doOnBindViewHolder(@NonNull BaseQuoteViewHolder baseQuoteViewHolder, int position)
     {
-        baseQuoteViewHolder.setOnLikeQuoteEvent(new BaseQuoteCardView.OnLikeQuoteEvent()
+        super.doOnBindViewHolder(baseQuoteViewHolder, position);
+
+        baseQuoteViewHolder.setOnLikeQuoteEvent(new BaseQuoteCardView.OnLikeQuoteListener()
         {
             @Override
             public void like() { }
@@ -38,6 +40,5 @@ public class LikedQuoteListAdapter extends BaseQuoteAdapter
                 notifyItemRemoved(baseQuoteViewHolder.getAdapterPosition());
             }
         });
-        super.doOnBindViewHolder(baseQuoteViewHolder, position);
     }
 }
