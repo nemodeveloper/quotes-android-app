@@ -16,4 +16,5 @@ public interface QuoteIntractor
     void loadRandom(OnFinishLoadListener onFinishLoadListener, Map<String, String> params, boolean fromCache);
     void loadByAuthor(OnFinishLoadListener onFinishLoadListener, Long authorId, boolean fromCache);
     void loadByCategory(OnFinishLoadListener onFinishLoadListener, Long categoryId, boolean fromCache);
+    void loadLiked(OnFinishLoadListener onFinishLoadListener);
 }

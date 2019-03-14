@@ -21,7 +21,6 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
-import ru.nemodev.project.quotes.mvp.base.RandomQuoteRV;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 

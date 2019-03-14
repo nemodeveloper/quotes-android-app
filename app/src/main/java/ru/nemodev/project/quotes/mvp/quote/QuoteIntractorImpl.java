@@ -175,4 +175,29 @@ public class QuoteIntractorImpl implements QuoteIntractor
                     });
         }
     }
+
+    @Override
+    public void loadLiked(OnFinishLoadListener onFinishLoadListener)
+    {
+        AppDataBase.getInstance().getQuoteDAO().getLiked()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<QuoteInfo>>()
+                {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+
+                    @Override
+                    public void onSuccess(List<QuoteInfo> quoteInfoList)
+                    {
+                        onFinishLoadListener.onFinishLoad(quoteInfoList, true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+                        onFinishLoadListener.onLoadError(e, true);
+                    }
+                });
+    }
 }

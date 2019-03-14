@@ -22,6 +22,7 @@ import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
 import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;
 import ru.nemodev.project.quotes.mvp.category.list.CategoryListFragment;
+import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
@@ -76,6 +77,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_item_author:
             {
                 openFragment(new AuthorListFragment());
+                break;
+            }
+            case R.id.nav_item_liked:
+            {
+                openFragment(new LikedQuoteListFragment());
                 break;
             }
             case R.id.nav_item_share:

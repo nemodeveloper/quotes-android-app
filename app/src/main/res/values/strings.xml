@@ -28,7 +28,7 @@
     <string name="random_title">Случайные</string>
     <string name="category_title">Категории</string>
     <string name="author_title">Авторы</string>
-    <!--<string name="like_title">"Избранные"</string>-->
+    <string name="like_title">Избранные</string>
 
     <string name="menu_item_others">Другое</string>
     <string name="menu_item_telegram_channel">Telegram канал</string>

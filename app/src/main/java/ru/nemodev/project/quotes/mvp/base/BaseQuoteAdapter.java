@@ -37,6 +37,11 @@ public abstract class BaseQuoteAdapter extends AnimationRVAdapter<QuoteInfo, Bas
         {
             quoteCardView.setQuote(quote);
         }
+
+        public void setOnLikeQuoteEvent(BaseQuoteCardView.OnLikeQuoteEvent onLikeQuoteEvent)
+        {
+            quoteCardView.setOnLikeQuoteEvent(onLikeQuoteEvent);
+        }
     }
 
     @NonNull

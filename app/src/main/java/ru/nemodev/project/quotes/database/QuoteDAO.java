@@ -51,4 +51,8 @@ public abstract class QuoteDAO
     @Transaction
     @Query("SELECT id FROM quotes WHERE id IN (:quotesForCheck) AND liked = 1")
     public abstract List<Long> getLiked(List<Long> quotesForCheck);
+
+    @Transaction
+    @Query("SELECT * FROM quotes WHERE liked = 1")
+    public abstract Single<List<QuoteInfo>> getLiked();
 }

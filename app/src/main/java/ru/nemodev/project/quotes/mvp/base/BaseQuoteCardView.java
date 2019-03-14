@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,7 +17,15 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.database.AppDataBase;
+import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -24,8 +33,11 @@ import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class BaseQuoteCardView extends CardView
 {
+    protected final String TAG_LOG = this.getClass().getSimpleName();
+
     protected FragmentActivity fragmentActivity;
     protected QuoteInfo quote;
+    protected OnLikeQuoteEvent onLikeQuoteEvent;
 
     public BaseQuoteCardView(@NonNull Context context)
     {
@@ -54,6 +66,11 @@ public class BaseQuoteCardView extends CardView
         showAuthor();
         showQuote();
         showActions();
+    }
+
+    public void setOnLikeQuoteEvent(OnLikeQuoteEvent onLikeQuoteEvent)
+    {
+        this.onLikeQuoteEvent = onLikeQuoteEvent;
     }
 
     protected void showAuthor()
@@ -108,6 +125,62 @@ public class BaseQuoteCardView extends CardView
                 AndroidUtils.openShareDialog(getContext(),
                         AndroidUtils.getTextById(R.string.share_quote_dialog_title),
                         QuoteUtils.getQuoteTextForShare(quote)));
+
+        ImageView likeButton = findViewById(R.id.likeQuote);
+        if (onLikeQuoteEvent == null)
+        {
+            onLikeQuoteEvent = new OnLikeQuoteEvent()
+            {
+                @Override
+                public void like()
+                {
+
+                }
+
+                @Override
+                public void unLike()
+                {
+
+                }
+            };
+        }
+
+        likeButton.setOnClickListener(v ->
+        {
+            Observable.create((ObservableOnSubscribe<Quote>) emitter -> {
+                Quote likedQuote = quote.getQuote();
+                AppDataBase.getInstance().getQuoteDAO().like(likedQuote.getId(), !likedQuote.getLiked());
+                likedQuote.setLiked(!likedQuote.getLiked());
+
+                emitter.onNext(likedQuote);
+                emitter.onComplete();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Quote>()
+            {
+                @Override
+                public void onSubscribe(Disposable d) { }
+
+                @Override
+                public void onNext(Quote quote)
+                {
+                    if (quote.getLiked())
+                        onLikeQuoteEvent.like();
+                    else
+                        onLikeQuoteEvent.unLike();
+                }
+
+                @Override
+                public void onError(Throwable e)
+                {
+                    Log.e(TAG_LOG, "Ошибка лайка цитаты!", e);
+                }
+
+                @Override
+                public void onComplete() { }
+            });
+        });
     }
 
     protected void showCategoryAction()
@@ -119,5 +192,11 @@ public class BaseQuoteCardView extends CardView
             MainActivity mainActivity = (MainActivity) fragmentActivity;
             mainActivity.openQuoteFragment(quote.getCategory());
         });
+    }
+
+    public interface OnLikeQuoteEvent
+    {
+        void like();
+        void unLike();
     }
 }

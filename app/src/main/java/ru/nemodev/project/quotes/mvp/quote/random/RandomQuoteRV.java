@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.mvp.base;
+package ru.nemodev.project.quotes.mvp.quote.random;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

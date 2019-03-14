@@ -30,13 +30,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteRV
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/quoteList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#EEEEEE"
-                android:layout_above="@+id/not_full_content_message">
-            </ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteRV>
+                android:background="#EEEEEE">
+            </android.support.v7.widget.RecyclerView>
 
             <ProgressBar
                 android:id="@+id/contentLoadingProgressBar"
@@ -44,18 +43,6 @@
                 android:layout_height="100dp"
                 style="@android:style/Widget.Material.ProgressBar.Small"
                 android:layout_centerInParent="true"/>
-
-            <TextView
-                android:id="@+id/not_full_content_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:textAlignment="center"
-                android:layout_alignParentBottom="true"
-                android:background="@color/notFullContentBackground"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:text="@string/not_full_quotes_message"/>
         </RelativeLayout>
 
     </LinearLayout>
