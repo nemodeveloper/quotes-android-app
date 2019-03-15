@@ -7,12 +7,13 @@ import java.util.List;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
+import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 
 public class CategoryQuotesAdapter extends BaseQuoteAdapter
 {
-    public CategoryQuotesAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes)
+    public CategoryQuotesAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes, OnQuoteCardClickListener onQuoteCardClickListener)
     {
-        super(fragmentActivity, quotes);
+        super(fragmentActivity, quotes, onQuoteCardClickListener);
     }
 
     @Override

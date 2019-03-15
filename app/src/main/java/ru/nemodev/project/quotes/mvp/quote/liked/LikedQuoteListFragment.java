@@ -16,6 +16,7 @@ import java.util.List;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
@@ -83,7 +84,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
     {
         if (CollectionUtils.isNotEmpty(quotes))
         {
-            quoteRV.setAdapter(new LikedQuoteListAdapter(getActivity(), quotes));
+            quoteRV.setAdapter(new LikedQuoteListAdapter(getActivity(), quotes, (MainActivity) getActivity()));
         }
     }
 }

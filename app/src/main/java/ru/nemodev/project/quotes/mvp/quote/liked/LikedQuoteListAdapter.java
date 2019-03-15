@@ -9,12 +9,13 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteCardView;
+import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 
 public class LikedQuoteListAdapter extends BaseQuoteAdapter
 {
-    public LikedQuoteListAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes)
+    public LikedQuoteListAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes, OnQuoteCardClickListener onQuoteCardClickListener)
     {
-        super(fragmentActivity, quotes);
+        super(fragmentActivity, quotes, onQuoteCardClickListener);
     }
 
     @Override

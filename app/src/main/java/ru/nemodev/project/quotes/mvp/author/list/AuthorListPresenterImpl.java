@@ -23,7 +23,6 @@ public class AuthorListPresenterImpl implements AuthorListContract.AuthorListPre
     @Override
     public void loadAuthors()
     {
-        // TODO подумать как это обыграть более красиво
         if (isAllDataLoaded.get() || isDataLoading.get())
             return;
 

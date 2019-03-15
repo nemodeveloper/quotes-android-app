@@ -10,9 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
@@ -20,14 +17,19 @@ import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
 import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
+import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;
 import ru.nemodev.project.quotes.mvp.category.list.CategoryListFragment;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.MobileAds;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener, OnQuoteCardClickListener
 {
     private DrawerLayout drawer;
 
@@ -165,5 +167,17 @@ public class MainActivity extends AppCompatActivity
     private void initFabricIO()
     {
         Fabric.with(this, new Crashlytics());
+    }
+
+    @Override
+    public void onAuthorClick(Author author)
+    {
+        openQuoteFragment(author);
+    }
+
+    @Override
+    public void onCategoryClick(Category category)
+    {
+        openQuoteFragment(category);
     }
 }

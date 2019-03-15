@@ -19,6 +19,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -70,14 +71,13 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         quoteRV = root.findViewById(R.id.quoteList);
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-        quoteRV.setAdapter(new RandomQuoteListAdapter(getActivity()));
+        quoteRV.setAdapter(new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity()));
 
         quoteRV.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
-                // TODO подумать как эту логику перенести в Presenter
                 loadNextQuotes();
             }
         });

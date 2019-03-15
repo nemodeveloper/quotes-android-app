@@ -216,8 +216,8 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
             {
                 searchView.clearFocus();
-                MainActivity mainActivity1 = (MainActivity) getActivity();
-                mainActivity1.openQuoteFragment(item);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.openQuoteFragment(item);
             }));
             categoryLoadRV.setIndexBarVisibility(true);
             getActivity().invalidateOptionsMenu();

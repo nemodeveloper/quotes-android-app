@@ -19,6 +19,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
@@ -59,7 +60,6 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
         return root;
     }
 
-    // TODO переписать чтобы эту логику делал presenter
     @Override
     protected void initToolbar(View root)
     {
@@ -125,9 +125,8 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     @Override
     public void showQuotes(List<QuoteInfo> quotes)
     {
-        // TODO прокидывать OnClickQuoteActionListener вместо Context
         if (CollectionUtils.isNotEmpty(quotes))
-            quoteRV.setAdapter(new AuthorQuotesAdapter(getActivity(), quotes));
+            quoteRV.setAdapter(new AuthorQuotesAdapter(getActivity(), quotes, (MainActivity) getActivity()));
     }
 
     private void setVisibleNotFullContentMessage(boolean isVisible)

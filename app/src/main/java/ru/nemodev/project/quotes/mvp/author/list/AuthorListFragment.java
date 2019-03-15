@@ -167,7 +167,6 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
-    // TODO полумать как обыграть события сети более красиво в рамках MVP
     private void connectToNetworkEvents()
     {
         disconnectFromNetworkEvents();
@@ -218,8 +217,8 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
             {
                 searchView.clearFocus();
-                MainActivity mainActivity1 = (MainActivity) getActivity();
-                mainActivity1.openQuoteFragment(item);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.openQuoteFragment(item);
             }));
             authorLoadRV.setIndexBarVisibility(true);
             getActivity().invalidateOptionsMenu();

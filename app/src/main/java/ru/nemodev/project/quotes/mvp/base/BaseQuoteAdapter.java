@@ -14,23 +14,22 @@ import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public abstract class BaseQuoteAdapter extends AnimationRVAdapter<QuoteInfo, BaseQuoteAdapter.BaseQuoteViewHolder>
 {
-    private final FragmentActivity fragmentActivity;
+    private final OnQuoteCardClickListener onQuoteCardClickListener;
 
-    public BaseQuoteAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes)
+    public BaseQuoteAdapter(FragmentActivity fragmentActivity, List<QuoteInfo> quotes, OnQuoteCardClickListener onQuoteCardClickListener)
     {
         super(fragmentActivity, quotes);
-        this.fragmentActivity = fragmentActivity;
+        this.onQuoteCardClickListener = onQuoteCardClickListener;
     }
 
     public static class BaseQuoteViewHolder extends RecyclerView.ViewHolder
     {
         private final BaseQuoteCardView quoteCardView;
 
-        public BaseQuoteViewHolder(FragmentActivity fragmentActivity, BaseQuoteCardView itemView)
+        public BaseQuoteViewHolder(BaseQuoteCardView itemView)
         {
             super(itemView);
             this.quoteCardView = itemView;
-            this.quoteCardView.setFragmentActivity(fragmentActivity);
         }
 
         public void setQuote(QuoteInfo quote)
@@ -48,8 +47,10 @@ public abstract class BaseQuoteAdapter extends AnimationRVAdapter<QuoteInfo, Bas
     @Override
     public BaseQuoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        return new BaseQuoteViewHolder(fragmentActivity,
-                (BaseQuoteCardView) LayoutInflater.from(context).inflate(getCardViewLayoutId(), parent, false));
+        BaseQuoteCardView baseQuoteCardView = (BaseQuoteCardView) LayoutInflater.from(context).inflate(getCardViewLayoutId(), parent, false);
+        baseQuoteCardView.setOnQuoteCardClickListener(onQuoteCardClickListener);
+
+        return new BaseQuoteViewHolder(baseQuoteCardView);
     }
 
     @Override

@@ -3,7 +3,6 @@ package ru.nemodev.project.quotes.mvp.base;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,7 +24,6 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
@@ -33,9 +31,9 @@ public class BaseQuoteCardView extends CardView
 {
     protected final String TAG_LOG = this.getClass().getSimpleName();
 
-    protected FragmentActivity fragmentActivity;
     protected QuoteInfo quote;
     protected OnLikeQuoteListener onLikeQuoteListener;
+    protected OnQuoteCardClickListener onQuoteCardClickListener;
 
     public BaseQuoteCardView(@NonNull Context context)
     {
@@ -52,9 +50,9 @@ public class BaseQuoteCardView extends CardView
         super(context, attrs, defStyleAttr);
     }
 
-    public void setFragmentActivity(FragmentActivity fragmentActivity)
+    public void setOnQuoteCardClickListener(OnQuoteCardClickListener onQuoteCardClickListener)
     {
-        this.fragmentActivity = fragmentActivity;
+        this.onQuoteCardClickListener = onQuoteCardClickListener;
     }
 
     public void setQuote(QuoteInfo quote)
@@ -90,10 +88,7 @@ public class BaseQuoteCardView extends CardView
         if (quote.getAuthor() != null)
         {
             authorBlock.setOnClickListener(view ->
-            {
-                MainActivity mainActivity = (MainActivity) fragmentActivity;
-                mainActivity.openQuoteFragment(quote.getAuthor());
-            });
+                    onQuoteCardClickListener.onAuthorClick(quote.getAuthor()));
         }
 
         String quoteSourceText = QuoteUtils.getQuoteSource(quote, true);
@@ -187,10 +182,7 @@ public class BaseQuoteCardView extends CardView
         Button quoteCategoryButton = this.findViewById(R.id.quoteCategoryButton);
         quoteCategoryButton.setText(quote.getCategory().getName());
         quoteCategoryButton.setOnClickListener(view ->
-        {
-            MainActivity mainActivity = (MainActivity) fragmentActivity;
-            mainActivity.openQuoteFragment(quote.getCategory());
-        });
+                onQuoteCardClickListener.onCategoryClick(quote.getCategory()));
     }
 
     public interface OnLikeQuoteListener
