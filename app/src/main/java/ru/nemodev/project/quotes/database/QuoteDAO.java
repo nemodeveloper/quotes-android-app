@@ -48,12 +48,9 @@ public abstract class QuoteDAO
 
     public Observable<Quote> like(Quote quote)
     {
-        return Observable.create(emitter ->
-        {
+        return Observable.fromCallable(() -> {
             like(quote.getId(), quote.getLiked());
-
-            emitter.onNext(quote);
-            emitter.onComplete();
+            return quote;
         });
     }
 
