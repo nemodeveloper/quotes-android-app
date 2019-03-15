@@ -17,8 +17,6 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -152,39 +150,35 @@ public class BaseQuoteCardView extends CardView
 
         likeButton.setOnClickListener(v ->
         {
-            Observable.create((ObservableOnSubscribe<Quote>) emitter -> {
-                Quote likedQuote = quote.getQuote();
-                AppDataBase.getInstance().getQuoteDAO().like(likedQuote.getId(), !likedQuote.getLiked());
-                likedQuote.setLiked(!likedQuote.getLiked());
+            Quote likeQuote = quote.getQuote();
+            likeQuote.setLiked(!likeQuote.getLiked());
 
-                emitter.onNext(likedQuote);
-                emitter.onComplete();
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<Quote>()
-            {
-                @Override
-                public void onSubscribe(Disposable d) { }
-
-                @Override
-                public void onNext(Quote quote)
+            AppDataBase.getInstance().getQuoteDAO().like(likeQuote)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Quote>()
                 {
-                    if (quote.getLiked())
-                        onLikeQuoteListener.like();
-                    else
-                        onLikeQuoteListener.unLike();
-                }
+                    @Override
+                    public void onSubscribe(Disposable d) { }
 
-                @Override
-                public void onError(Throwable e)
-                {
-                    Log.e(TAG_LOG, "Ошибка лайка цитаты!", e);
-                }
+                    @Override
+                    public void onNext(Quote quote)
+                    {
+                        if (quote.getLiked())
+                            onLikeQuoteListener.like();
+                        else
+                            onLikeQuoteListener.unLike();
+                    }
 
-                @Override
-                public void onComplete() { }
-            });
+                    @Override
+                    public void onError(Throwable e)
+                    {
+                        Log.e(TAG_LOG, "Ошибка лайка цитаты!", e);
+                    }
+
+                    @Override
+                    public void onComplete() { }
+                });
         });
     }
 
