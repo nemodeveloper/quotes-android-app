@@ -5,7 +5,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import ru.nemodev.project.quotes.R;
@@ -86,5 +88,12 @@ public final class AndroidUtils
         Toast toast = Toast.makeText(QuoteApp.getInstance(), getTextById(messageResId), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0 ,0);
         toast.show();
+    }
+
+    public static void showSnackBarMessage(View whereShow, int textId)
+    {
+        Snackbar snackbar = Snackbar
+                .make(whereShow, AndroidUtils.getTextById(textId), Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

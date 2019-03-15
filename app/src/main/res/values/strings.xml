@@ -46,8 +46,8 @@
 
     <!-- not full quote info warning message -->
     <string name="connect_off_message">Для корректной работы приложения необходимо подключение к сети интернет!</string>
-    <string name="not_full_quotes_message">Для полного списка цитат необходимо подключение к сети интернет…</string>
-    <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет…</string>
-    <string name="not_full_categories_message">Для полного списка категорий необходимо подключение к сети интернет…</string>
+    <string name="not_full_quotes_message">Для полного списка цитат необходимо подключение к сети интернет!</string>
+    <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет!</string>
+    <string name="not_full_categories_message">Для полного списка категорий необходимо подключение к сети интернет!</string>
 
 </resources>

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -21,6 +20,7 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
@@ -32,7 +32,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
     private View root;
     private RecyclerView quoteRV;
     private ProgressBar progressBar;
-    private TextView notFullContentMessage;
 
     private CategoryDetailContract.CategoryDetailPresenter presenter;
 
@@ -50,7 +49,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
         initToolbar(root);
         initRV();
         initProgressBar();
-        initNotFullContentMessageBlock();
 
         presenter = new CategoryDetailPresenterImpl(getArguments().getLong(CATEGORY_ID_KEY), this);
         presenter.loadQuotes();
@@ -72,12 +70,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
         progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
-    private void initNotFullContentMessageBlock()
-    {
-        notFullContentMessage = root.findViewById(R.id.not_full_content_message);
-        notFullContentMessage.setOnClickListener(view -> setVisibleNotFullContentMessage(false));
-    }
-
     private void connectToNetworkEvents()
     {
         disconnectFromNetworkEvents();
@@ -87,11 +79,10 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
                     if (connectivity.state() == NetworkInfo.State.CONNECTED)
                     {
                         presenter.loadQuotes();
-                        setVisibleNotFullContentMessage(false);
                     }
                     else
                     {
-                        setVisibleNotFullContentMessage(true);
+                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
                     }
                 });
     }
@@ -126,14 +117,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
     {
         if (CollectionUtils.isNotEmpty(quotes))
             quoteRV.setAdapter(new CategoryQuotesAdapter(getActivity(), quotes, (MainActivity) getActivity()));
-    }
-
-    private void setVisibleNotFullContentMessage(boolean isVisible)
-    {
-        if (isVisible)
-            notFullContentMessage.setVisibility(View.VISIBLE);
-        else
-            notFullContentMessage.setVisibility(View.GONE);
     }
 
     @Override

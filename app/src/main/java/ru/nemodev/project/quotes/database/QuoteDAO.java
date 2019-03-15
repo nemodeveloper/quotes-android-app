@@ -19,6 +19,7 @@ import ru.nemodev.project.quotes.utils.QuoteUtils;
 @Dao
 public abstract class QuoteDAO
 {
+    @Transaction
     @Query("SELECT * FROM quotes ORDER BY RANDOM() LIMIT :count")
     public abstract Single<List<QuoteInfo>> getRandom(int count);
 
@@ -26,10 +27,12 @@ public abstract class QuoteDAO
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void add(List<Quote> quotes);
 
+    @Transaction
     @Query("SELECT * FROM quotes" +
             " WHERE quotes.author_id = :authorId")
     public abstract Single<List<QuoteInfo>> getByAuthor(long authorId);
 
+    @Transaction
     @Query("SELECT * FROM quotes" +
             " WHERE quotes.category_id = :categoryId")
     public abstract Single<List<QuoteInfo>> getByCategoryId(long categoryId);
@@ -54,9 +57,11 @@ public abstract class QuoteDAO
         });
     }
 
+    @Transaction
     @Query("SELECT id FROM quotes WHERE id IN (:quotesForCheck) AND liked = 1")
     public abstract List<Long> getLiked(List<Long> quotesForCheck);
 
+    @Transaction
     @Query("SELECT * FROM quotes WHERE liked = 1")
     public abstract Single<List<QuoteInfo>> getLiked();
 }

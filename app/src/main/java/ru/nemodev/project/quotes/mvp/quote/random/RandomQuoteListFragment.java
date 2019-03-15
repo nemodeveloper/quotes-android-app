@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -31,7 +30,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
     private View root;
     private RandomQuoteRV<? extends BaseQuoteAdapter.BaseQuoteViewHolder> quoteRV;
     private ProgressBar progressBar;
-    private TextView notFullContentMessage;
 
     private RandomQuoteListContract.RandomQuoteListPresenter presenter;
 
@@ -49,7 +47,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         initToolbar(root);
         initRV();
         initProgressBar();
-        initNotFullContentMessageBlock();
 
         presenter = new RandomQuoteListPresenterImpl(this);
         loadNextQuotes();
@@ -97,13 +94,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
-    // TODO перейти на SnackBar
-    private void initNotFullContentMessageBlock()
-    {
-        notFullContentMessage = root.findViewById(R.id.not_full_content_message);
-        notFullContentMessage.setOnClickListener(view -> setVisibleNotFullContentMessage(false));
-    }
-
     private void connectToNetworkEvents()
     {
         disconnectFromNetworkEvents();
@@ -113,11 +103,10 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
                     if (connectivity.state() == NetworkInfo.State.CONNECTED)
                     {
                         loadNextQuotes();
-                        setVisibleNotFullContentMessage(false);
                     }
                     else
                     {
-                        setVisibleNotFullContentMessage(true);
+                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
                     }
                 });
     }
@@ -171,13 +160,5 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
     {
         connectToNetworkEvents();
         super.onResume();
-    }
-
-    private void setVisibleNotFullContentMessage(boolean isVisible)
-    {
-        if (isVisible)
-            notFullContentMessage.setVisibility(View.VISIBLE);
-        else
-            notFullContentMessage.setVisibility(View.GONE);
     }
 }
