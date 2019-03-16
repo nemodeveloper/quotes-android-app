@@ -30,7 +30,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 5
-        versionName "1.2.0"
+        versionName "1.2.1"
         multiDexEnabled false
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -84,6 +84,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.2'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+//    implementation 'at.blogc:expandabletextview:1.0.5'
     //    implementation 'com.android.support:multidex:1.0.3'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
