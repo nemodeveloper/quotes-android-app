@@ -49,7 +49,7 @@ public abstract class QuoteDAO
     @Query("UPDATE quotes SET liked = :liked WHERE id = :id")
     public abstract void like(Long id, boolean liked);
 
-    public Observable<Quote> like(Quote quote)
+    public Observable<Quote> likeAsync(Quote quote)
     {
         return Observable.fromCallable(() -> {
             like(quote.getId(), quote.getLiked());

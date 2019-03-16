@@ -51,32 +51,9 @@ public class QuoteCacheService
 
     public Observable<List<QuoteInfo>> getRandom(Map<String, String> queryParams)
     {
-        Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getRandom(queryParams)
-                .map(this::toLikedQuoteInfo)
+        return RetrofitAPIFactory.getQuoteAPI().getRandom(queryParams)
+                .map(this::saveToDataBase)
                 .subscribeOn(Schedulers.io());
-
-        observable.subscribe(new Observer<List<QuoteInfo>>()
-        {
-            @Override
-            public void onSubscribe(Disposable d) { }
-
-            @Override
-            public void onNext(List<QuoteInfo> quoteInfoList)
-            {
-                saveToDataBase(quoteInfoList);
-            }
-
-            @Override
-            public void onError(Throwable e)
-            {
-                Log.e(LOG_TAG, "Ошибка сохранения случайных цитат в кеш!", e);
-            }
-
-            @Override
-            public void onComplete() { }
-        });
-
-        return observable;
     }
 
     public Observable<List<QuoteInfo>> getByAuthor(Long authorId)
@@ -89,7 +66,7 @@ public class QuoteCacheService
             if (quotesByAuthor == null)
             {
                 Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByAuthor(authorId)
-                        .map(this::toLikedQuoteInfo)
+                        .map(this::saveToDataBase)
                         .subscribeOn(Schedulers.io());
 
                 observable.subscribe(new Observer<List<QuoteInfo>>()
@@ -101,7 +78,6 @@ public class QuoteCacheService
                     public void onNext(List<QuoteInfo> quotes)
                     {
                         quoteCache.put(byAuthorKey, quotes);
-                        saveToDataBase(quotes);
                     }
 
                     @Override
@@ -131,7 +107,7 @@ public class QuoteCacheService
             if (quotesByCategory == null)
             {
                 Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByCategory(categoryId)
-                        .map(this::toLikedQuoteInfo)
+                        .map(this::saveToDataBase)
                         .subscribeOn(Schedulers.io());
 
                 observable.subscribe(new Observer<List<QuoteInfo>>()
@@ -143,7 +119,6 @@ public class QuoteCacheService
                     public void onNext(List<QuoteInfo> quotes)
                     {
                         quoteCache.put(byCategoryKey, quotes);
-                        saveToDataBase(quotes);
                     }
 
                     @Override
@@ -163,14 +138,12 @@ public class QuoteCacheService
         }
     }
 
-    private List<QuoteInfo> toLikedQuoteInfo(List<QuoteDTO> quotes)
+    private List<QuoteInfo> saveToDataBase(List<QuoteDTO> quotes)
     {
-        return QuoteUtils.toQuotesInfo(quotes,
+        List<QuoteInfo> quoteInfos = QuoteUtils.toQuotesInfo(quotes,
                 new HashSet<>(AppDataBase.getInstance().getQuoteDAO().getLiked(QuoteUtils.getQuoteIds(quotes))));
-    }
+        AppDataBase.getInstance().getQuoteDAO().addQuoteInfo(quoteInfos);
 
-    private void saveToDataBase(List<QuoteInfo> quoteInfoList)
-    {
-        AppDataBase.getInstance().getQuoteDAO().addQuoteInfo(quoteInfoList);
+        return quoteInfos;
     }
 }

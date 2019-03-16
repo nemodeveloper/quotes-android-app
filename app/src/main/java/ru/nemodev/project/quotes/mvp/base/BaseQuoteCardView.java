@@ -148,7 +148,7 @@ public class BaseQuoteCardView extends CardView
             Quote likeQuote = quote.getQuote();
             likeQuote.setLiked(!likeQuote.getLiked());
 
-            AppDataBase.getInstance().getQuoteDAO().like(likeQuote)
+            AppDataBase.getInstance().getQuoteDAO().likeAsync(likeQuote)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Quote>()
