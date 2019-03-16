@@ -50,4 +50,6 @@
     <string name="not_full_authors_message">Для полного списка авторов необходимо подключение к сети интернет!</string>
     <string name="not_full_categories_message">Для полного списка категорий необходимо подключение к сети интернет!</string>
 
+    <string name="empty_liked_message">Здесь будут появляться ваши избранные цитаты</string>
+
 </resources>

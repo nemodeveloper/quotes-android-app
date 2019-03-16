@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -26,6 +27,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
     private View root;
     private RecyclerView quoteRV;
     private ProgressBar progressBar;
+    private TextView emptyLikedView;
 
     private LikedQuoteListContract.LikedQuoteListPresenter presenter;
 
@@ -60,6 +62,8 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
         quoteRV = root.findViewById(R.id.quoteList);
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        emptyLikedView = root.findViewById(R.id.emptyLiked);
     }
 
     private void initProgressBar()
@@ -84,7 +88,22 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
     {
         if (CollectionUtils.isNotEmpty(quotes))
         {
-            quoteRV.setAdapter(new LikedQuoteListAdapter(getActivity(), quotes, (MainActivity) getActivity()));
+            showEmptyContentView(false);
+            quoteRV.setAdapter(new LikedQuoteListAdapter(getActivity(), quotes,
+                    (MainActivity) getActivity(),
+                    () -> showEmptyContentView(true)));
         }
+        else
+        {
+            showEmptyContentView(true);
+        }
+    }
+
+    private void showEmptyContentView(boolean empty)
+    {
+        if (empty)
+            emptyLikedView.setVisibility(View.VISIBLE);
+        else
+            emptyLikedView.setVisibility(View.GONE);
     }
 }

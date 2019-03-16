@@ -43,6 +43,14 @@
                 android:layout_height="100dp"
                 style="@android:style/Widget.Material.ProgressBar.Small"
                 android:layout_centerInParent="true"/>
+            <TextView
+                android:id="@+id/emptyLiked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/empty_liked_message"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </LinearLayout>
