@@ -16,6 +16,8 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Calendar;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -156,6 +158,14 @@ public class BaseQuoteCardView extends CardView
         {
             Quote likeQuote = quote.getQuote();
             likeQuote.setLiked(!likeQuote.getLiked());
+            if (likeQuote.getLiked())
+            {
+                likeQuote.setLikeDate(Calendar.getInstance());
+            }
+            else
+            {
+                likeQuote.setLikeDate(null);
+            }
 
             AppDataBase.getInstance().getQuoteDAO().likeAsync(likeQuote)
                 .subscribeOn(Schedulers.io())

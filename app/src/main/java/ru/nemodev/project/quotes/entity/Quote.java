@@ -4,9 +4,13 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Calendar;
+
+import ru.nemodev.project.quotes.database.DataTypeConverter;
 
 @Entity(tableName = "quotes",
         indices = {
@@ -35,6 +39,10 @@ public class Quote implements Serializable
     @ColumnInfo(name = "liked")
     @NonNull
     private Boolean liked;
+
+    @ColumnInfo(name = "like_date")
+    @TypeConverters({DataTypeConverter.class})
+    private Calendar likeDate;
 
     public Long getId()
     {
@@ -104,5 +112,15 @@ public class Quote implements Serializable
     public void setLiked(Boolean liked)
     {
         this.liked = liked;
+    }
+
+    public Calendar getLikeDate()
+    {
+        return likeDate;
+    }
+
+    public void setLikeDate(Calendar likeDate)
+    {
+        this.likeDate = likeDate;
     }
 }

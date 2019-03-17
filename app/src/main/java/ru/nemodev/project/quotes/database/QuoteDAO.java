@@ -46,13 +46,13 @@ public abstract class QuoteDAO
     }
 
     @Transaction
-    @Query("UPDATE quotes SET liked = :liked WHERE id = :id")
-    public abstract void like(Long id, boolean liked);
+    @Query("UPDATE quotes SET liked = :liked, like_date = :likeDate WHERE id = :id")
+    public abstract void like(Long id, boolean liked, Long likeDate);
 
     public Observable<Quote> likeAsync(Quote quote)
     {
         return Observable.fromCallable(() -> {
-            like(quote.getId(), quote.getLiked());
+            like(quote.getId(), quote.getLiked(), DataTypeConverter.fromCalendar(quote.getLikeDate()));
             return quote;
         });
     }
@@ -62,6 +62,6 @@ public abstract class QuoteDAO
     public abstract List<Long> getLiked(List<Long> quotesForCheck);
 
     @Transaction
-    @Query("SELECT * FROM quotes WHERE liked = 1")
+    @Query("SELECT * FROM quotes WHERE liked = 1 ORDER BY like_date DESC")
     public abstract Single<List<QuoteInfo>> getLiked();
 }
