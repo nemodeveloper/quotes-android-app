@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 public class CategoryListFragment extends BaseToolbarFragment implements CategoryListContract.CategoryListView
@@ -32,6 +34,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     private IndexFastScrollRecyclerView categoryLoadRV;
     private ProgressBar progressBar;
     private SearchView searchView;
+    private String whatSearch;
 
     private CategoryListContract.CategoryListPresenter presenter;
 
@@ -54,6 +57,8 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         presenter.loadCategory();
 
         connectToNetworkEvents();
+
+        MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_LIST);
 
         return root;
     }
@@ -126,6 +131,15 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     {
         if (!isCanSearch())
             return;
+
+        if (StringUtils.isNotEmpty(search))
+        {
+            whatSearch = search;
+        }
+        else
+        {
+            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, CategoryListFragment.this.whatSearch);
+        }
 
         CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
         adapter.getFilter().filter(search);
@@ -206,6 +220,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
             {
                 searchView.clearFocus();
+                MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_MENU);
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
             }));

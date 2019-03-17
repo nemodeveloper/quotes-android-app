@@ -13,6 +13,7 @@ import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteCardView;
 import ru.nemodev.project.quotes.mvp.base.EmptyAdapterDataListener;
 import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class LikedQuoteListAdapter extends BaseQuoteAdapter
 {
@@ -45,6 +46,7 @@ public class LikedQuoteListAdapter extends BaseQuoteAdapter
             @Override
             public void unLike()
             {
+                MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_UNLIKE);
                 data.remove(baseQuoteViewHolder.getAdapterPosition());
                 notifyItemRemoved(baseQuoteViewHolder.getAdapterPosition());
 

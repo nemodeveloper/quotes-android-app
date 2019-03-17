@@ -25,6 +25,7 @@ import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class BaseQuoteCardView extends CardView
@@ -88,7 +89,10 @@ public class BaseQuoteCardView extends CardView
         if (quote.getAuthor() != null)
         {
             authorBlock.setOnClickListener(view ->
-                    onQuoteCardClickListener.onAuthorClick(quote.getAuthor()));
+            {
+                MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD);
+                onQuoteCardClickListener.onAuthorClick(quote.getAuthor());
+            });
         }
 
         String quoteSourceText = QuoteUtils.getQuoteSource(quote, true);
@@ -115,9 +119,12 @@ public class BaseQuoteCardView extends CardView
 
         ImageView shareButton = findViewById(R.id.shareQuote);
         shareButton.setOnClickListener(v ->
-                AndroidUtils.openShareDialog(getContext(),
-                        AndroidUtils.getTextById(R.string.share_quote_dialog_title),
-                        QuoteUtils.getQuoteTextForShare(quote)));
+        {
+            MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
+            AndroidUtils.openShareDialog(getContext(),
+                    AndroidUtils.getTextById(R.string.share_quote_dialog_title),
+                    QuoteUtils.getQuoteTextForShare(quote));
+        });
 
         final ImageView likeButton = findViewById(R.id.likeQuote);
         if (quote.getQuote().getLiked())
@@ -132,12 +139,14 @@ public class BaseQuoteCardView extends CardView
                 @Override
                 public void like()
                 {
+                    MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_LIKE);
                     likeButton.setImageResource(R.drawable.ic_like);
                 }
 
                 @Override
                 public void unLike()
                 {
+                    MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_UNLIKE);
                     likeButton.setImageResource(R.drawable.ic_unlike);
                 }
             };
@@ -182,7 +191,10 @@ public class BaseQuoteCardView extends CardView
         Button quoteCategoryButton = this.findViewById(R.id.quoteCategoryButton);
         quoteCategoryButton.setText(quote.getCategory().getName());
         quoteCategoryButton.setOnClickListener(view ->
-                onQuoteCardClickListener.onCategoryClick(quote.getCategory()));
+        {
+            MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD);
+            onQuoteCardClickListener.onCategoryClick(quote.getCategory());
+        });
     }
 
     public interface OnLikeQuoteListener

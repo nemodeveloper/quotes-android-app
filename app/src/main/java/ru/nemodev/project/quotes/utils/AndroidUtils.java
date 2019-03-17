@@ -35,6 +35,7 @@ public final class AndroidUtils
 
     public static void sendPlayMarketAppInfo(Context context)
     {
+        MetricUtils.inviteEvent(MetricUtils.InviteType.APP_LINK);
         AndroidUtils.openShareDialog(context,
                 AndroidUtils.getTextById(R.string.tell_about_app_title),
                 AndroidUtils.getTextById(R.string.play_market_app_http_link) + context.getPackageName());
@@ -55,6 +56,7 @@ public final class AndroidUtils
     {
         try
         {
+            MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
             openAppByURI(activity, getTextById(R.string.telegram_channel_uri));
         }
         catch (ActivityNotFoundException e)
@@ -65,8 +67,9 @@ public final class AndroidUtils
 
     public static void openAppRatePage(Activity activity)
     {
-        String packageName = activity.getPackageName();
+        MetricUtils.rateEvent(MetricUtils.RateType.APP);
 
+        String packageName = activity.getPackageName();
         try
         {
             openAppByURI(activity, getTextById(R.string.play_market_app_link) + packageName);

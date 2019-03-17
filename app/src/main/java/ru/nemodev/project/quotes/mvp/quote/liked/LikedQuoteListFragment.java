@@ -20,6 +20,7 @@ import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class LikedQuoteListFragment extends BaseToolbarFragment implements LikedQuoteListContract.LikedQuoteListView
@@ -46,6 +47,8 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
 
         presenter = new LikedQuoteListPresenterImpl(this);
         presenter.loadLikedQuotes();
+
+        MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
 
         return root;
     }

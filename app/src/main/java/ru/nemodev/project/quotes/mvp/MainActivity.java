@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity
                     openFragment(new LikedQuoteListFragment());
                     break;
                 }
-                case R.id.nav_item_share: {
-                    AndroidUtils.sendPlayMarketAppInfo(this);
-                    break;
-                }
                 case R.id.nav_item_telegram_channel: {
                     AndroidUtils.openTelegramChannel(this);
+                    break;
+                }
+                case R.id.nav_item_share: {
+                    AndroidUtils.sendPlayMarketAppInfo(this);
                     break;
                 }
                 case R.id.nav_item_rate_app: {

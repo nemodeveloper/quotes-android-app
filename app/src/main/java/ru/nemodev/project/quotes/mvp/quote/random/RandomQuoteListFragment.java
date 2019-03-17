@@ -22,6 +22,7 @@ import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
@@ -52,6 +53,8 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         loadNextQuotes();
 
         connectToNetworkEvents();
+
+        MetricUtils.viewEvent(MetricUtils.ViewType.RANDOM_QUOTES);
 
         return root;
     }

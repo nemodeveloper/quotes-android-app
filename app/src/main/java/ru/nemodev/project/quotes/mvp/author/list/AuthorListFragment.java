@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
@@ -33,6 +35,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private IndexFastScrollRecyclerView authorLoadRV;
     private ProgressBar progressBar;
     private SearchView searchView;
+    private String whatSearch;
 
     private AuthorListContract.AuthorListPresenter presenter;
 
@@ -55,6 +58,8 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         presenter.loadAuthors();
 
         connectToNetworkEvents();
+
+        MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_LIST);
 
         return root;
     }
@@ -127,6 +132,15 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     {
         if (!isCanSearch())
             return;
+
+        if (StringUtils.isNotEmpty(search))
+        {
+            whatSearch = search;
+        }
+        else
+        {
+            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, AuthorListFragment.this.whatSearch);
+        }
 
         AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
         adapter.getFilter().filter(search);
@@ -207,6 +221,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
             {
                 searchView.clearFocus();
+                MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_MENU);
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
             }));
