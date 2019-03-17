@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,6 +26,7 @@ import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
@@ -187,7 +187,9 @@ public class BaseQuoteCardView extends CardView
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.e(TAG_LOG, "Ошибка лайка цитаты!", e);
+                        LogUtils.logWithReport(TAG_LOG, "Ошибка лайка цитаты!", e);
+                        // TODO показывать нужно SnackBar
+                        AndroidUtils.showToastMessage(R.string.quote_like_error);
                     }
 
                     @Override

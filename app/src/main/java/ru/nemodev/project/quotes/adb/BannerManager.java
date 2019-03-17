@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.adb;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -18,6 +17,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class BannerManager
 {
@@ -41,6 +42,7 @@ public class BannerManager
     {
         if (fullScreenBanner.isLoaded())
         {
+            MetricUtils.viewEvent(MetricUtils.ViewType.FULL_SCREEN_BANNER);
             fullScreenBanner.show();
             return true;
         }
@@ -70,7 +72,7 @@ public class BannerManager
                 }
             });
 
-            Observable.interval(2, TimeUnit.MINUTES)
+            Observable.interval(3, TimeUnit.MINUTES)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Long>()
@@ -81,20 +83,13 @@ public class BannerManager
                         @Override
                         public void onNext(Long aLong)
                         {
-                            if (fullScreenBanner.isLoaded())
-                            {
-                                fullScreenBanner.show();
-                            }
-                            else
-                            {
-                                loadNewFullscreenBanner();
-                            }
+                            showFullScreenBanner();
                         }
 
                         @Override
                         public void onError(Throwable e)
                         {
-                            Log.e(LOG_TAG, "Ошибка показа полноэкранного баннера", e);
+                            LogUtils.logWithReport(LOG_TAG, "Ошибка показа полноэкранного баннера", e);
                         }
 
                         @Override
@@ -103,7 +98,7 @@ public class BannerManager
         }
         catch (Exception e)
         {
-            Log.e(LOG_TAG, "Ошибка инициализации полноэкранного баннера", e);
+            LogUtils.logWithReport(LOG_TAG, "Ошибка инициализации полноэкранного баннера", e);
         }
     }
 

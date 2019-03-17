@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.service.author;
 
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.utils.AuthorUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 public class AuthorCacheService
 {
@@ -70,7 +70,7 @@ public class AuthorCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.e(LOG_TAG, "Ошибка сохранения авторов в кеш!", e);
+                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения авторов в кеш!", e);
                     }
 
                     @Override

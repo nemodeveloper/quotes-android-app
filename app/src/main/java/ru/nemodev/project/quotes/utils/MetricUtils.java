@@ -124,7 +124,9 @@ public final class MetricUtils
 
         LIKED_QUOTES("Избранные цитаты"),
 
-        TELEGRAM_CHANNEL("Телеграм канал");
+        TELEGRAM_CHANNEL("Телеграм канал"),
+
+        FULL_SCREEN_BANNER("Показ полноэкранного баннера");
 
         private final String viewName;
 

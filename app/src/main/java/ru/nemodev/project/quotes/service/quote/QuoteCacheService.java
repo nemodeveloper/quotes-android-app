@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.service.quote;
 
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +14,7 @@ import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.api.dto.QuoteDTO;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class QuoteCacheService
@@ -83,7 +83,7 @@ public class QuoteCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.e(LOG_TAG, "Ошибка сохранения цитат по автору в кеш!", e);
+                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения цитат по автору в кеш!", e);
                     }
 
                     @Override
@@ -124,7 +124,7 @@ public class QuoteCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.e(LOG_TAG, "Ошибка сохранения цитат по категории в кеш!", e);
+                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения цитат по категории в кеш!", e);
                     }
 
                     @Override

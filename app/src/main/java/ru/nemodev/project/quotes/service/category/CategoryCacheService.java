@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.service.category;
 
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.utils.CategoryUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 public class CategoryCacheService
 {
@@ -70,7 +70,7 @@ public class CategoryCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.e(LOG_TAG, "Ошибка сохранения категорий в кеш!", e);
+                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения категорий в кеш!", e);
                     }
 
                     @Override
