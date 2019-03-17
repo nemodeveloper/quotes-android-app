@@ -9,7 +9,8 @@
 
     <!-- Реклама -->
     <string name="ads_app_id">ca-app-pub-5449253846737836~3312376789</string>
-    <string name="ads_banner_id">ca-app-pub-5449253846737836/8259535410</string>
+    <string name="ads_simple_banner_id">ca-app-pub-5449253846737836/8259535410</string>
+    <string name="ads_fullscreen_banner_id">ca-app-pub-5449253846737836/6488703104</string>
 
     <!-- fabric.io key -->
     <string name="fabric_io_key">b084a5fe6f1774820fee9a78dd1fdef5101fff2d</string>

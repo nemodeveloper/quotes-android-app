@@ -10,12 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.adb.BannerManager;
 import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
@@ -32,16 +30,17 @@ public class MainActivity extends AppCompatActivity
 {
     private DrawerLayout drawer;
     protected NavigationView navigationView;
+    private BannerManager bannerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         initFabricIO();
-        initNavigationMenu();
+
+        setContentView(R.layout.activity_main);
         initAdb();
+        initNavigationMenu();
     }
 
     @Override
@@ -169,9 +168,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initAdb()
     {
-        MobileAds.initialize(this, getResources().getString(R.string.ads_app_id));
-        AdView adView = findViewById(R.id.adView);
-        adView.loadAd(new AdRequest.Builder().build());
+        bannerManager = new BannerManager(this, findViewById(R.id.adView));
     }
 
     private void initFabricIO()
