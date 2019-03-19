@@ -46,6 +46,8 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="b084a5fe6f1774820fee9a78dd1fdef5101fff2d" />
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 
 </manifest>
