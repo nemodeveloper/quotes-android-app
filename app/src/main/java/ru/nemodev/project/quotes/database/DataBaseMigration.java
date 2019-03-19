@@ -51,6 +51,7 @@ public final class DataBaseMigration
         public void migrate(@NonNull SupportSQLiteDatabase database)
         {
             database.execSQL("ALTER TABLE authors ADD COLUMN image_url TEXT");
+            database.execSQL("ALTER TABLE categories ADD COLUMN image_url TEXT");
         }
     };
 

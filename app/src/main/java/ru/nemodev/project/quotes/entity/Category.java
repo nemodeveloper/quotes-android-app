@@ -1,5 +1,6 @@
 package ru.nemodev.project.quotes.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -11,6 +12,9 @@ public class Category implements Serializable
     @PrimaryKey
     private Long id;
     private String name;
+
+    @ColumnInfo(name = "image_url")
+    private String imageURL;
 
     public Long getId()
     {
@@ -30,5 +34,15 @@ public class Category implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getImageURL()
+    {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL)
+    {
+        this.imageURL = imageURL;
     }
 }

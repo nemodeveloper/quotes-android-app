@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -86,10 +89,11 @@ public class BaseQuoteCardView extends CardView
                 .buildRound(author == null ? "?" : authorNameText.substring(0, 1),
                         ColorGenerator.MATERIAL.getColor(quote.getQuote().getAuthorId()));
 
-        if (author != null && StringUtils.isNoneEmpty(author.getImageURL()))
+        if (author != null && StringUtils.isNotEmpty(author.getImageURL()))
         {
-            GlideApp.with(getContext())
+            Glide.with(getContext())
                     .load(author.getImageURL())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(drawable)
                     .error(drawable)
                     .transform(new CircleCrop())

@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+
+import org.apache.commons.lang3.StringUtils;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Category;
@@ -42,6 +47,21 @@ public class CategoryCardView extends CardView
                 .buildRound("", ColorGenerator.MATERIAL.getColor(category.getId()));
 
         ImageView categoryImg = this.findViewById(R.id.categoryImg);
+        if (StringUtils.isNotEmpty(category.getImageURL()))
+        {
+            Glide.with(getContext())
+                    .load(category.getImageURL())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(drawable)
+                    .error(drawable)
+                    .transform(new CircleCrop())
+                    .into(categoryImg);
+        }
+        else
+        {
+            categoryImg.setImageDrawable(drawable);
+        }
+
         categoryImg.setImageDrawable(drawable);
 
         TextView categoryName = this.findViewById(R.id.categoryName);

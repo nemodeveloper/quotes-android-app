@@ -35,6 +35,7 @@ public final class CategoryUtils
         Category category = new Category();
         category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName());
+        category.setImageURL(categoryDTO.getImageURL());
 
         return category;
     }

@@ -6,6 +6,7 @@ public class CategoryDTO implements Serializable
 {
     private Long id;
     private String name;
+    private String imageURL;
 
     public Long getId()
     {
@@ -25,5 +26,15 @@ public class CategoryDTO implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getImageURL()
+    {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL)
+    {
+        this.imageURL = imageURL;
     }
 }
