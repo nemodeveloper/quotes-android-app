@@ -6,18 +6,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.mvp.MainActivity;
 
 public abstract class BaseToolbarFragment extends Fragment
 {
     private DrawerLayout drawer;
+
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
     protected void initToolbar(View root)
     {
-        toolbar = root.findViewById(R.id.toolbar);
-
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setSupportActionBar(toolbar);
 

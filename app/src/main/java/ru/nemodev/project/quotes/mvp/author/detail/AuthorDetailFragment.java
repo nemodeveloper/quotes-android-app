@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
@@ -30,8 +32,12 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     public static final String AUTHOR_NAME_KEY = "authorName";
 
     private View root;
-    private RecyclerView quoteRV;
-    private ProgressBar progressBar;
+
+    @BindView(R.id.quoteList)
+    RecyclerView quoteRV;
+
+    @BindView(R.id.contentLoadingProgressBar)
+    ProgressBar progressBar;
 
     private AuthorDetailContract.AuthorDetailPresenter presenter;
 
@@ -45,10 +51,10 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
             return root;
 
         root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
+        ButterKnife.bind(this, root);
 
         initToolbar(root);
         initRV();
-        initProgressBar();
 
         presenter = new AuthorDetailPresenterImpl(getArguments().getLong(AUTHOR_ID_KEY), this);
         presenter.loadQuotes();
@@ -67,14 +73,8 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
 
     private void initRV()
     {
-        quoteRV = root.findViewById(R.id.quoteList);
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    private void initProgressBar()
-    {
-        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
     private void connectToNetworkEvents()

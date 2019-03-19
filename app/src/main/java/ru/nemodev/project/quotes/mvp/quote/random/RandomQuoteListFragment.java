@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
@@ -29,8 +31,12 @@ import ru.nemodev.project.quotes.utils.NetworkUtils;
 public class RandomQuoteListFragment extends BaseToolbarFragment implements RandomQuoteListContract.RandomQuoteListView
 {
     private View root;
-    private RandomQuoteRV<? extends BaseQuoteAdapter.BaseQuoteViewHolder> quoteRV;
-    private ProgressBar progressBar;
+
+    @BindView(R.id.quoteList)
+    RandomQuoteRV<? extends BaseQuoteAdapter.BaseQuoteViewHolder> quoteRV;
+
+    @BindView(R.id.contentLoadingProgressBar)
+    ProgressBar progressBar;
 
     private RandomQuoteListContract.RandomQuoteListPresenter presenter;
 
@@ -44,10 +50,10 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
             return root;
 
         root = inflater.inflate(R.layout.random_quote_fragmet, container, false);
+        ButterKnife.bind(this, root);
 
         initToolbar(root);
         initRV();
-        initProgressBar();
 
         presenter = new RandomQuoteListPresenterImpl(this);
         loadNextQuotes();
@@ -68,7 +74,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
 
     private void initRV()
     {
-        quoteRV = root.findViewById(R.id.quoteList);
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         quoteRV.setAdapter(new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity()));
@@ -90,11 +95,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
             quoteRV.setDataLoading(true);
             presenter.loadNextQuotes();
         }
-    }
-
-    private void initProgressBar()
-    {
-        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
     private void connectToNetworkEvents()

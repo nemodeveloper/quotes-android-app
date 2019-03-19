@@ -18,6 +18,8 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
@@ -31,8 +33,13 @@ import ru.nemodev.project.quotes.utils.NetworkUtils;
 public class CategoryListFragment extends BaseToolbarFragment implements CategoryListContract.CategoryListView
 {
     private View root;
-    private IndexFastScrollRecyclerView categoryLoadRV;
-    private ProgressBar progressBar;
+
+    @BindView(R.id.categoryList)
+    IndexFastScrollRecyclerView categoryLoadRV;
+
+    @BindView(R.id.contentLoadingProgressBar)
+    ProgressBar progressBar;
+
     private SearchView searchView;
     private String whatSearch;
 
@@ -48,10 +55,10 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             return root;
 
         root = inflater.inflate(R.layout.category_fragmet, container, false);
+        ButterKnife.bind(this, root);
 
         initToolbar(root);
-        initRV(root);
-        initProgressBar();
+        initRV();
 
         presenter = new CategoryListPresenterImpl(this);
         presenter.loadCategory();
@@ -158,9 +165,8 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         return super.onOptionsItemSelected(item);
     }
 
-    private void initRV(View root)
+    private void initRV()
     {
-        categoryLoadRV = root.findViewById(R.id.categoryList);
         categoryLoadRV.setHasFixedSize(true);
         categoryLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -170,11 +176,6 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         categoryLoadRV.setPreviewPadding(0);
         categoryLoadRV.setIndexbarMargin(0);
         categoryLoadRV.setIndexBarColor(R.color.search_bar_background);
-    }
-
-    private void initProgressBar()
-    {
-        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
     private void connectToNetworkEvents()

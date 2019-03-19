@@ -11,6 +11,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.adb.BannerManager;
@@ -28,17 +30,22 @@ import ru.nemodev.project.quotes.utils.AndroidUtils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnQuoteCardClickListener
 {
-    private DrawerLayout drawer;
-    protected NavigationView navigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
     private BannerManager bannerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initFabricIO();
 
-        setContentView(R.layout.activity_main);
         initAdb();
         initNavigationMenu();
     }
@@ -144,10 +151,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initNavigationMenu()
     {
-        drawer = findViewById(R.id.drawer_layout);
-
         // Обработка пунктов меню
-        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));

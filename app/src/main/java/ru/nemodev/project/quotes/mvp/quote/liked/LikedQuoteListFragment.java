@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
@@ -27,10 +29,18 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 public class LikedQuoteListFragment extends BaseToolbarFragment implements LikedQuoteListContract.LikedQuoteListView, SwipeRefreshLayout.OnRefreshListener
 {
     private View root;
-    private RecyclerView quoteRV;
-    private ProgressBar progressBar;
-    private TextView emptyLikedView;
-    private SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.quoteList)
+    RecyclerView quoteRV;
+
+    @BindView(R.id.contentLoadingProgressBar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.emptyLiked)
+    TextView emptyLikedView;
+
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private LikedQuoteListContract.LikedQuoteListPresenter presenter;
 
@@ -42,9 +52,9 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
             return root;
 
         root = inflater.inflate(R.layout.liked_quote_fragmet, container, false);
+        ButterKnife.bind(this, root);
 
         initToolbar(root);
-        initProgressBar();
         initRV();
 
         presenter = new LikedQuoteListPresenterImpl(this);
@@ -66,21 +76,12 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
 
     private void initRV()
     {
-        quoteRV = root.findViewById(R.id.quoteList);
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        emptyLikedView = root.findViewById(R.id.emptyLiked);
-    }
-
-    private void initProgressBar()
-    {
-        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
     private void initRefreshLayout()
     {
-        swipeRefreshLayout = root.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
         swipeRefreshLayout.setOnRefreshListener(this);
     }

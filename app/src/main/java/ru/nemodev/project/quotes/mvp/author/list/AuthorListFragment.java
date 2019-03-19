@@ -18,6 +18,8 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
@@ -32,8 +34,13 @@ import ru.nemodev.project.quotes.utils.NetworkUtils;
 public class AuthorListFragment extends BaseToolbarFragment implements AuthorListContract.AuthorListView
 {
     private View root;
-    private IndexFastScrollRecyclerView authorLoadRV;
-    private ProgressBar progressBar;
+
+    @BindView(R.id.authorList)
+    IndexFastScrollRecyclerView authorLoadRV;
+
+    @BindView(R.id.contentLoadingProgressBar)
+    ProgressBar progressBar;
+
     private SearchView searchView;
     private String whatSearch;
 
@@ -49,10 +56,10 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             return root;
 
         root = inflater.inflate(R.layout.author_fragmet, container, false);
+        ButterKnife.bind(this, root);
 
         initToolbar(root);
         initRV(root);
-        initProgressBar();
 
         presenter = new AuthorListPresenterImpl(this);
         presenter.loadAuthors();
@@ -161,7 +168,6 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
 
     private void initRV(View root)
     {
-        authorLoadRV = root.findViewById(R.id.authorList);
         authorLoadRV.setHasFixedSize(true);
         authorLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -171,11 +177,6 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         authorLoadRV.setPreviewPadding(0);
         authorLoadRV.setIndexbarMargin(0);
         authorLoadRV.setIndexBarColor(R.color.search_bar_background);
-    }
-
-    private void initProgressBar()
-    {
-        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
     }
 
     private void connectToNetworkEvents()
