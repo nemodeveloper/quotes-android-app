@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.core.search;
+package ru.nemodev.project.quotes.core.recyclerView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>
         extends AnimationRVAdapter<T, VH> implements SectionIndexer, Filterable

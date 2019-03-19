@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.core.recyclerView.FastSearchRVAdapter;
 import ru.nemodev.project.quotes.core.recyclerView.OnItemClickRVListener;
-import ru.nemodev.project.quotes.core.search.FastSearchRVAdapter;
 import ru.nemodev.project.quotes.entity.Category;
 
 public class CategoryListAdapter extends FastSearchRVAdapter<Category, CategoryListAdapter.CategoryViewHolder>

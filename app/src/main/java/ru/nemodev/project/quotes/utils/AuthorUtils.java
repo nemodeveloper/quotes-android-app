@@ -35,6 +35,7 @@ public final class AuthorUtils
         Author author = new Author();
         author.setId(authorDTO.getId());
         author.setFullName(authorDTO.getFullName());
+        author.setImageURL(authorDTO.getImageURL());
 
         return author;
     }

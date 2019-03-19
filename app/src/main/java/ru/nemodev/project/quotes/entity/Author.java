@@ -11,8 +11,12 @@ public class Author implements Serializable
 {
     @PrimaryKey
     private Long id;
+
     @ColumnInfo(name = "full_name")
     private String fullName;
+
+    @ColumnInfo(name = "image_url")
+    private String imageURL;
 
     public Long getId()
     {
@@ -32,5 +36,15 @@ public class Author implements Serializable
     public void setFullName(String fullName)
     {
         this.fullName = fullName;
+    }
+
+    public String getImageURL()
+    {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL)
+    {
+        this.imageURL = imageURL;
     }
 }

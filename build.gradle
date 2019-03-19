@@ -6,6 +6,8 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { name 'glide-snapshot'; url 'oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://jitpack.io" }
         maven { url 'https://maven.google.com' }
         maven { url 'https://maven.fabric.io/public' }
     }
@@ -22,6 +24,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven { name 'glide-snapshot'; url 'oss.sonatype.org/content/repositories/snapshots' }
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.google.com' }
         maven { url 'https://maven.fabric.io/public' }

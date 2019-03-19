@@ -23,6 +23,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.database.AppDataBase;
+import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -78,15 +79,28 @@ public class BaseQuoteCardView extends CardView
 
         String authorNameText = QuoteUtils.getAuthorName(quote);
 
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(quote.getAuthor() == null ? "?" : authorNameText.substring(0, 1),
-                        ColorGenerator.MATERIAL.getColor(quote.getQuote().getId()));
-
+        Author author = quote.getAuthor();
         ImageView authorImage = this.findViewById(R.id.authorImg);
-        authorImage.setImageDrawable(drawable);
+
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(author == null ? "?" : authorNameText.substring(0, 1),
+                        ColorGenerator.MATERIAL.getColor(quote.getQuote().getAuthorId()));
+
+        if (author != null && StringUtils.isNoneEmpty(author.getImageURL()))
+        {
+            GlideApp.with(getContext())
+                    .load(author.getImageURL())
+                    .placeholder(drawable)
+                    .error(drawable)
+                    .transform(new CircleCrop())
+                    .into(authorImage);
+        }
+        else
+        {
+            authorImage.setImageDrawable(drawable);
+        }
 
         TextView authorName = this.findViewById(R.id.authorName);
-
         authorName.setText(authorNameText);
         if (quote.getAuthor() != null)
         {

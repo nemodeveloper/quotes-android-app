@@ -45,4 +45,13 @@ public final class DataBaseMigration
         }
     };
 
+    public static final Migration MIGRATION_3_4 = new Migration(3, 4)
+    {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database)
+        {
+            database.execSQL("ALTER TABLE authors ADD COLUMN image_url TEXT");
+        }
+    };
+
 }
