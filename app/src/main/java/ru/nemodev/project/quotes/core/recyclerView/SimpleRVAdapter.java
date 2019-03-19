@@ -1,9 +1,10 @@
 package ru.nemodev.project.quotes.core.recyclerView;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class SimpleRVAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH>
 {

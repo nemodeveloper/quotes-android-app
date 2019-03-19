@@ -1,9 +1,8 @@
 package ru.nemodev.project.quotes.mvp.category.detail;
 
-import android.support.v4.app.FragmentActivity;
-
 import java.util.List;
 
+import androidx.fragment.app.FragmentActivity;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;

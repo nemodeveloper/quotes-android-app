@@ -1,8 +1,8 @@
 package ru.nemodev.project.quotes.database;
 
-import android.arch.persistence.room.TypeConverter;
-
 import java.util.Calendar;
+
+import androidx.room.TypeConverter;
 
 public class DataTypeConverter
 {

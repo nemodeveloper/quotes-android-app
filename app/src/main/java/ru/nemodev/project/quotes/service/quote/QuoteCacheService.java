@@ -1,11 +1,10 @@
 package ru.nemodev.project.quotes.service.quote;
 
-import android.support.v4.util.LruCache;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import androidx.collection.LruCache;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

@@ -1,6 +1,5 @@
 package ru.nemodev.project.quotes.api;
 
-import android.support.annotation.NonNull;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -11,6 +10,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.annotation.NonNull;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import retrofit2.Retrofit;

@@ -1,12 +1,12 @@
 package ru.nemodev.project.quotes.core.recyclerView;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.R;
 
 public abstract class AnimationRVAdapter<T, VH extends RecyclerView.ViewHolder> extends SimpleRVAdapter<T, VH>

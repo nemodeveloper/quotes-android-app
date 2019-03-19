@@ -1,9 +1,9 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.core.recyclerView.BaseLoadingRV;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 

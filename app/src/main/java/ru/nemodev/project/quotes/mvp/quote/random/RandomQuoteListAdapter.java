@@ -1,9 +1,8 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
-import android.support.v4.app.FragmentActivity;
-
 import java.util.ArrayList;
 
+import androidx.fragment.app.FragmentActivity;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;

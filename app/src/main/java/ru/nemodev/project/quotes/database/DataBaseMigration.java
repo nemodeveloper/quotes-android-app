@@ -1,10 +1,10 @@
 package ru.nemodev.project.quotes.database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.migration.Migration;
-import android.support.annotation.NonNull;
-
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public final class DataBaseMigration
 {

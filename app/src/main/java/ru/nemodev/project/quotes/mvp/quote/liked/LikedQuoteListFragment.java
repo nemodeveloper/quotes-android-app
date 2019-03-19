@@ -1,11 +1,6 @@
 package ru.nemodev.project.quotes.mvp.quote.liked;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,11 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.MainActivity;
@@ -112,12 +112,13 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
             quoteRV.setAdapter(new LikedQuoteListAdapter(getActivity(), quotes,
                     (MainActivity) getActivity(),
                     () -> showEmptyContentView(true)));
-            swipeRefreshLayout.setRefreshing(false);
         }
         else
         {
             showEmptyContentView(true);
         }
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void showEmptyContentView(boolean empty)

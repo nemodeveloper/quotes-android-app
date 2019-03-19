@@ -1,9 +1,6 @@
 package ru.nemodev.project.quotes.mvp.author.list;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +13,9 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
 import org.apache.commons.lang3.StringUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Author;
 

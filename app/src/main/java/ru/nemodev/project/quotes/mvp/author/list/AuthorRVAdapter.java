@@ -1,14 +1,14 @@
 package ru.nemodev.project.quotes.mvp.author.list;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.core.recyclerView.FastSearchRVAdapter;
 import ru.nemodev.project.quotes.core.recyclerView.OnItemClickRVListener;

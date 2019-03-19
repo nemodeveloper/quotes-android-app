@@ -7,5 +7,5 @@
         android:orderInCategory="100"
         android:title="@string/category_search_hint"
         app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView" />
 </menu>

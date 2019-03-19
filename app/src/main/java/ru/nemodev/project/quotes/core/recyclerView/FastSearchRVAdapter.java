@@ -1,7 +1,6 @@
 package ru.nemodev.project.quotes.core.recyclerView;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.SectionIndexer;
@@ -11,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>

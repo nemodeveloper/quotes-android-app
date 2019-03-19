@@ -1,9 +1,9 @@
 package ru.nemodev.project.quotes.service.category;
 
-import android.support.v4.util.LruCache;
 
 import java.util.List;
 
+import androidx.collection.LruCache;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

@@ -1,14 +1,13 @@
 package ru.nemodev.project.quotes.mvp.base;
 
-
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
