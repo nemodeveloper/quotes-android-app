@@ -38,8 +38,8 @@
     <string name="menu_item_rate_app">Оценить приложение</string>
 
     <!-- Поиск -->
-    <string name="author_search_hint">Поиск автора</string>
-    <string name="category_search_hint">Поиск категории</string>
+    <string name="author_search_hint">Поиск</string>
+    <string name="category_search_hint">Поиск</string>
 
     <!-- Диалоги отправки контента -->
     <string name="share_quote_dialog_title">Поделиться цитатой</string>

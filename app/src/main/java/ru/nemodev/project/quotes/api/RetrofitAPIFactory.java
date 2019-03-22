@@ -1,6 +1,9 @@
 package ru.nemodev.project.quotes.api;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -19,9 +22,9 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitAPIFactory
 {
-    private static final int CONNECT_TIMEOUT = 5;
-    private static final int WRITE_TIMEOUT = 5;
-    private static final int READ_TIMEOUT = 5;
+    private static final int CONNECT_TIMEOUT = 10;
+    private static final int WRITE_TIMEOUT = 10;
+    private static final int READ_TIMEOUT = 10;
 
     private static final String BASE_ENDPOINT = "https://quoteformuse.ru/quotes/rest/v1/";
     private static final String QUOTE_ENDPOINT = BASE_ENDPOINT + "quote/";
@@ -82,9 +85,19 @@ public class RetrofitAPIFactory
         return new Retrofit.Builder()
                 .baseUrl(endpoint)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(buildConvertFactory())
                 .client(OK_HTTP_CLIENT)
                 .build();
+    }
+
+    private static JacksonConverterFactory buildConvertFactory()
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        JacksonConverterFactory jacksonConverterFactory = JacksonConverterFactory.create(objectMapper);
+
+        return jacksonConverterFactory;
     }
 
     public static QuoteAPI getQuoteAPI()
