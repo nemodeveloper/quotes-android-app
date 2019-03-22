@@ -227,7 +227,11 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
                 mainActivity.openQuoteFragment(item);
             }));
             authorLoadRV.setIndexBarVisibility(true);
-            getActivity().invalidateOptionsMenu();
+
+            if (getActivity() != null)
+            {
+                getActivity().invalidateOptionsMenu();
+            }
         }
     }
 

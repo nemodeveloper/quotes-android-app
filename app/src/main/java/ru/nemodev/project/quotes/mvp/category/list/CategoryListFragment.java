@@ -226,7 +226,11 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
                 mainActivity.openQuoteFragment(item);
             }));
             categoryLoadRV.setIndexBarVisibility(true);
-            getActivity().invalidateOptionsMenu();
+
+            if (getActivity() != null)
+            {
+                getActivity().invalidateOptionsMenu();
+            }
         }
     }
 
