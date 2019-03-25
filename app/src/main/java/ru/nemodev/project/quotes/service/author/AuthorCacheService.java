@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.utils.AuthorUtils;
+import ru.nemodev.project.quotes.entity.AuthorUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 
 public class AuthorCacheService

@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.Category;
-import ru.nemodev.project.quotes.utils.CategoryUtils;
+import ru.nemodev.project.quotes.entity.CategoryUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 
 public class CategoryCacheService

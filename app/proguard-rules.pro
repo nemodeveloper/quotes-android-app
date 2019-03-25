@@ -97,3 +97,6 @@
   **[] $VALUES;
   public *;
 }
+
+# Purchase
+-keep class com.android.vending.billing.**

@@ -142,7 +142,7 @@ public class BaseQuoteCardView extends CardView
         {
             MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
             AndroidUtils.openShareDialog(getContext(),
-                    AndroidUtils.getTextById(R.string.share_quote_dialog_title),
+                    AndroidUtils.getString(R.string.share_quote_dialog_title),
                     QuoteUtils.getQuoteTextForShare(quote));
         });
 

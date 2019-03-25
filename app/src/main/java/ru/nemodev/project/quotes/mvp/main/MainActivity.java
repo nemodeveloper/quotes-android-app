@@ -1,11 +1,13 @@
-package ru.nemodev.project.quotes.mvp;
+package ru.nemodev.project.quotes.mvp.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.adb.BannerManager;
 import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
@@ -23,6 +24,7 @@ import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
 import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;
 import ru.nemodev.project.quotes.mvp.category.list.CategoryListFragment;
+import ru.nemodev.project.quotes.mvp.purchase.PurchaseListFragment;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    private BannerManager bannerManager;
+    private MainContract.MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,8 +48,22 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initFabricIO();
 
-        initAdb();
+        mainPresenter = new MainPresenterImpl(this);
         initNavigationMenu();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        mainPresenter.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        mainPresenter.onDestroy();
+        super.onDestroy();
     }
 
     @Override
@@ -93,6 +109,15 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_item_like: {
                     getSupportFragmentManager().popBackStack();
                     openFragment(new LikedQuoteListFragment());
+                    break;
+                }
+                case R.id.nav_item_purchase: {
+                    getSupportFragmentManager().popBackStack();
+
+                    PurchaseListFragment fragment = new PurchaseListFragment();
+                    fragment.setMainPresenter(mainPresenter);
+
+                    openFragment(fragment);
                     break;
                 }
                 case R.id.nav_item_telegram_channel: {
@@ -168,11 +193,6 @@ public class MainActivity extends AppCompatActivity
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         });
-    }
-
-    private void initAdb()
-    {
-        bannerManager = new BannerManager(this, findViewById(R.id.adView));
     }
 
     private void initFabricIO()

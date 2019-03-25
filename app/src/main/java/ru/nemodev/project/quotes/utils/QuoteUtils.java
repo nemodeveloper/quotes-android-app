@@ -10,6 +10,8 @@ import java.util.Set;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.api.dto.QuoteDTO;
+import ru.nemodev.project.quotes.entity.AuthorUtils;
+import ru.nemodev.project.quotes.entity.CategoryUtils;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
@@ -22,7 +24,7 @@ public final class QuoteUtils
     public static String getAuthorName(QuoteInfo quote)
     {
         return quote.getAuthor() == null
-                ? AndroidUtils.getTextById(R.string.author_unknown_name)
+                ? AndroidUtils.getString(R.string.author_unknown_name)
                 : quote.getAuthor().getFullName();
     }
 

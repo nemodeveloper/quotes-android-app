@@ -20,8 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.mvp.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
@@ -71,7 +71,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
     protected void initToolbar(View root)
     {
         super.initToolbar(root);
-        toolbar.setTitle(AndroidUtils.getTextById(R.string.like_title));
+        toolbar.setTitle(AndroidUtils.getString(R.string.like_title));
     }
 
     private void initRV()

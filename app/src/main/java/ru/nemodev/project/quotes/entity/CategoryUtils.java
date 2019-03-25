@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.utils;
+package ru.nemodev.project.quotes.entity;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import ru.nemodev.project.quotes.api.dto.CategoryDTO;
-import ru.nemodev.project.quotes.entity.Category;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public final class CategoryUtils
 {

@@ -24,8 +24,8 @@ import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Category;
-import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.mvp.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
@@ -74,7 +74,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     protected void initToolbar(View root)
     {
         super.initToolbar(root);
-        toolbar.setTitle((AndroidUtils.getTextById(R.string.category_title)));
+        toolbar.setTitle((AndroidUtils.getString(R.string.category_title)));
 
         setHasOptionsMenu(true);
     }
@@ -91,7 +91,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             inflater.inflate(R.menu.menu_category_bar, menu);
 
             searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-            searchView.setQueryHint(AndroidUtils.getTextById(R.string.category_search_hint));
+            searchView.setQueryHint(AndroidUtils.getString(R.string.category_search_hint));
             searchView.setMaxWidth(Integer.MAX_VALUE);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
             {

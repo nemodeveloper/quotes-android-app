@@ -18,6 +18,12 @@
     <!-- открытый ключ приложения для покупок -->
     <string name="APP_GOOGLE_RSA_PUBLIC_KEY">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjFfwGosO5fHf/y/czCUJXOfG550OZiugYePEkDNyA/i3n4+/QA+jU44gV9d4q/XDWBN/ypAEGpWB3SnGqiqYpzjKfh2q5IIpXSIlg8Q37lUw6RYTm6MQuPn6tGIYkCmdIp3RkJDjYjSpytZOtYpT01cWQLyGDPSkyW4ijIIFk7ARWVKrhfK1K2cnAmLzXY+A47xr1qYZEeI2B8lCUm+W8qgtmhUTEqwRYNcQgWHFgZnSSANMoO7PPaBTC7kOnPNWhOVA9OVgMy4tUYQLmAmFpHveAgzZPy4xeWtQYyUiC3TCxHruFQETUAU2rfKWVTJV85T3OOYxtgt8Gm9iWVtPywIDAQAB</string>
 
+    <!-- Покупки -->
+    <array name="inapp_products">
+        <item>quote_widget</item>
+        <item>quote_adb</item>
+    </array>
+
     <!-- Меню -->
     <string name="nav_title">Цитаты великих людей</string>
 
@@ -33,6 +39,7 @@
     <string name="like_title">Избранные</string>
 
     <string name="menu_item_others">Другое</string>
+    <string name="menu_item_purchase">Покупки</string>
     <string name="menu_item_telegram_channel">Telegram канал</string>
     <string name="menu_item_share">Поделиться</string>
     <string name="menu_item_rate_app">Оценить приложение</string>

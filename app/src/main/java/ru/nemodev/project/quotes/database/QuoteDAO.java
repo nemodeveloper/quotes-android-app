@@ -10,10 +10,10 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import ru.nemodev.project.quotes.entity.AuthorUtils;
+import ru.nemodev.project.quotes.entity.CategoryUtils;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.utils.AuthorUtils;
-import ru.nemodev.project.quotes.utils.CategoryUtils;
 import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 @Dao

@@ -8,7 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.mvp.MainActivity;
+import ru.nemodev.project.quotes.mvp.main.MainActivity;
 
 public abstract class BaseToolbarFragment extends Fragment
 {
@@ -17,6 +17,7 @@ public abstract class BaseToolbarFragment extends Fragment
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
+    // TODO убрать параметр
     protected void initToolbar(View root)
     {
         MainActivity mainActivity = (MainActivity) getActivity();

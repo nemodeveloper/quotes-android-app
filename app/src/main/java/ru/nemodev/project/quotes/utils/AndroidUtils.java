@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.QuoteApp;
 
@@ -20,9 +23,14 @@ public final class AndroidUtils
 
     private AndroidUtils() { }
 
-    public static String getTextById(int id)
+    public static String getString(int resId)
     {
-        return QuoteApp.getInstance().getResources().getString(id);
+        return QuoteApp.getInstance().getResources().getString(resId);
+    }
+
+    public static List<String> getStringList(int resId)
+    {
+        return Arrays.asList(QuoteApp.getInstance().getResources().getStringArray(resId));
     }
 
     public static void openShareDialog(Context context, String dialogTitle, String shareContent)
@@ -38,8 +46,8 @@ public final class AndroidUtils
     {
         MetricUtils.inviteEvent(MetricUtils.InviteType.APP_LINK);
         AndroidUtils.openShareDialog(context,
-                AndroidUtils.getTextById(R.string.tell_about_app_title),
-                AndroidUtils.getTextById(R.string.play_market_app_http_link) + context.getPackageName());
+                AndroidUtils.getString(R.string.tell_about_app_title),
+                AndroidUtils.getString(R.string.play_market_app_http_link) + context.getPackageName());
     }
 
     public static void openAppByURI(Activity activity, String rawURI)
@@ -58,7 +66,7 @@ public final class AndroidUtils
         try
         {
             MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
-            openAppByURI(activity, getTextById(R.string.telegram_channel_uri));
+            openAppByURI(activity, getString(R.string.telegram_channel_uri));
         }
         catch (ActivityNotFoundException e)
         {
@@ -73,12 +81,12 @@ public final class AndroidUtils
         String packageName = activity.getPackageName();
         try
         {
-            openAppByURI(activity, getTextById(R.string.play_market_app_link) + packageName);
+            openAppByURI(activity, getString(R.string.play_market_app_link) + packageName);
         }
         catch (ActivityNotFoundException e)
         {
             startActivity(activity, new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(getTextById(R.string.play_market_app_http_link) + packageName)));
+                    Uri.parse(getString(R.string.play_market_app_http_link) + packageName)));
         }
     }
 
@@ -89,7 +97,7 @@ public final class AndroidUtils
 
     public static void showToastMessage(int messageResId)
     {
-        Toast toast = Toast.makeText(QuoteApp.getInstance(), getTextById(messageResId), Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(QuoteApp.getInstance(), getString(messageResId), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0 ,0);
         toast.show();
     }
@@ -97,7 +105,7 @@ public final class AndroidUtils
     public static void showSnackBarMessage(View whereShow, int textId)
     {
         Snackbar snackbar = Snackbar
-                .make(whereShow, AndroidUtils.getTextById(textId), Snackbar.LENGTH_SHORT);
+                .make(whereShow, AndroidUtils.getString(textId), Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 }

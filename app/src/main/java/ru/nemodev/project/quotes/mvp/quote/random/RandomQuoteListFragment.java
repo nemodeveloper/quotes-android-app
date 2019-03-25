@@ -20,9 +20,9 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.mvp.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
@@ -69,7 +69,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
     protected void initToolbar(View root)
     {
         super.initToolbar(root);
-        toolbar.setTitle(AndroidUtils.getTextById(R.string.random_title));
+        toolbar.setTitle(AndroidUtils.getString(R.string.random_title));
     }
 
     private void initRV()

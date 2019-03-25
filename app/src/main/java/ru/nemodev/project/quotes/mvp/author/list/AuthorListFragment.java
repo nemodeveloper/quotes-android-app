@@ -24,8 +24,8 @@ import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.mvp.MainActivity;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.mvp.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
@@ -75,7 +75,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     protected void initToolbar(View root)
     {
         super.initToolbar(root);
-        toolbar.setTitle(AndroidUtils.getTextById(R.string.author_title));
+        toolbar.setTitle(AndroidUtils.getString(R.string.author_title));
 
         setHasOptionsMenu(true);
     }
@@ -92,7 +92,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             inflater.inflate(R.menu.menu_author_bar, menu);
 
             searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-            searchView.setQueryHint(AndroidUtils.getTextById(R.string.author_search_hint));
+            searchView.setQueryHint(AndroidUtils.getString(R.string.author_search_hint));
             searchView.setMaxWidth(Integer.MAX_VALUE);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
             {

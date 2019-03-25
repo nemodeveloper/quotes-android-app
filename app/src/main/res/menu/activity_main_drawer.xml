@@ -25,6 +25,10 @@
     <item android:title="@string/menu_item_others">
         <menu>
             <item
+                android:id="@+id/nav_item_purchase"
+                android:icon="@drawable/ic_menu_purchase"
+                android:title="@string/menu_item_purchase" />
+            <item
                 android:id="@+id/nav_item_telegram_channel"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_item_telegram_channel" />
