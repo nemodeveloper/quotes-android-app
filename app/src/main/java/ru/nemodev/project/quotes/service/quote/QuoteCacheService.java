@@ -13,8 +13,8 @@ import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
 import ru.nemodev.project.quotes.api.dto.QuoteDTO;
 import ru.nemodev.project.quotes.database.AppDataBase;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.entity.QuoteUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
-import ru.nemodev.project.quotes.utils.QuoteUtils;
 
 public class QuoteCacheService
 {

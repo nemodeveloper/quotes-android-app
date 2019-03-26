@@ -14,10 +14,13 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AppSetting;
+import ru.nemodev.project.quotes.app.QuoteApp;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.entity.QuoteUtils;
 import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
 import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
-import ru.nemodev.project.quotes.utils.QuoteUtils;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public class QuoteWidgetProvider extends AppWidgetProvider
@@ -45,39 +48,52 @@ public class QuoteWidgetProvider extends AppWidgetProvider
 
     private void updateQuote(final AppWidgetManager appWidgetManager, final int appWidgetId, final RemoteViews remoteViews, final boolean fromCache)
     {
-        quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
+        if (QuoteApp.getInstance().getAppSetting().getBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY))
         {
-            @Override
-            public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
+            quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
             {
-                if (CollectionUtils.isNotEmpty(quotes))
+                @Override
+                public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
                 {
-                    QuoteInfo quoteInfo = quotes.get(0);
+                    if (CollectionUtils.isNotEmpty(quotes))
+                    {
+                        QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quotes);
+                        if (quoteInfo == null)
+                        {
+                            updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
+                        }
+                        else
+                        {
+                            remoteViews.setTextViewText(R.id.quoteText, quoteInfo.getQuote().getText());
+                            remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + quoteInfo.getAuthor().getFullName());
 
-                    remoteViews.setTextViewText(R.id.quoteText, quoteInfo.getQuote().getText());
-                    remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + quoteInfo.getAuthor().getFullName());
+                            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+                        }
+                    }
+                    else
+                    {
+                        showErrorLoad(remoteViews);
+                    }
+                }
 
-                    appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-                }
-                else
+                @Override
+                public void onLoadError(Throwable t, boolean fromCache)
                 {
-                    showErrorLoad(remoteViews);
+                    if (!fromCache)
+                    {
+                        updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
+                    }
+                    else
+                    {
+                        showErrorLoad(remoteViews);
+                    }
                 }
-            }
-
-            @Override
-            public void onLoadError(Throwable t, boolean fromCache)
-            {
-                if (!fromCache)
-                {
-                    updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
-                }
-                else
-                {
-                    showErrorLoad(remoteViews);
-                }
-            }
-        }, Collections.singletonMap("count", "1"), fromCache);
+            }, Collections.singletonMap("count", "50"), fromCache);
+        }
+        else
+        {
+            showNotPurchaseInfo(remoteViews);
+        }
     }
 
     @Override
@@ -107,7 +123,17 @@ public class QuoteWidgetProvider extends AppWidgetProvider
 
     private void showErrorLoad(RemoteViews remoteViews)
     {
-        remoteViews.setTextViewText(R.id.quoteText, "Произошла ошибка, попробуйте обновить виджет!");
-        remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + "Разработчик");
+        remoteViews.setTextViewText(R.id.quoteText,
+                AndroidUtils.getString(R.string.widget_update_error));
+        remoteViews.setTextViewText(R.id.quoteAuthorName,
+                QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
+    }
+
+    private void showNotPurchaseInfo(RemoteViews remoteViews)
+    {
+        remoteViews.setTextViewText(R.id.quoteText,
+                AndroidUtils.getString(R.string.widget_not_purchase));
+        remoteViews.setTextViewText(R.id.quoteAuthorName,
+                QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
     }
 }

@@ -28,6 +28,11 @@
     <string name="purchase_ready">Доступно для покупки!</string>
     <string name="purchase_already_do">Покупка уже совершена!</string>
 
+    <!-- Виджет -->
+    <string name="widget_update_info">Подбираем для вас цитату…</string>
+    <string name="widget_not_purchase">Для просмотра цитат с помощью виджета необходимо перейти в приложение, раздел покупки и приобрести виджет!</string>
+    <string name="widget_update_error">Произошла ошибка, попробуйте пересоздать виджет!</string>
+
     <!-- Меню -->
     <string name="nav_title">Цитаты великих людей</string>
 
@@ -35,6 +40,8 @@
     <string name="app_name">Цитаты</string>
     <string name="navigation_drawer_open">Открыть меню</string>
     <string name="navigation_drawer_close">Закрыть меню</string>
+
+    <string name="dev_author_name">Разработчик</string>
 
     <!-- Меню -->
     <string name="random_title">Случайные</string>

@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:fontFamily="@font/vollkorn"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:text="@string/widget_update_info"/>
         <TextView
             android:id="@+id/quoteAuthorName"
             android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
             android:layout_marginTop="10dp"
             android:textSize="18sp"
             android:fontFamily="@font/vollkorn"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:text="@string/dev_author_name"/>
         <ImageView
             android:id="@+id/updateWidgetButton"
             android:layout_width="20dp"

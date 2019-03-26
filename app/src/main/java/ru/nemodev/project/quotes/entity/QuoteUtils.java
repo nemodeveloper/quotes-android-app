@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.utils;
+package ru.nemodev.project.quotes.entity;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,10 +10,7 @@ import java.util.Set;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.api.dto.QuoteDTO;
-import ru.nemodev.project.quotes.entity.AuthorUtils;
-import ru.nemodev.project.quotes.entity.CategoryUtils;
-import ru.nemodev.project.quotes.entity.Quote;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 public final class QuoteUtils
 {
@@ -136,5 +133,16 @@ public final class QuoteUtils
     public static Quote fromQuoteInfo(QuoteInfo quoteInfo)
     {
         return quoteInfo.getQuote();
+    }
+
+    public static QuoteInfo getQuoteForWidget(List<QuoteInfo> quoteInfoList)
+    {
+        for (QuoteInfo quoteInfo : quoteInfoList)
+        {
+            if (quoteInfo.getQuote().getText().length() < 100)
+                return quoteInfo;
+        }
+
+        return quoteInfoList.get(0);
     }
 }

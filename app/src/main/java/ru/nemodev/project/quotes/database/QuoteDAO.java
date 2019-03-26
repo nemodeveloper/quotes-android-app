@@ -14,7 +14,7 @@ import ru.nemodev.project.quotes.entity.AuthorUtils;
 import ru.nemodev.project.quotes.entity.CategoryUtils;
 import ru.nemodev.project.quotes.entity.Quote;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.utils.QuoteUtils;
+import ru.nemodev.project.quotes.entity.QuoteUtils;
 
 @Dao
 public abstract class QuoteDAO

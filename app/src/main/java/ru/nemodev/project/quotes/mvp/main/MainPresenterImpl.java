@@ -8,6 +8,7 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.adb.BannerManager;
+import ru.nemodev.project.quotes.app.AppSetting;
 import ru.nemodev.project.quotes.app.QuoteApp;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseModel;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseModelImpl;
@@ -59,6 +60,10 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
         if (PurchaseType.QUOTE_ADB.getProductId().equals(productId))
         {
             bannerManager.disableAdb();
+        }
+        else if (PurchaseType.QUOTE_WIDGET.getProductId().equals(productId))
+        {
+            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
         }
     }
 
