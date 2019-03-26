@@ -1,8 +1,9 @@
 package ru.nemodev.project.quotes.mvp.purchase;
 
-import com.anjlab.android.iab.v3.SkuDetails;
+
+import ru.nemodev.project.quotes.entity.Purchase;
 
 public interface OnPurchaseClickListener
 {
-    void onSkuClick(SkuDetails skuDetails);
+    void onPurchaseClick(Purchase purchase);
 }

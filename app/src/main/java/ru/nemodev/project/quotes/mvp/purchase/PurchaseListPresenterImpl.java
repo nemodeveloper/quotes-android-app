@@ -1,17 +1,16 @@
 package ru.nemodev.project.quotes.mvp.purchase;
 
-import com.anjlab.android.iab.v3.SkuDetails;
-
 import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.entity.Purchase;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
-public class PurchaseListPresenterImpl implements PurchaseListContract.SkuInAppListPresenter
+public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseInAppListPresenter
 {
     private final PurchaseListContract.SkuInAppListView skuInAppListView;
     private final PurchaseModel purchaseModel;
@@ -24,21 +23,21 @@ public class PurchaseListPresenterImpl implements PurchaseListContract.SkuInAppL
     }
 
     @Override
-    public void loadSkuList()
+    public void loadPurchaseList()
     {
         skuInAppListView.showLoader();
 
-        purchaseModel.loadSkuInAppList(AndroidUtils.getStringList(R.array.inapp_products))
+        purchaseModel.loadPurchaseInAppList(AndroidUtils.getStringList(R.array.inapp_products))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<SkuDetails>>()
+                .subscribe(new Observer<List<Purchase>>()
                 {
                     @Override
                     public void onSubscribe(Disposable d) { }
 
                     @Override
-                    public void onNext(List<SkuDetails> skuDetails)
+                    public void onNext(List<Purchase> purchaseList)
                     {
-                        skuInAppListView.showSkuList(skuDetails);
+                        skuInAppListView.showPurchaseList(purchaseList);
                         skuInAppListView.hideLoader();
                     }
 
@@ -54,8 +53,18 @@ public class PurchaseListPresenterImpl implements PurchaseListContract.SkuInAppL
     }
 
     @Override
-    public void onSkuClick(SkuDetails skuDetails)
+    public void onPurchaseClick(Purchase purchase)
     {
-        purchaseModel.purchase(PurchaseType.getBySkuName(skuDetails.productId));
+        if (purchase.isPurchase())
+        {
+            skuInAppListView.showMessage(
+                    String.format(
+                            AndroidUtils.getString(R.string.purchase_already_do_detail),
+                            purchase.getTitle()));
+        }
+        else
+        {
+            purchaseModel.purchase(purchase.getPurchaseType());
+        }
     }
 }

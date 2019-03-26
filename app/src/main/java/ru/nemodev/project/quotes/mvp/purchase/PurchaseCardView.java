@@ -2,12 +2,12 @@ package ru.nemodev.project.quotes.mvp.purchase;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.anjlab.android.iab.v3.SkuDetails;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,19 +15,23 @@ import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.entity.Purchase;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 public class PurchaseCardView extends CardView
 {
-    private SkuDetails skuDetails;
+    private Purchase purchase;
 
-    @BindView(R.id.skuImg)
-    ImageView skuImageView;
-    @BindView(R.id.skuTitle)
-    TextView skuTitle;
-    @BindView(R.id.skuDescription)
-    TextView skuDescription;
-    @BindView(R.id.skuPrice)
-    TextView skuPrice;
+    @BindView(R.id.purchaseImg)
+    ImageView purchaseImageView;
+    @BindView(R.id.purchaseTitle)
+    TextView purchaseTitle;
+    @BindView(R.id.purchaseDescription)
+    TextView purchaseDescription;
+    @BindView(R.id.purchasePrice)
+    TextView purchasePrice;
+    @BindView(R.id.purchaseEnableView)
+    TextView purchaseEnableView;
 
     public PurchaseCardView(@NonNull Context context)
     {
@@ -44,27 +48,25 @@ public class PurchaseCardView extends CardView
         super(context, attrs, defStyleAttr);
     }
 
-    public void setSkuDetails(SkuDetails skuDetails)
+    public void setPurchase(Purchase purchase)
     {
-        this.skuDetails = skuDetails;
+        this.purchase = purchase;
         ButterKnife.bind(this);
 
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound("", ColorGenerator.MATERIAL.getColor(skuDetails.productId));
+                .buildRound("", ColorGenerator.MATERIAL.getColor(purchase.getPurchaseType().getProductId()));
 
-        skuImageView.setImageDrawable(drawable);
-        skuTitle.setText(removeAppDescription(skuDetails.title));
-        skuDescription.setText(skuDetails.description);
-        skuPrice.setText(skuDetails.priceText);
-    }
+        purchaseImageView.setImageDrawable(drawable);
+        purchaseTitle.setText(purchase.getTitle());
+        purchaseDescription.setText(purchase.getDescription());
 
-    private String removeAppDescription(String rawString)
-    {
-        if (rawString.contains("("))
-        {
-            return rawString.substring(0, rawString.indexOf("("));
-        }
+        if (purchase.isPurchase())
+            purchasePrice.setVisibility(View.GONE);
+        else
+            purchasePrice.setText(purchase.getPriceText());
 
-        return rawString;
+        purchaseEnableView.setText(purchase.isPurchase()
+                ? AndroidUtils.getString(R.string.purchase_already_do)
+                : AndroidUtils.getString(R.string.purchase_ready));
     }
 }

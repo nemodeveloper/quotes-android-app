@@ -24,6 +24,10 @@
         <item>quote_adb</item>
     </array>
 
+    <string name="purchase_already_do_detail">Покупка «%s» уже совершена!</string>
+    <string name="purchase_ready">Доступно для покупки!</string>
+    <string name="purchase_already_do">Покупка уже совершена!</string>
+
     <!-- Меню -->
     <string name="nav_title">Цитаты великих людей</string>
 

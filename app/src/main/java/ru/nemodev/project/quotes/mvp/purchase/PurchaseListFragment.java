@@ -6,20 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.anjlab.android.iab.v3.SkuDetails;
-
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.entity.Purchase;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.main.MainContract;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -28,15 +27,13 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
 {
     private View root;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.skuList)
     RecyclerView skuRV;
     @BindView(R.id.contentLoadingProgressBar)
     ProgressBar progressBar;
 
     private MainContract.MainPresenter mainPresenter;
-    private PurchaseListContract.SkuInAppListPresenter presenter;
+    private PurchaseListContract.PurchaseInAppListPresenter presenter;
 
     @Nullable
     @Override
@@ -52,7 +49,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         initRV();
 
         presenter = new PurchaseListPresenterImpl(mainPresenter.getPurchaseModel(), this);
-        presenter.loadSkuList();
+        presenter.loadPurchaseList();
 
         return root;
     }
@@ -88,12 +85,21 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     }
 
     @Override
-    public void showSkuList(List<SkuDetails> skuDetailsList)
+    public void showPurchaseList(List<Purchase> purchaseList)
     {
-        if (CollectionUtils.isNotEmpty(skuDetailsList))
+        if (CollectionUtils.isNotEmpty(purchaseList))
         {
-            skuRV.setAdapter(new PurchaseAdapter(this.getActivity(), skuDetailsList,
-                    skuDetails -> presenter.onSkuClick(skuDetails)));
+            skuRV.setAdapter(new PurchaseAdapter(this.getActivity(), purchaseList,
+                    purchase -> presenter.onPurchaseClick(purchase)));
+        }
+    }
+
+    @Override
+    public void showMessage(String message)
+    {
+        if (StringUtils.isNotEmpty(message))
+        {
+            AndroidUtils.showSnackBarMessage(root, message);
         }
     }
 }

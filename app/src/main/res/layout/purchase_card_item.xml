@@ -3,7 +3,7 @@
 <ru.nemodev.project.quotes.mvp.purchase.PurchaseCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/skuCardView"
+    android:id="@+id/purchaseCardView"
     card_view:cardElevation="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,24 +17,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/skuImg"
+                android:id="@+id/purchaseImg"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"/>
             <TextView
-                android:id="@+id/skuTitle"
+                android:id="@+id/purchaseTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/skuImg"
+                android:layout_toEndOf="@+id/purchaseImg"
                 android:layout_marginStart="10dp"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
                 android:textColor="@color/black"/>
         </RelativeLayout>
         <TextView
-            android:id="@+id/skuDescription"
+            android:id="@+id/purchaseDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/headBlock"
@@ -43,10 +43,19 @@
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/skuPrice"
+            android:id="@+id/purchasePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/skuDescription"
+            android:layout_below="@+id/purchaseDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/purchaseEnableView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/purchasePrice"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textSize="20sp"

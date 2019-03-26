@@ -4,20 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.anjlab.android.iab.v3.SkuDetails;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
+import ru.nemodev.project.quotes.entity.Purchase;
 
-public class PurchaseAdapter extends AnimationRVAdapter<SkuDetails, PurchaseAdapter.PurchaseViewHolder>
+public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
 {
     private final OnPurchaseClickListener onPurchaseClickListener;
 
-    public PurchaseAdapter(Context context, List<SkuDetails> data, OnPurchaseClickListener onPurchaseClickListener)
+    public PurchaseAdapter(Context context, List<Purchase> data, OnPurchaseClickListener onPurchaseClickListener)
     {
         super(context, data);
         this.onPurchaseClickListener = onPurchaseClickListener;
@@ -46,9 +45,9 @@ public class PurchaseAdapter extends AnimationRVAdapter<SkuDetails, PurchaseAdap
     @Override
     protected void doOnBindViewHolder(@NonNull PurchaseViewHolder purchaseViewHolder, int position)
     {
-        final SkuDetails skuDetails = getItem(position);
+        final Purchase purchase = getItem(position);
 
-        purchaseViewHolder.purchaseCardView.setSkuDetails(skuDetails);
-        purchaseViewHolder.purchaseCardView.setOnClickListener(v -> onPurchaseClickListener.onSkuClick(skuDetails));
+        purchaseViewHolder.purchaseCardView.setPurchase(purchase);
+        purchaseViewHolder.purchaseCardView.setOnClickListener(v -> onPurchaseClickListener.onPurchaseClick(purchase));
     }
 }

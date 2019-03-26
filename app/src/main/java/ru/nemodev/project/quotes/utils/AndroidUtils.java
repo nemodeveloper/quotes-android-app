@@ -104,8 +104,13 @@ public final class AndroidUtils
 
     public static void showSnackBarMessage(View whereShow, int textId)
     {
+        showSnackBarMessage(whereShow, AndroidUtils.getString(textId));
+    }
+
+    public static void showSnackBarMessage(View whereShow, String message)
+    {
         Snackbar snackbar = Snackbar
-                .make(whereShow, AndroidUtils.getString(textId), Snackbar.LENGTH_SHORT);
+                .make(whereShow, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 }

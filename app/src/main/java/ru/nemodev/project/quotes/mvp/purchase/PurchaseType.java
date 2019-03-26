@@ -5,23 +5,23 @@ public enum PurchaseType
     QUOTE_ADB("quote_adb"),
     QUOTE_WIDGET("quote_widget");
 
-    private final String skuName;
+    private final String productId;
 
-    PurchaseType(String skuName)
+    PurchaseType(String productId)
     {
-        this.skuName = skuName;
+        this.productId = productId;
     }
 
-    public String getSkuName()
+    public String getProductId()
     {
-        return skuName;
+        return productId;
     }
 
-    public static PurchaseType getBySkuName(String rawValue)
+    public static PurchaseType getByProductId(String rawValue)
     {
         for (PurchaseType purchaseType : values())
         {
-            if (purchaseType.getSkuName().equals(rawValue))
+            if (purchaseType.getProductId().equals(rawValue))
             {
                 return purchaseType;
             }

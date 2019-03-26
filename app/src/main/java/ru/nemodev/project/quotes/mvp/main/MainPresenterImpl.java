@@ -56,7 +56,7 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
     @Override
     public void onProductPurchased(String productId, TransactionDetails details)
     {
-        if (PurchaseType.QUOTE_ADB.getSkuName().equals(productId))
+        if (PurchaseType.QUOTE_ADB.getProductId().equals(productId))
         {
             bannerManager.disableAdb();
         }
@@ -72,6 +72,6 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
     public void onBillingInitialized()
     {
         bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView),
-                billingProcessor.isPurchased(PurchaseType.QUOTE_ADB.getSkuName()));
+                billingProcessor.isPurchased(PurchaseType.QUOTE_ADB.getProductId()));
     }
 }

@@ -1,8 +1,8 @@
 package ru.nemodev.project.quotes.mvp.purchase;
 
-import com.anjlab.android.iab.v3.SkuDetails;
-
 import java.util.List;
+
+import ru.nemodev.project.quotes.entity.Purchase;
 
 public interface PurchaseListContract
 {
@@ -10,12 +10,13 @@ public interface PurchaseListContract
     {
         void showLoader();
         void hideLoader();
-        void showSkuList(List<SkuDetails> skuDetailsList);
+        void showPurchaseList(List<Purchase> purchaseList);
+        void showMessage(String message);
     }
 
-    interface SkuInAppListPresenter
+    interface PurchaseInAppListPresenter
     {
-        void loadSkuList();
-        void onSkuClick(SkuDetails skuDetails);
+        void loadPurchaseList();
+        void onPurchaseClick(Purchase purchase);
     }
 }
