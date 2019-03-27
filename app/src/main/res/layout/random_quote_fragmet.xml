@@ -38,12 +38,7 @@
                 android:background="#EEEEEE">
             </ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteRV>
 
-            <ProgressBar
-                android:id="@+id/contentLoadingProgressBar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                style="@android:style/Widget.Material.ProgressBar.Small"
-                android:layout_centerInParent="true"/>
+            <include layout="@layout/content_loader_view"/>
         </RelativeLayout>
 
     </LinearLayout>

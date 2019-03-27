@@ -38,12 +38,16 @@
                 android:background="#EEEEEE">
             </androidx.recyclerview.widget.RecyclerView>
 
-            <ProgressBar
-                android:id="@+id/contentLoadingProgressBar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                style="@android:style/Widget.Material.ProgressBar.Small"
-                android:layout_centerInParent="true"/>
+            <include layout="@layout/content_loader_view"/>
+            <TextView
+                android:id="@+id/purchaseEmptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="@string/purchase_empty_list"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </LinearLayout>

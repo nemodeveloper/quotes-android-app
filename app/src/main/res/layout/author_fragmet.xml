@@ -36,12 +36,7 @@
                 android:layout_height="match_parent">
             </in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView>
 
-            <ProgressBar
-                android:id="@+id/contentLoadingProgressBar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                style="@android:style/Widget.Material.ProgressBar.Small"
-                android:layout_centerInParent="true"/>
+            <include layout="@layout/content_loader_view"/>
         </RelativeLayout>
 
     </LinearLayout>

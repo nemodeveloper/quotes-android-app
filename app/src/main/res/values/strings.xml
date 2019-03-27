@@ -28,6 +28,8 @@
     <string name="purchase_ready">Доступно для покупки!</string>
     <string name="purchase_already_do">Покупка уже совершена!</string>
 
+    <string name="purchase_empty_list">Список покупок временно недоступен. Проверьте подключение к сети интернет или перезапустите приложение.</string>
+
     <!-- Виджет -->
     <string name="widget_update_info">Подбираем для вас цитату…</string>
     <string name="widget_not_purchase">Для просмотра цитат с помощью виджета необходимо перейти в приложение, раздел покупки и приобрести виджет!</string>

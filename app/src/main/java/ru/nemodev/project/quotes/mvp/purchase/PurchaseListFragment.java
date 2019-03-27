@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,8 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     RecyclerView skuRV;
     @BindView(R.id.contentLoadingProgressBar)
     ProgressBar progressBar;
+    @BindView(R.id.purchaseEmptyView)
+    TextView purchaseEmptyView;
 
     private MainContract.MainPresenter mainPresenter;
     private PurchaseListContract.PurchaseInAppListPresenter presenter;
@@ -89,8 +92,13 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     {
         if (CollectionUtils.isNotEmpty(purchaseList))
         {
+            showEmptyContentView(false);
             skuRV.setAdapter(new PurchaseAdapter(this.getActivity(), purchaseList,
                     purchase -> presenter.onPurchaseClick(purchase)));
+        }
+        else
+        {
+            showEmptyContentView(true);
         }
     }
 
@@ -101,5 +109,11 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         {
             AndroidUtils.showSnackBarMessage(root, message);
         }
+    }
+
+    // TODO сделать общее view как с загрузкой для всех фрагментов
+    private void showEmptyContentView(boolean show)
+    {
+        purchaseEmptyView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

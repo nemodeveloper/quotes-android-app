@@ -122,11 +122,8 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void showEmptyContentView(boolean empty)
+    private void showEmptyContentView(boolean show)
     {
-        if (empty)
-            emptyLikedView.setVisibility(View.VISIBLE);
-        else
-            emptyLikedView.setVisibility(View.GONE);
+        emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
