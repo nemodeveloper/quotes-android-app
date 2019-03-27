@@ -4,6 +4,9 @@ import com.anjlab.android.iab.v3.SkuDetails;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.util.Currency;
+
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 
 public class Purchase
@@ -30,6 +33,16 @@ public class Purchase
     public String getDescription()
     {
         return skuDetails.description;
+    }
+
+    public BigDecimal getPrice()
+    {
+        return BigDecimal.valueOf(skuDetails.priceValue);
+    }
+
+    public Currency getCurrency()
+    {
+        return Currency.getInstance(skuDetails.currency);
     }
 
     public String getPriceText()

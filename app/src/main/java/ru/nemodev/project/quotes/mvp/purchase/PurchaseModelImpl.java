@@ -36,6 +36,13 @@ public class PurchaseModelImpl implements PurchaseModel
     }
 
     @Override
+    public Observable<Purchase> loadPurchase(String productId)
+    {
+        return loadPurchaseInAppList(Collections.singletonList(productId))
+                .map(purchaseList -> purchaseList.get(0));
+    }
+
+    @Override
     public void purchase(PurchaseType purchaseType)
     {
         billingProcessor.purchase(activity, purchaseType.getProductId());

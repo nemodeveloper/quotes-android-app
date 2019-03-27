@@ -53,7 +53,7 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
         root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV();
 
         presenter = new CategoryDetailPresenterImpl(getArguments().getLong(CATEGORY_ID_KEY), this);
@@ -94,9 +94,9 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         toolbar.setTitle(getArguments().getString(CATEGORY_NAME_KEY));
     }
 

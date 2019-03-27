@@ -14,6 +14,7 @@ import ru.nemodev.project.quotes.mvp.purchase.PurchaseModel;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseModelImpl;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class MainPresenterImpl implements MainContract.MainPresenter, BillingProcessor.IBillingHandler
 {
@@ -65,6 +66,8 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
         {
             QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
         }
+
+        purchaseModel.loadPurchase(productId).subscribe(MetricUtils::purchaseEvent);
     }
 
     @Override

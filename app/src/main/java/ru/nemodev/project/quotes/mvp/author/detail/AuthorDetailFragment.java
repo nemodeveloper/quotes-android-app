@@ -53,7 +53,7 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
         root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV();
 
         presenter = new AuthorDetailPresenterImpl(getArguments().getLong(AUTHOR_ID_KEY), this);
@@ -65,9 +65,9 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         toolbar.setTitle(getArguments().getString(AUTHOR_NAME_KEY));
     }
 

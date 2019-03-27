@@ -58,7 +58,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         root = inflater.inflate(R.layout.author_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV(root);
 
         presenter = new AuthorListPresenterImpl(this);
@@ -72,9 +72,9 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         toolbar.setTitle(AndroidUtils.getString(R.string.author_title));
 
         setHasOptionsMenu(true);

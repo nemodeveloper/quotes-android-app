@@ -3,7 +3,6 @@ package ru.nemodev.project.quotes.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -35,7 +34,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
         {
             final String packageName = context.getPackageName();
 
-            for (int appWidgetId : appWidgetManager.getAppWidgetIds(new ComponentName(context, QuoteWidgetProvider.class)))
+            for (int appWidgetId : appWidgetIds)
             {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.quote_widget);
                 remoteViews.setOnClickPendingIntent(R.id.updateWidgetButton,

@@ -3,11 +3,14 @@ package ru.nemodev.project.quotes.utils;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.InviteEvent;
+import com.crashlytics.android.answers.PurchaseEvent;
 import com.crashlytics.android.answers.RatingEvent;
 import com.crashlytics.android.answers.SearchEvent;
 import com.crashlytics.android.answers.ShareEvent;
 
 import org.apache.commons.lang3.StringUtils;
+
+import ru.nemodev.project.quotes.entity.Purchase;
 
 public final class MetricUtils
 {
@@ -49,6 +52,18 @@ public final class MetricUtils
         Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentType(viewType.name())
                 .putContentName(viewType.getViewName()));
+    }
+
+    public static void purchaseEvent(Purchase purchase)
+    {
+        Answers.getInstance().logPurchase(new PurchaseEvent()
+                .putItemId(purchase.getPurchaseType().getProductId())
+                .putItemName(purchase.getTitle())
+                .putItemType(purchase.getPurchaseType().getItemType())
+                .putItemPrice(purchase.getPrice())
+                .putCurrency(purchase.getCurrency())
+                .putSuccess(purchase.isPurchase())
+        );
     }
 
     public enum SearchType

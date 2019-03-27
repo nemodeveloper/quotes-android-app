@@ -52,7 +52,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
         root = inflater.inflate(R.layout.random_quote_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV();
 
         presenter = new RandomQuoteListPresenterImpl(this);
@@ -66,9 +66,9 @@ public class RandomQuoteListFragment extends BaseToolbarFragment implements Rand
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         toolbar.setTitle(AndroidUtils.getString(R.string.random_title));
     }
 

@@ -57,7 +57,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         root = inflater.inflate(R.layout.category_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV();
 
         presenter = new CategoryListPresenterImpl(this);
@@ -71,9 +71,9 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         toolbar.setTitle((AndroidUtils.getString(R.string.category_title)));
 
         setHasOptionsMenu(true);

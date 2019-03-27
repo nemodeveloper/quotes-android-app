@@ -45,7 +45,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         root = inflater.inflate(R.layout.purchase_list_fragmet, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar(root);
+        initToolbar();
         initRV();
 
         presenter = new PurchaseListPresenterImpl(mainPresenter.getPurchaseModel(), this);
@@ -60,9 +60,9 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     }
 
     @Override
-    protected void initToolbar(View root)
+    protected void initToolbar()
     {
-        super.initToolbar(root);
+        super.initToolbar();
         this.toolbar.setTitle(AndroidUtils.getString(R.string.menu_item_purchase));
     }
 
