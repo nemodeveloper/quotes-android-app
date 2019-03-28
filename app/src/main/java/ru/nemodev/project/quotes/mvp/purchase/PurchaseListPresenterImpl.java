@@ -67,4 +67,12 @@ public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseI
             purchaseModel.purchase(purchase.getPurchaseType());
         }
     }
+
+    @Override
+    public void onPurchase(String productId)
+    {
+        purchaseModel.loadPurchase(productId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(purchase -> loadPurchaseList());
+    }
 }

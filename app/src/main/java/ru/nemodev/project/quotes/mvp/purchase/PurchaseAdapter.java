@@ -47,7 +47,6 @@ public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapte
     {
         final Purchase purchase = getItem(position);
 
-        purchaseViewHolder.purchaseCardView.setPurchase(purchase);
-        purchaseViewHolder.purchaseCardView.setOnClickListener(v -> onPurchaseClickListener.onPurchaseClick(purchase));
+        purchaseViewHolder.purchaseCardView.setPurchase(purchase, onPurchaseClickListener);
     }
 }

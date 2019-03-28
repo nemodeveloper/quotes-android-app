@@ -43,6 +43,12 @@ public class PurchaseModelImpl implements PurchaseModel
     }
 
     @Override
+    public void loadOwnedPurchaseList()
+    {
+        billingProcessor.loadOwnedPurchasesFromGoogle();
+    }
+
+    @Override
     public void purchase(PurchaseType purchaseType)
     {
         billingProcessor.purchase(activity, purchaseType.getProductId());
@@ -65,6 +71,16 @@ public class PurchaseModelImpl implements PurchaseModel
             purchaseList.add(new Purchase(skuDetail,
                     isPurchase(PurchaseType.getByProductId(skuDetail.productId))));
         }
+
+        Collections.sort(purchaseList, (o1, o2) ->
+        {
+            if (!o1.isPurchase() || !o2.isPurchase())
+            {
+                return Boolean.compare(o1.isPurchase(), o2.isPurchase());
+            }
+
+            return o2.getPurchaseType().compareTo(o1.getPurchaseType());
+        });
 
         return purchaseList;
     }

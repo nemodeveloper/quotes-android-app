@@ -14,6 +14,7 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.adb.BannerManager;
 import ru.nemodev.project.quotes.app.AppSetting;
 import ru.nemodev.project.quotes.app.QuoteApp;
+import ru.nemodev.project.quotes.mvp.purchase.BillingEventListener;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseModel;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseModelImpl;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
@@ -28,6 +29,7 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     private final BillingProcessor billingProcessor;
     private final PurchaseModel purchaseModel;
 
+    private BillingEventListener billingEventListener;
     private BannerManager bannerManager;
     private final AppUpdaterUtils appUpdater;
 
@@ -68,6 +70,12 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     }
 
     @Override
+    public void setBillingEventListener(BillingEventListener billingEventListener)
+    {
+        this.billingEventListener = billingEventListener;
+    }
+
+    @Override
     public void checkAppUpdate()
     {
         appUpdater.start();
@@ -76,6 +84,11 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     @Override
     public void onProductPurchased(String productId, TransactionDetails details)
     {
+        if (billingEventListener != null)
+        {
+            billingEventListener.onPurchase(productId);
+        }
+
         if (PurchaseType.QUOTE_ADB.getProductId().equals(productId))
         {
             bannerManager.disableAdb();
@@ -89,13 +102,7 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     }
 
     @Override
-    public void onPurchaseHistoryRestored()
-    {
-        if (purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET))
-        {
-            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
-        }
-    }
+    public void onPurchaseHistoryRestored() { }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) { }
@@ -104,7 +111,14 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     public void onBillingInitialized()
     {
         bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView),
-                billingProcessor.isPurchased(PurchaseType.QUOTE_ADB.getProductId()));
+                purchaseModel.isPurchase(PurchaseType.QUOTE_ADB));
+
+        if (purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET))
+        {
+            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
+        }
+
+        purchaseModel.loadOwnedPurchaseList();
     }
 
     @Override

@@ -3,6 +3,7 @@ package ru.nemodev.project.quotes.mvp.purchase;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Purchase;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 public class PurchaseCardView extends MaterialCardView
 {
@@ -26,12 +26,8 @@ public class PurchaseCardView extends MaterialCardView
     ImageView purchaseImageView;
     @BindView(R.id.purchaseTitle)
     TextView purchaseTitle;
-    @BindView(R.id.purchaseDescription)
-    TextView purchaseDescription;
     @BindView(R.id.purchasePrice)
-    TextView purchasePrice;
-    @BindView(R.id.purchaseEnableView)
-    TextView purchaseEnableView;
+    Button purchaseButton;
 
     public PurchaseCardView(@NonNull Context context)
     {
@@ -48,7 +44,7 @@ public class PurchaseCardView extends MaterialCardView
         super(context, attrs, defStyleAttr);
     }
 
-    public void setPurchase(Purchase purchase)
+    public void setPurchase(Purchase purchase, OnPurchaseClickListener onPurchaseClickListener)
     {
         this.purchase = purchase;
         ButterKnife.bind(this);
@@ -58,15 +54,16 @@ public class PurchaseCardView extends MaterialCardView
 
         purchaseImageView.setImageDrawable(drawable);
         purchaseTitle.setText(purchase.getTitle());
-        purchaseDescription.setText(purchase.getDescription());
 
         if (purchase.isPurchase())
-            purchasePrice.setVisibility(View.GONE);
+        {
+            purchaseButton.setVisibility(View.GONE);
+            this.setOnClickListener((view) -> onPurchaseClickListener.onPurchaseClick(purchase));
+        }
         else
-            purchasePrice.setText(purchase.getPriceText());
-
-        purchaseEnableView.setText(purchase.isPurchase()
-                ? AndroidUtils.getString(R.string.purchase_already_do)
-                : AndroidUtils.getString(R.string.purchase_ready));
+        {
+            purchaseButton.setText(purchase.getPriceText());
+            purchaseButton.setOnClickListener((button) -> onPurchaseClickListener.onPurchaseClick(purchase));
+        }
     }
 }

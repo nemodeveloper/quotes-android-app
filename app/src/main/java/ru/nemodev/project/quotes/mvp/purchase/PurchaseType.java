@@ -2,8 +2,9 @@ package ru.nemodev.project.quotes.mvp.purchase;
 
 public enum PurchaseType
 {
+    QUOTE_WIDGET("quote_widget", "inapp"),
     QUOTE_ADB("quote_adb", "inapp"),
-    QUOTE_WIDGET("quote_widget", "inapp");
+    QUOTE_DEV_TY("quote_dev_ty", "inapp");
 
     private final String productId;
     private final String itemType;

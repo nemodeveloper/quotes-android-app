@@ -52,6 +52,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         initRV();
 
         presenter = new PurchaseListPresenterImpl(mainPresenter.getPurchaseModel(), this);
+        mainPresenter.setBillingEventListener(presenter);
         presenter.loadPurchaseList();
 
         return root;
@@ -60,6 +61,13 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     public void setMainPresenter(MainContract.MainPresenter mainPresenter)
     {
         this.mainPresenter = mainPresenter;
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        mainPresenter.setBillingEventListener(null);
+        super.onDestroy();
     }
 
     @Override

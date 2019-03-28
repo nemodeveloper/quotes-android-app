@@ -22,11 +22,10 @@
     <array name="inapp_products">
         <item>quote_widget</item>
         <item>quote_adb</item>
+        <item>quote_dev_ty</item>
     </array>
 
     <string name="purchase_already_do_detail">Покупка «%s» уже совершена!</string>
-    <string name="purchase_ready">Доступно для покупки!</string>
-    <string name="purchase_already_do">Покупка уже совершена!</string>
 
     <string name="purchase_empty_list">Список покупок временно недоступен. Проверьте подключение к сети интернет или перезапустите приложение.</string>
 

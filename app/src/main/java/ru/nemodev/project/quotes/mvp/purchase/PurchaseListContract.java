@@ -14,7 +14,7 @@ public interface PurchaseListContract
         void showMessage(String message);
     }
 
-    interface PurchaseInAppListPresenter
+    interface PurchaseInAppListPresenter extends BillingEventListener
     {
         void loadPurchaseList();
         void onPurchaseClick(Purchase purchase);
