@@ -89,7 +89,13 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     }
 
     @Override
-    public void onPurchaseHistoryRestored() { }
+    public void onPurchaseHistoryRestored()
+    {
+        if (purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET))
+        {
+            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
+        }
+    }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) { }

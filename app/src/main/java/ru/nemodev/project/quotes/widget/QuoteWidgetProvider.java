@@ -71,7 +71,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
                     }
                     else
                     {
-                        showErrorLoad(remoteViews);
+                        showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                     }
                 }
 
@@ -84,14 +84,14 @@ public class QuoteWidgetProvider extends AppWidgetProvider
                     }
                     else
                     {
-                        showErrorLoad(remoteViews);
+                        showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                     }
                 }
             }, Collections.singletonMap("count", "50"), fromCache);
         }
         else
         {
-            showNotPurchaseInfo(remoteViews);
+            showNotPurchaseInfo(appWidgetManager, appWidgetId, remoteViews);
         }
     }
 
@@ -120,19 +120,23 @@ public class QuoteWidgetProvider extends AppWidgetProvider
         return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void showErrorLoad(RemoteViews remoteViews)
+    private void showErrorLoad(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
     {
         remoteViews.setTextViewText(R.id.quoteText,
                 AndroidUtils.getString(R.string.widget_update_error));
         remoteViews.setTextViewText(R.id.quoteAuthorName,
                 QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    private void showNotPurchaseInfo(RemoteViews remoteViews)
+    private void showNotPurchaseInfo(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
     {
         remoteViews.setTextViewText(R.id.quoteText,
                 AndroidUtils.getString(R.string.widget_not_purchase));
         remoteViews.setTextViewText(R.id.quoteAuthorName,
                 QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 }
