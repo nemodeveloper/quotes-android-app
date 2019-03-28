@@ -107,6 +107,7 @@ dependencies {
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.0'
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'org.apache.commons:commons-collections4:4.2'
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'

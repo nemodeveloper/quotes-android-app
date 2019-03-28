@@ -74,7 +74,7 @@ public final class AndroidUtils
         }
     }
 
-    public static void openAppRatePage(Activity activity)
+    public static void openAppPage(Activity activity)
     {
         MetricUtils.rateEvent(MetricUtils.RateType.APP);
 

@@ -72,7 +72,7 @@ public class AuthorRVAdapter extends FastSearchRVAdapter<Author, AuthorRVAdapter
     @Override
     public AuthorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        return new AuthorViewHolder((AuthorCardView) LayoutInflater.from(context).inflate(R.layout.author_card_item, parent, false));
+        return new AuthorViewHolder((AuthorCardView) LayoutInflater.from(context).inflate(R.layout.author_card_view, parent, false));
     }
 
     @Override

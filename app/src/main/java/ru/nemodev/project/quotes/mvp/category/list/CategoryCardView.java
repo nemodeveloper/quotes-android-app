@@ -10,17 +10,17 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.android.material.card.MaterialCardView;
 
 import org.apache.commons.lang3.StringUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Category;
 
 
-public class CategoryCardView extends CardView
+public class CategoryCardView extends MaterialCardView
 {
     private Category category;
 

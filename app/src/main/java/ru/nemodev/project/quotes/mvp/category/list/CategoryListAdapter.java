@@ -72,7 +72,7 @@ public class CategoryListAdapter extends FastSearchRVAdapter<Category, CategoryL
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        return new CategoryViewHolder((CategoryCardView) LayoutInflater.from(context).inflate(R.layout.category_card_item, parent, false));
+        return new CategoryViewHolder((CategoryCardView) LayoutInflater.from(context).inflate(R.layout.category_card_view, parent, false));
     }
 
     @Override

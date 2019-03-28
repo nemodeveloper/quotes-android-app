@@ -5,6 +5,10 @@ import android.content.Intent;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.github.javiersantos.appupdater.AppUpdaterUtils;
+import com.github.javiersantos.appupdater.enums.AppUpdaterError;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.github.javiersantos.appupdater.objects.Update;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.adb.BannerManager;
@@ -16,17 +20,21 @@ import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
-public class MainPresenterImpl implements MainContract.MainPresenter, BillingProcessor.IBillingHandler
+public class MainPresenterImpl implements MainContract.MainPresenter,
+        BillingProcessor.IBillingHandler, AppUpdaterUtils.UpdateListener
 {
+    private final MainContract.MainView mainView;
     private final Activity activity;
     private final BillingProcessor billingProcessor;
     private final PurchaseModel purchaseModel;
 
     private BannerManager bannerManager;
+    private final AppUpdaterUtils appUpdater;
 
-    public MainPresenterImpl(Activity activity)
+    public MainPresenterImpl(Activity activity, MainContract.MainView mainView)
     {
         this.activity = activity;
+        this.mainView = mainView;
 
         this.billingProcessor = BillingProcessor.newBillingProcessor(
                 QuoteApp.getInstance(),
@@ -35,6 +43,10 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
 
         this.billingProcessor.initialize();
         this.purchaseModel = new PurchaseModelImpl(activity, billingProcessor);
+
+        appUpdater = new AppUpdaterUtils(activity)
+                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+                .withListener(this);
     }
 
     @Override
@@ -53,6 +65,12 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
     public PurchaseModel getPurchaseModel()
     {
         return purchaseModel;
+    }
+
+    @Override
+    public void checkAppUpdate()
+    {
+        appUpdater.start();
     }
 
     @Override
@@ -82,4 +100,14 @@ public class MainPresenterImpl implements MainContract.MainPresenter, BillingPro
         bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView),
                 billingProcessor.isPurchased(PurchaseType.QUOTE_ADB.getProductId()));
     }
+
+    @Override
+    public void onSuccess(Update update, Boolean isUpdateAvailable)
+    {
+        if (isUpdateAvailable)
+            mainView.showUpdateDialog();
+    }
+
+    @Override
+    public void onFailed(AppUpdaterError error) { }
 }

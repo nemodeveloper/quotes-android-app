@@ -8,7 +8,7 @@
     card_view:cardCornerRadius="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
+    android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:background="@color/quoteCardBackground">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,19 +63,13 @@
             android:layout_marginBottom="5dp"
             android:layout_below="@+id/quoteText"
             android:layout_centerVertical="true">
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/quoteCategoryButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/quote_but_category_height"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:paddingLeft="@dimen/quote_but_category_hor_pad"
-                android:paddingRight="@dimen/quote_but_category_hor_pad"
-                android:textSize="12sp"
-                android:background="@drawable/category_button"
-                android:stateListAnimator="@null"
-                android:textColor="@color/quoteCategoryButton"/>
+                android:textSize="12sp" />
             <ImageView
                 android:id="@+id/likeQuote"
                 android:layout_width="@dimen/quote_but_like_size"

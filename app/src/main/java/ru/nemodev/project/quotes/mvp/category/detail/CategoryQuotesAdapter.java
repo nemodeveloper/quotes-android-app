@@ -18,6 +18,6 @@ public class CategoryQuotesAdapter extends BaseQuoteAdapter
     @Override
     protected int getCardViewLayoutId()
     {
-        return R.layout.quote_by_category_card_item;
+        return R.layout.quote_by_category_card_view;
     }
 }

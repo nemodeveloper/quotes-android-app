@@ -37,7 +37,7 @@ public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapte
     @Override
     public PurchaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        PurchaseCardView purchaseCardView = (PurchaseCardView) LayoutInflater.from(context).inflate(R.layout.purchase_card_item, parent, false);
+        PurchaseCardView purchaseCardView = (PurchaseCardView) LayoutInflater.from(context).inflate(R.layout.purchase_card_view, parent, false);
 
         return new PurchaseViewHolder(purchaseCardView);
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.nemodev.project.quotes.mvp.author.detail.AuthorQuoteCardView
+<ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/quoteCardItem"
@@ -8,16 +8,53 @@
     card_view:cardCornerRadius="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
+    android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:background="@color/quoteCardBackground">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp">
+        <RelativeLayout
+            android:id="@+id/authorBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/authorImg"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"/>
+            <RelativeLayout
+                android:id="@+id/authorNameBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/authorImg"
+                android:layout_toEndOf="@+id/authorImg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true">
+                <TextView
+                    android:id="@+id/authorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/quoteAuthor"/>
+                <TextView
+                    android:id="@+id/quoteSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/authorName"
+                    android:textSize="14sp"
+                    android:textColor="@color/quoteSource"/>
+            </RelativeLayout>
+        </RelativeLayout>
         <TextView
             android:id="@+id/quoteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/authorBlock"
             android:layout_marginTop="8dp"
             android:textSize="18sp"
             android:textColor="@color/quoteText"/>
@@ -29,19 +66,6 @@
             android:layout_marginBottom="5dp"
             android:layout_below="@+id/quoteText"
             android:layout_centerVertical="true">
-            <Button
-                android:id="@+id/quoteCategoryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/quote_but_category_height"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:paddingLeft="@dimen/quote_but_category_hor_pad"
-                android:paddingRight="@dimen/quote_but_category_hor_pad"
-                android:textSize="12sp"
-                android:background="@drawable/category_button"
-                android:stateListAnimator="@null"
-                android:textColor="@color/quoteCategoryButton"/>
             <ImageView
                 android:id="@+id/likeQuote"
                 android:layout_width="@dimen/quote_but_like_size"
@@ -61,5 +85,5 @@
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </RelativeLayout>
-</ru.nemodev.project.quotes.mvp.author.detail.AuthorQuoteCardView>
+</ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView>
 

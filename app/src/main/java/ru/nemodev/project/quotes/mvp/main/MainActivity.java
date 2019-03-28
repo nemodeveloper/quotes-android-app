@@ -8,6 +8,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements
 {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
@@ -48,8 +48,12 @@ public class MainActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
         initFabricIO();
 
-        mainPresenter = new MainPresenterImpl(this);
         initNavigationMenu();
+
+        mainPresenter = new MainPresenterImpl(this, this);
+        mainPresenter.checkAppUpdate();
+
+        showMainContent();
     }
 
     @Override
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 }
                 case R.id.nav_item_rate_app: {
-                    AndroidUtils.openAppRatePage(this);
+                    AndroidUtils.openAppPage(this);
                     break;
                 }
             }
@@ -179,9 +183,6 @@ public class MainActivity extends AppCompatActivity implements
         // Обработка пунктов меню
         navigationView.setNavigationItemSelectedListener(this);
 
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-        navigationView.getMenu().getItem(0).setChecked(true);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(() -> {
             if (fragmentManager.getBackStackEntryCount() == 1)
@@ -210,5 +211,25 @@ public class MainActivity extends AppCompatActivity implements
     public void onCategoryClick(Category category)
     {
         openQuoteFragment(category);
+    }
+
+    @Override
+    public void showUpdateDialog()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.app_update_available_title)
+                .setMessage(R.string.app_update_available_desc)
+                .setPositiveButton(R.string.app_update_yes_text, (dialog, which) -> AndroidUtils.openAppPage(this))
+                .setNeutralButton(R.string.app_update_pass_text, (dialog, which) -> {})
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void showMainContent()
+    {
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 }

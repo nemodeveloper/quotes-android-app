@@ -12,6 +12,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.android.material.card.MaterialCardView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,7 +20,6 @@ import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -34,7 +34,7 @@ import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
-public class BaseQuoteCardView extends CardView
+public class BaseQuoteCardView extends MaterialCardView
 {
     protected final String TAG_LOG = this.getClass().getSimpleName();
 

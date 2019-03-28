@@ -10,8 +10,7 @@
     <color name="quoteAuthor">#000000</color>
     <color name="quoteSource">#828282</color>
     <color name="quoteText">#000000</color>
-
-    <color name="quoteCategoryButton">#3F88C5</color>
+    <!--<color tools:override="true" name="mtrl_btn_stroke_color_selector">@color/colorAccent</color>-->
 
     <color name="notFullContentBackground">#828282</color>
     <color name="white">#FFFFFF</color>

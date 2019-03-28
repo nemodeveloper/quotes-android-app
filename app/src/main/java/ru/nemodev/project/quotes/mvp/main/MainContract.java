@@ -12,9 +12,14 @@ public interface MainContract
         void onDestroy();
 
         PurchaseModel getPurchaseModel();
+
+        void checkAppUpdate();
     }
 
     interface MainView
-    { }
+    {
+        void showUpdateDialog();
+        void showMainContent();
+    }
 
 }

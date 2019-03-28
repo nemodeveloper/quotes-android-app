@@ -8,17 +8,17 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.card.MaterialCardView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.Purchase;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
-public class PurchaseCardView extends CardView
+public class PurchaseCardView extends MaterialCardView
 {
     private Purchase purchase;
 
