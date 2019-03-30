@@ -9,7 +9,7 @@ import ru.nemodev.project.quotes.entity.Author;
 import ru.nemodev.project.quotes.entity.Category;
 import ru.nemodev.project.quotes.entity.Quote;
 
-@Database(entities = {Quote.class, Author.class, Category.class}, version = 4)
+@Database(entities = {Quote.class, Author.class, Category.class}, version = 5)
 public abstract class AppDataBase extends RoomDatabase
 {
     private static final String DATA_BASE_NAME = "quotes.db";
@@ -32,7 +32,8 @@ public abstract class AppDataBase extends RoomDatabase
                             .addMigrations(
                                     DataBaseMigration.MIGRATION_1_2,
                                     DataBaseMigration.MIGRATION_2_3,
-                                    DataBaseMigration.MIGRATION_3_4)
+                                    DataBaseMigration.MIGRATION_3_4,
+                                    DataBaseMigration.MIGRATION_4_5)
                             .build();
                 }
             }

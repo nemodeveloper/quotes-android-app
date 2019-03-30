@@ -25,6 +25,6 @@ public class CategoryQuoteCardView extends BaseQuoteCardView
     }
 
     @Override
-    protected void showCategoryAction()
+    protected void initCategoryAction()
     { }
 }

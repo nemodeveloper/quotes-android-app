@@ -1,10 +1,13 @@
 package ru.nemodev.project.quotes.utils;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ import java.util.List;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.QuoteApp;
+import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 public final class AndroidUtils
 {
@@ -112,5 +116,31 @@ public final class AndroidUtils
         Snackbar snackbar = Snackbar
                 .make(whereShow, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
+    }
+
+    public static boolean addWidgetFromAppSupported(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
+            return appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported();
+        }
+        else
+            return false;
+    }
+
+    public static void openAddWidgetDialog(Context context, Long quoteId)
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
+            ComponentName quoteWidgetProvider = new ComponentName(context, QuoteWidgetProvider.class);
+
+            if (addWidgetFromAppSupported(context))
+            {
+                QuoteApp.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteId);
+                appWidgetManager.requestPinAppWidget(quoteWidgetProvider, null, null);
+            }
+        }
     }
 }

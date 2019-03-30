@@ -20,6 +20,8 @@ import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -41,6 +43,32 @@ public class BaseQuoteCardView extends MaterialCardView
     protected QuoteInfo quote;
     protected OnLikeQuoteListener onLikeQuoteListener;
     protected OnQuoteCardClickListener onQuoteCardClickListener;
+
+    @Nullable
+    @BindView(R.id.authorBlock)
+    View authorBlock;
+    @Nullable
+    @BindView(R.id.authorImg)
+    ImageView authorImg;
+    @Nullable
+    @BindView(R.id.authorName)
+    TextView authorName;
+    @Nullable
+    @BindView(R.id.quoteSource)
+    TextView quoteSource;
+
+    @BindView(R.id.quoteText)
+    TextView quoteText;
+
+    @Nullable
+    @BindView(R.id.quoteCategoryButton)
+    Button quoteCategoryButton;
+    @BindView(R.id.likeQuote)
+    ImageView likeQuote;
+    @BindView(R.id.quoteToWidget)
+    ImageView quoteToWidget;
+    @BindView(R.id.shareQuote)
+    ImageView shareQuote;
 
     public BaseQuoteCardView(@NonNull Context context)
     {
@@ -64,6 +92,7 @@ public class BaseQuoteCardView extends MaterialCardView
 
     public void setQuote(QuoteInfo quote)
     {
+        ButterKnife.bind(this);
         this.quote = quote;
 
         showAuthor();
@@ -78,12 +107,8 @@ public class BaseQuoteCardView extends MaterialCardView
 
     protected void showAuthor()
     {
-        View authorBlock = this.findViewById(R.id.authorBlock);
-
         String authorNameText = QuoteUtils.getAuthorName(quote);
-
         Author author = quote.getAuthor();
-        ImageView authorImage = this.findViewById(R.id.authorImg);
 
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(author == null ? "?" : authorNameText.substring(0, 1),
@@ -97,14 +122,13 @@ public class BaseQuoteCardView extends MaterialCardView
                     .placeholder(drawable)
                     .error(drawable)
                     .transform(new CircleCrop())
-                    .into(authorImage);
+                    .into(authorImg);
         }
         else
         {
-            authorImage.setImageDrawable(drawable);
+            authorImg.setImageDrawable(drawable);
         }
 
-        TextView authorName = this.findViewById(R.id.authorName);
         authorName.setText(authorNameText);
         if (quote.getAuthor() != null)
         {
@@ -116,7 +140,6 @@ public class BaseQuoteCardView extends MaterialCardView
         }
 
         String quoteSourceText = QuoteUtils.getQuoteSource(quote, true);
-        TextView quoteSource = this.findViewById(R.id.quoteSource);
         if (StringUtils.isNoneBlank(quoteSourceText))
         {
             quoteSource.setText(quoteSourceText);
@@ -127,30 +150,25 @@ public class BaseQuoteCardView extends MaterialCardView
         }
     }
 
-    protected void showQuote()
+    private void showQuote()
     {
-        TextView quoteText = this.findViewById(R.id.quoteText);
         quoteText.setText(quote.getQuote().getText());
     }
 
-    protected void showActions()
+    private void showActions()
     {
-        showCategoryAction();
+        initCategoryAction();
+        initLikeAction();
+        initQuoteToWidgetAction();
+        initShareQuoteAction();
+    }
 
-        ImageView shareButton = findViewById(R.id.shareQuote);
-        shareButton.setOnClickListener(v ->
-        {
-            MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
-            AndroidUtils.openShareDialog(getContext(),
-                    AndroidUtils.getString(R.string.share_quote_dialog_title),
-                    QuoteUtils.getQuoteTextForShare(quote));
-        });
-
-        final ImageView likeButton = findViewById(R.id.likeQuote);
+    private void initLikeAction()
+    {
         if (quote.getQuote().getLiked())
-            likeButton.setImageResource(R.drawable.ic_like);
+            likeQuote.setImageResource(R.drawable.ic_like);
         else
-            likeButton.setImageResource(R.drawable.ic_unlike);
+            likeQuote.setImageResource(R.drawable.ic_unlike);
 
         if (onLikeQuoteListener == null)
         {
@@ -160,19 +178,19 @@ public class BaseQuoteCardView extends MaterialCardView
                 public void like()
                 {
                     MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_LIKE);
-                    likeButton.setImageResource(R.drawable.ic_like);
+                    likeQuote.setImageResource(R.drawable.ic_like);
                 }
 
                 @Override
                 public void unLike()
                 {
                     MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_UNLIKE);
-                    likeButton.setImageResource(R.drawable.ic_unlike);
+                    likeQuote.setImageResource(R.drawable.ic_unlike);
                 }
             };
         }
 
-        likeButton.setOnClickListener(v ->
+        likeQuote.setOnClickListener(v ->
         {
             Quote likeQuote = quote.getQuote();
             likeQuote.setLiked(!likeQuote.getLiked());
@@ -186,39 +204,65 @@ public class BaseQuoteCardView extends MaterialCardView
             }
 
             AppDataBase.getInstance().getQuoteDAO().likeAsync(likeQuote)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Quote>()
-                {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-
-                    @Override
-                    public void onNext(Quote quote)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Quote>()
                     {
-                        if (quote.getLiked())
-                            onLikeQuoteListener.like();
-                        else
-                            onLikeQuoteListener.unLike();
-                    }
+                        @Override
+                        public void onSubscribe(Disposable d) { }
 
-                    @Override
-                    public void onError(Throwable e)
-                    {
-                        LogUtils.logWithReport(TAG_LOG, "Ошибка лайка цитаты!", e);
-                        // TODO показывать нужно SnackBar
-                        AndroidUtils.showToastMessage(R.string.quote_like_error);
-                    }
+                        @Override
+                        public void onNext(Quote quote)
+                        {
+                            if (quote.getLiked())
+                                onLikeQuoteListener.like();
+                            else
+                                onLikeQuoteListener.unLike();
+                        }
 
-                    @Override
-                    public void onComplete() { }
-                });
+                        @Override
+                        public void onError(Throwable e)
+                        {
+                            LogUtils.logWithReport(TAG_LOG, "Ошибка лайка цитаты!", e);
+                            // TODO показывать нужно SnackBar
+                            AndroidUtils.showToastMessage(R.string.quote_like_error);
+                        }
+
+                        @Override
+                        public void onComplete() { }
+                    });
         });
     }
 
-    protected void showCategoryAction()
+    private void initQuoteToWidgetAction()
     {
-        Button quoteCategoryButton = this.findViewById(R.id.quoteCategoryButton);
+        if (AndroidUtils.addWidgetFromAppSupported(getContext()))
+        {
+            quoteToWidget.setOnClickListener(v ->
+            {
+                MetricUtils.viewEvent(MetricUtils.ViewType.QUOTE_TO_WIDGET);
+                AndroidUtils.openAddWidgetDialog(getContext(), quote.getQuote().getId());
+            });
+        }
+        else
+        {
+            quoteToWidget.setVisibility(View.GONE);
+        }
+    }
+
+    private void initShareQuoteAction()
+    {
+        shareQuote.setOnClickListener(v ->
+        {
+            MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
+            AndroidUtils.openShareDialog(getContext(),
+                    AndroidUtils.getString(R.string.share_quote_dialog_title),
+                    QuoteUtils.getQuoteTextForShare(quote));
+        });
+    }
+
+    protected void initCategoryAction()
+    {
         quoteCategoryButton.setText(quote.getCategory().getName());
         quoteCategoryButton.setOnClickListener(view ->
         {

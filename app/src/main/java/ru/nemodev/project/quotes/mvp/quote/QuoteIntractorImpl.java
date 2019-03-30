@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -73,7 +74,7 @@ public class QuoteIntractorImpl implements QuoteIntractor
     {
         if (fromCache)
         {
-            AppDataBase.getInstance().getQuoteDAO().getByAuthor(authorId)
+            AppDataBase.getInstance().getQuoteDAO().getByAuthorId(authorId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleObserver<List<QuoteInfo>>()
@@ -199,5 +200,13 @@ public class QuoteIntractorImpl implements QuoteIntractor
                         onFinishLoadListener.onLoadError(e, true);
                     }
                 });
+    }
+
+    @Override
+    public Single<QuoteInfo> getById(Long quoteId)
+    {
+        return AppDataBase.getInstance().getQuoteDAO().getById(quoteId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

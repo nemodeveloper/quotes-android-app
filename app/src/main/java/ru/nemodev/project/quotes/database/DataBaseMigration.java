@@ -55,4 +55,14 @@ public final class DataBaseMigration
         }
     };
 
+    public static final Migration MIGRATION_4_5 = new Migration(4, 5)
+    {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database)
+        {
+            database.execSQL("DELETE FROM categories " +
+                    "WHERE id IN (SELECT id FROM categories WHERE id NOT IN (SELECT DISTINCT category_id from quotes))");
+        }
+    };
+
 }

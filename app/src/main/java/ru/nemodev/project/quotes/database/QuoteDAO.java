@@ -24,18 +24,22 @@ public abstract class QuoteDAO
     public abstract Single<List<QuoteInfo>> getRandom(int count);
 
     @Transaction
+    @Query("SELECT * FROM quotes WHERE id = :id")
+    public abstract Single<QuoteInfo> getById(Long id);
+
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void add(List<Quote> quotes);
 
     @Transaction
     @Query("SELECT * FROM quotes" +
             " WHERE quotes.author_id = :authorId")
-    public abstract Single<List<QuoteInfo>> getByAuthor(long authorId);
+    public abstract Single<List<QuoteInfo>> getByAuthorId(Long authorId);
 
     @Transaction
     @Query("SELECT * FROM quotes" +
             " WHERE quotes.category_id = :categoryId")
-    public abstract Single<List<QuoteInfo>> getByCategoryId(long categoryId);
+    public abstract Single<List<QuoteInfo>> getByCategoryId(Long categoryId);
 
     @Transaction
     public void addQuoteInfo(List<QuoteInfo> quoteInfoList)

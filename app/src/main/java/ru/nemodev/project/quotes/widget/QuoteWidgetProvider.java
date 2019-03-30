@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.widget;
 
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -25,8 +26,9 @@ import ru.nemodev.project.quotes.utils.AndroidUtils;
 public class QuoteWidgetProvider extends AppWidgetProvider
 {
     private static final String UPDATE_WIDGET_BUTTON_ACTION = "UPDATE_WIDGET_BUTTON_ACTION";
-
     private static final QuoteIntractor quoteLoader = new QuoteIntractorImpl();
+
+    public static final String QUOTE_ID_BUNDLE_KEY = "quote_id";
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
@@ -49,50 +51,61 @@ public class QuoteWidgetProvider extends AppWidgetProvider
     {
         if (QuoteApp.getInstance().getAppSetting().getBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY))
         {
-            quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
+            Long selectQuoteId = QuoteApp.getInstance().getAppSetting().getLong(QUOTE_ID_BUNDLE_KEY);
+            if (selectQuoteId != null && selectQuoteId != 0L)
             {
-                @Override
-                public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
+                quoteLoader.getById(selectQuoteId)
+                        .subscribe(quoteInfo -> updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
+                                quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName()),
+                                exception -> showErrorLoad(appWidgetManager, appWidgetId, remoteViews));
+            }
+            else
+            {
+                quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
                 {
-                    if (CollectionUtils.isNotEmpty(quotes))
+                    @Override
+                    public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
                     {
-                        QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quotes);
-                        if (quoteInfo == null)
+                        if (CollectionUtils.isNotEmpty(quotes))
                         {
-                            updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
+                            QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quotes);
+                            if (quoteInfo == null)
+                            {
+                                updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
+                            }
+                            else
+                            {
+                                updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
+                                        quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName());
+                            }
                         }
                         else
                         {
-                            remoteViews.setTextViewText(R.id.quoteText, quoteInfo.getQuote().getText());
-                            remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + quoteInfo.getAuthor().getFullName());
-
-                            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+                            showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                         }
                     }
-                    else
-                    {
-                        showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
-                    }
-                }
 
-                @Override
-                public void onLoadError(Throwable t, boolean fromCache)
-                {
-                    if (!fromCache)
+                    @Override
+                    public void onLoadError(Throwable t, boolean fromCache)
                     {
-                        updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
+                        if (!fromCache)
+                        {
+                            updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
+                        }
+                        else
+                        {
+                            showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
+                        }
                     }
-                    else
-                    {
-                        showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
-                    }
-                }
-            }, Collections.singletonMap("count", "50"), fromCache);
+                }, Collections.singletonMap("count", "50"), fromCache);
+            }
         }
         else
         {
             showNotPurchaseInfo(appWidgetManager, appWidgetId, remoteViews);
         }
+
+        QuoteApp.getInstance().getAppSetting().removeValue(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY);
     }
 
     @Override
@@ -111,6 +124,18 @@ public class QuoteWidgetProvider extends AppWidgetProvider
         }
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds)
+    {
+        super.onDeleted(context, appWidgetIds);
+
+        AppWidgetHost appWidgetHost = new AppWidgetHost(context, 1);
+        for (int widgetId : appWidgetIds)
+        {
+            appWidgetHost.deleteAppWidgetId(widgetId);
+        }
+    }
+
     private PendingIntent getPendingSelfIntent(Context context, String action, int appWidgetId)
     {
         Intent intent = new Intent(context, getClass());
@@ -120,23 +145,24 @@ public class QuoteWidgetProvider extends AppWidgetProvider
         return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void showErrorLoad(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
+    private void updateQuoteInfo(AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews,
+                                 String quoteText, String authorText)
     {
-        remoteViews.setTextViewText(R.id.quoteText,
-                AndroidUtils.getString(R.string.widget_update_error));
-        remoteViews.setTextViewText(R.id.quoteAuthorName,
-                QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
+        remoteViews.setTextViewText(R.id.quoteText, quoteText);
+        remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + authorText);
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
+    private void showErrorLoad(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
+    {
+        updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
+                AndroidUtils.getString(R.string.widget_update_error), AndroidUtils.getString(R.string.dev_author_name));
+    }
+
     private void showNotPurchaseInfo(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
     {
-        remoteViews.setTextViewText(R.id.quoteText,
-                AndroidUtils.getString(R.string.widget_not_purchase));
-        remoteViews.setTextViewText(R.id.quoteAuthorName,
-                QuoteUtils.QUOTE_AUTHOR_SYMBOL + AndroidUtils.getString(R.string.dev_author_name));
-
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
+                AndroidUtils.getString(R.string.widget_not_purchase), AndroidUtils.getString(R.string.dev_author_name));
     }
 }

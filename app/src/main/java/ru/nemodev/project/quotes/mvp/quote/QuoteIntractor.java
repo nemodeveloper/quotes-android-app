@@ -3,6 +3,7 @@ package ru.nemodev.project.quotes.mvp.quote;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Single;
 import ru.nemodev.project.quotes.entity.QuoteInfo;
 
 public interface QuoteIntractor
@@ -17,4 +18,6 @@ public interface QuoteIntractor
     void loadByAuthor(OnFinishLoadListener onFinishLoadListener, Long authorId, boolean fromCache);
     void loadByCategory(OnFinishLoadListener onFinishLoadListener, Long categoryId, boolean fromCache);
     void loadLiked(OnFinishLoadListener onFinishLoadListener);
+
+    Single<QuoteInfo> getById(Long quoteId);
 }

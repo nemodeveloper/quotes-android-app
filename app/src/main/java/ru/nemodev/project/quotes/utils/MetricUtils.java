@@ -141,7 +141,9 @@ public final class MetricUtils
 
         TELEGRAM_CHANNEL("Телеграм канал"),
 
-        FULL_SCREEN_BANNER("Показ полноэкранного баннера");
+        FULL_SCREEN_BANNER("Показ полноэкранного баннера"),
+
+        QUOTE_TO_WIDGET("Создание виджета из цитаты");
 
         private final String viewName;
 

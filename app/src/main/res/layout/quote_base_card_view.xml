@@ -78,6 +78,15 @@
                 android:src="@drawable/ic_unlike"
                 android:background="@null"
                 android:layout_marginEnd="@dimen/quote_like_margin_right"
+                android:layout_toStartOf="@id/quoteToWidget"/>
+            <ImageView
+                android:id="@+id/quoteToWidget"
+                android:layout_width="@dimen/quote_but_like_size"
+                android:layout_height="@dimen/quote_but_like_size"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_widget"
+                android:background="@null"
+                android:layout_marginEnd="@dimen/quote_like_margin_right"
                 android:layout_toStartOf="@id/shareQuote"/>
             <ImageView
                 android:id="@+id/shareQuote"
