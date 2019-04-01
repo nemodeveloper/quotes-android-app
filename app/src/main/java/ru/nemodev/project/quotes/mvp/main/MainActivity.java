@@ -116,12 +116,7 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 }
                 case R.id.nav_item_purchase: {
-                    getSupportFragmentManager().popBackStack();
-
-                    PurchaseListFragment fragment = new PurchaseListFragment();
-                    fragment.setMainPresenter(mainPresenter);
-
-                    openFragment(fragment);
+                    showPurchaseListView();
                     break;
                 }
                 case R.id.nav_item_telegram_channel: {
@@ -231,5 +226,25 @@ public class MainActivity extends AppCompatActivity implements
     {
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    private void showPurchaseListView()
+    {
+        PurchaseListFragment fragment = new PurchaseListFragment();
+        fragment.setMainPresenter(mainPresenter);
+
+        openFragment(fragment);
+    }
+
+    @Override
+    public void showDisableAdbDialog()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.adb_disable_dialog_title)
+                .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView())
+                .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
+                .setCancelable(true)
+                .create()
+                .show();
     }
 }

@@ -22,17 +22,26 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class BannerManager
 {
+    public interface OnAdListener
+    {
+        void onAdClose();
+    }
+
     private static final String LOG_TAG = BannerManager.class.getSimpleName();
+    private static final int SHOW_FULL_SCREEN_BANNER_PERIOD_SEC = 2;
+
     private final Context context;
     private final AdView simpleBanner;
+    private final OnAdListener onAdListener;
 
     private InterstitialAd fullScreenBanner;
     private Disposable fullScreenBannerDisposable;
 
-    public BannerManager(Context context, AdView simpleBanner, boolean isPurchaseAdb)
+    public BannerManager(Context context, AdView simpleBanner, OnAdListener onAdListener, boolean isPurchaseAdb)
     {
         this.context = context;
         this.simpleBanner = simpleBanner;
+        this.onAdListener = onAdListener;
 
         if (!isPurchaseAdb)
         {
@@ -69,10 +78,11 @@ public class BannerManager
                 public void onAdClosed()
                 {
                     loadNewFullscreenBanner();
+                    onAdListener.onAdClose();
                 }
             });
 
-            fullScreenBannerDisposable = Observable.interval(3, TimeUnit.MINUTES)
+            fullScreenBannerDisposable = Observable.interval(SHOW_FULL_SCREEN_BANNER_PERIOD_SEC, TimeUnit.MINUTES)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> showFullScreenBanner(),

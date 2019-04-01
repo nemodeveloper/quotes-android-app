@@ -23,6 +23,7 @@ import ru.nemodev.project.quotes.entity.Purchase;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.main.MainContract;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class PurchaseListFragment extends BaseToolbarFragment implements PurchaseListContract.SkuInAppListView
 {
@@ -54,6 +55,8 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         presenter = new PurchaseListPresenterImpl(mainPresenter.getPurchaseModel(), this);
         mainPresenter.setBillingEventListener(presenter);
         presenter.loadPurchaseList();
+
+        MetricUtils.viewEvent(MetricUtils.ViewType.PURCHASE_LIST);
 
         return root;
     }

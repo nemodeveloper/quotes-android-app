@@ -139,6 +139,8 @@ public final class MetricUtils
 
         LIKED_QUOTES("Избранные цитаты"),
 
+        PURCHASE_LIST("Просмотр списка покупок"),
+
         TELEGRAM_CHANNEL("Телеграм канал"),
 
         FULL_SCREEN_BANNER("Показ полноэкранного баннера"),

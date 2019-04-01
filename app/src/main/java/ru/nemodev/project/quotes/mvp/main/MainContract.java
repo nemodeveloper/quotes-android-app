@@ -22,6 +22,7 @@ public interface MainContract
     {
         void showUpdateDialog();
         void showMainContent();
+        void showDisableAdbDialog();
     }
 
 }

@@ -22,7 +22,7 @@ import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class MainPresenterImpl implements MainContract.MainPresenter,
-        BillingProcessor.IBillingHandler, AppUpdaterUtils.UpdateListener
+        BillingProcessor.IBillingHandler, AppUpdaterUtils.UpdateListener, BannerManager.OnAdListener
 {
     private final MainContract.MainView mainView;
     private final Activity activity;
@@ -110,8 +110,8 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     @Override
     public void onBillingInitialized()
     {
-        bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView),
-                purchaseModel.isPurchase(PurchaseType.QUOTE_ADB));
+        bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView), this,
+                false);
 
         if (purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET))
         {
@@ -130,4 +130,10 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
 
     @Override
     public void onFailed(AppUpdaterError error) { }
+
+    @Override
+    public void onAdClose()
+    {
+        mainView.showDisableAdbDialog();
+    }
 }
