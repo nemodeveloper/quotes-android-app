@@ -29,10 +29,13 @@ import ru.nemodev.project.quotes.mvp.purchase.PurchaseListFragment;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, OnQuoteCardClickListener, MainContract.MainView
 {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
@@ -96,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements
         {
             switch (id) {
                 case R.id.nav_item_random: {
-                    getSupportFragmentManager().popBackStack();
-                    openFragment(new RandomQuoteListFragment());
+                    showMainContent();
                     break;
                 }
                 case R.id.nav_item_category: {
@@ -224,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showMainContent()
     {
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-        navigationView.getMenu().getItem(0).setChecked(true);
+        getSupportFragmentManager().popBackStack();
+        openFragment(new RandomQuoteListFragment());
     }
 
     private void showPurchaseListView()
@@ -239,12 +241,22 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showDisableAdbDialog()
     {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.adb_disable_dialog_title)
-                .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView())
-                .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
-                .setCancelable(true)
-                .create()
-                .show();
+        if (isFinishing())
+            return;
+
+        try
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.adb_disable_dialog_title)
+                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView())
+                    .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
+                    .setCancelable(true)
+                    .create()
+                    .show();
+        }
+        catch (Exception e)
+        {
+            LogUtils.logWithReport(LOG_TAG, "Ошибка показа диалога отключения рекламы!", e);
+        }
     }
 }

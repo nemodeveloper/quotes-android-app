@@ -9,8 +9,13 @@
 
     <!-- Реклама -->
     <string name="ads_app_id">ca-app-pub-5449253846737836~3312376789</string>
+    <string name="device_id_test">7FE03AE2B40677A6643CDC9F76B378FC</string>
+
     <string name="ads_simple_banner_id">ca-app-pub-5449253846737836/8259535410</string>
+    <string name="ads_simple_banner_id_test">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="ads_fullscreen_banner_id">ca-app-pub-5449253846737836/6488703104</string>
+    <string name="ads_fullscreen_banner_id_test">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="adb_disable_dialog_title">Отключить рекламу?</string>
     <string name="adb_disable_dialog_positive">Отключить</string>

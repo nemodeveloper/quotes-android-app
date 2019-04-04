@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/ads_simple_banner_id">
+            ads:adUnitId="@string/ads_simple_banner_id_test">
         </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>

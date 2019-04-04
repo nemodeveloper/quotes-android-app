@@ -15,6 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import ru.nemodev.project.quotes.BuildConfig;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
@@ -60,10 +61,21 @@ public class BannerManager
         }
     }
 
+    private AdRequest buildAdRequest()
+    {
+        AdRequest.Builder builder = new AdRequest.Builder();
+        if (BuildConfig.DEBUG)
+        {
+            builder.addTestDevice(AndroidUtils.getString(R.string.device_id_test));
+        }
+
+        return builder.build();
+    }
+
     private void initSimpleBanner()
     {
         simpleBanner.setVisibility(View.VISIBLE);
-        simpleBanner.loadAd(new AdRequest.Builder().build());
+        simpleBanner.loadAd(buildAdRequest());
     }
 
     private void initFullScreenBanner()
@@ -71,8 +83,10 @@ public class BannerManager
         try
         {
             fullScreenBanner = new InterstitialAd(context);
-            fullScreenBanner.setAdUnitId(AndroidUtils.getString(R.string.ads_fullscreen_banner_id));
-            fullScreenBanner.loadAd(new AdRequest.Builder().build());
+            fullScreenBanner.setAdUnitId(BuildConfig.DEBUG
+                    ? AndroidUtils.getString(R.string.ads_fullscreen_banner_id_test)
+                    : AndroidUtils.getString(R.string.ads_fullscreen_banner_id));
+
             fullScreenBanner.setAdListener(new AdListener() {
                 @Override
                 public void onAdClosed()
@@ -87,6 +101,8 @@ public class BannerManager
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> showFullScreenBanner(),
                             throwable -> LogUtils.logWithReport(LOG_TAG, "Ошибка показа полноэкранного баннера", throwable));
+
+            loadNewFullscreenBanner();
         }
         catch (Exception e)
         {
@@ -111,7 +127,7 @@ public class BannerManager
     {
         if (!fullScreenBanner.isLoaded())
         {
-            fullScreenBanner.loadAd(new AdRequest.Builder().build());
+            fullScreenBanner.loadAd(buildAdRequest());
         }
     }
 }
