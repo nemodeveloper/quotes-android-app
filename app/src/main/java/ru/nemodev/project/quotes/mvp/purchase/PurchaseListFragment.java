@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
@@ -46,7 +47,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.purchase_list_fragmet, container, false);
+        root = inflater.inflate(R.layout.purchase_list_fragmet, null, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

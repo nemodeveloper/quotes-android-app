@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +11,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.android.material.navigation.NavigationView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
@@ -54,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements
         initNavigationMenu();
 
         mainPresenter = new MainPresenterImpl(this, this);
-        mainPresenter.checkAppUpdate();
-
         showMainContent();
+
+        mainPresenter.checkAppUpdate();
     }
 
     @Override
@@ -226,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showMainContent()
     {
+        navigationView.getMenu().getItem(0).setChecked(true);
         getSupportFragmentManager().popBackStack();
         openFragment(new RandomQuoteListFragment());
     }

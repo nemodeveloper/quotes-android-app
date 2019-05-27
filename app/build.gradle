@@ -60,6 +60,7 @@ android {
 
         release {
             minifyEnabled true
+            shrinkResources true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
@@ -128,7 +129,7 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 
     // system
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.7@aar') {
         transitive = true
     }

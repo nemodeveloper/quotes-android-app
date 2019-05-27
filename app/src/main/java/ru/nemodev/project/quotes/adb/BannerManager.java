@@ -54,10 +54,17 @@ public class BannerManager
 
     public void disableAdb()
     {
-        simpleBanner.setVisibility(View.GONE);
-        if (fullScreenBannerDisposable != null && !fullScreenBannerDisposable.isDisposed())
+        try
         {
-            fullScreenBannerDisposable.dispose();
+            simpleBanner.setVisibility(View.GONE);
+            if (fullScreenBannerDisposable != null && !fullScreenBannerDisposable.isDisposed())
+            {
+                fullScreenBannerDisposable.dispose();
+            }
+        }
+        catch (Exception e)
+        {
+            LogUtils.logWithReport(LOG_TAG, "Ошибка при отключении рекламы!", e);
         }
     }
 
@@ -74,8 +81,15 @@ public class BannerManager
 
     private void initSimpleBanner()
     {
-        simpleBanner.setVisibility(View.VISIBLE);
-        simpleBanner.loadAd(buildAdRequest());
+        try
+        {
+            simpleBanner.setVisibility(View.VISIBLE);
+            simpleBanner.loadAd(buildAdRequest());
+        }
+        catch (Exception e)
+        {
+            LogUtils.logWithReport(LOG_TAG, "Ошибка инициализации SimpleBanner!", e);
+        }
     }
 
     private void initFullScreenBanner()
@@ -106,7 +120,7 @@ public class BannerManager
         }
         catch (Exception e)
         {
-            LogUtils.logWithReport(LOG_TAG, "Ошибка инициализации полноэкранного баннера", e);
+            LogUtils.logWithReport(LOG_TAG, "Ошибка инициализации полноэкранного баннера!", e);
         }
     }
 

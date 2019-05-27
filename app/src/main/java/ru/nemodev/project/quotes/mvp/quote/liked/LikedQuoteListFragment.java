@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.apache.commons.collections4.CollectionUtils;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
@@ -51,7 +52,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.liked_quote_fragmet, container, false);
+        root = inflater.inflate(R.layout.liked_quote_fragmet, null, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

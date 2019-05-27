@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
@@ -54,7 +55,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.category_fragmet, container, false);
+        root = inflater.inflate(R.layout.category_fragmet, null, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

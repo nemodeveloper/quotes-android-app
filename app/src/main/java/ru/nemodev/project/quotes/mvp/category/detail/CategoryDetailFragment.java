@@ -7,14 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import org.apache.commons.collections4.CollectionUtils;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -50,7 +51,7 @@ public class CategoryDetailFragment extends BaseToolbarFragment implements Categ
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
+        root = inflater.inflate(R.layout.base_quote_fragmet, null, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

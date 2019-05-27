@@ -23,6 +23,8 @@ import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 public final class AndroidUtils
 {
+    private static final String LOG_TAG = AndroidUtils.class.getSimpleName();
+
     private static final String DIALOG_SHARE_TYPE = "text/plain";
 
     private AndroidUtils() { }
@@ -113,9 +115,16 @@ public final class AndroidUtils
 
     public static void showSnackBarMessage(View whereShow, String message)
     {
-        Snackbar snackbar = Snackbar
-                .make(whereShow, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        try
+        {
+            Snackbar
+                .make(whereShow, message, Snackbar.LENGTH_SHORT)
+                .show();
+        }
+        catch (Exception e)
+        {
+            LogUtils.logWithReport(LOG_TAG, "Ошибка при показе ShackBar сообщения!", e);
+        }
     }
 
     public static boolean addWidgetFromAppSupported(Context context)
@@ -131,16 +140,14 @@ public final class AndroidUtils
 
     public static void openAddWidgetDialog(Context context, Long quoteId)
     {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O
+                && addWidgetFromAppSupported(context))
         {
             AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
             ComponentName quoteWidgetProvider = new ComponentName(context, QuoteWidgetProvider.class);
 
-            if (addWidgetFromAppSupported(context))
-            {
-                QuoteApp.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteId);
-                appWidgetManager.requestPinAppWidget(quoteWidgetProvider, null, null);
-            }
+            QuoteApp.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteId);
+            appWidgetManager.requestPinAppWidget(quoteWidgetProvider, null, null);
         }
     }
 }
