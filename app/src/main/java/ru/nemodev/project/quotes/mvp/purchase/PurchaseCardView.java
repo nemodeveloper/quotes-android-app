@@ -7,12 +7,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.card.MaterialCardView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
@@ -55,6 +56,7 @@ public class PurchaseCardView extends MaterialCardView
         purchaseImageView.setImageDrawable(drawable);
         purchaseTitle.setText(purchase.getTitle());
 
+        // TODO реализовать покупку спасибо разработчику множество раз
         if (purchase.isPurchase())
         {
             purchaseButton.setVisibility(View.GONE);

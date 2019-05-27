@@ -113,10 +113,9 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
         bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView), this,
                 false);
 
-        if (purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET))
-        {
-            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
-        }
+        QuoteApp.getInstance().getAppSetting().setBoolean(
+                AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY,
+                purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET));
 
         purchaseModel.loadOwnedPurchaseList();
     }
