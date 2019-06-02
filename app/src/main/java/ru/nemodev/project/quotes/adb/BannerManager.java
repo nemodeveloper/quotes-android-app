@@ -19,7 +19,6 @@ import ru.nemodev.project.quotes.BuildConfig;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class BannerManager
 {
@@ -128,7 +127,6 @@ public class BannerManager
     {
         if (fullScreenBanner.isLoaded())
         {
-            MetricUtils.viewEvent(MetricUtils.ViewType.FULL_SCREEN_BANNER);
             fullScreenBanner.show();
         }
         else
