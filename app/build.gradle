@@ -41,8 +41,8 @@ android {
         applicationId "ru.nemodev.project.quotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 14
-        versionName "1.1.7.3"
+        versionCode 16
+        versionName "1.1.7.5"
         multiDexEnabled false
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -85,13 +85,13 @@ dependencies {
 
     // view base
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // view custom
-    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.94'
+    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.92'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     //    implementation 'at.blogc:expandabletextview:1.0.5'
