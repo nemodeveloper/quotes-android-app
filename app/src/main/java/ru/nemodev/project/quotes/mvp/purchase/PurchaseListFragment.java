@@ -28,6 +28,8 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class PurchaseListFragment extends BaseToolbarFragment implements PurchaseListContract.SkuInAppListView
 {
+    public static final String PURCHASE_ID_ACTION = "PURCHASE_ID_ACTION";
+
     private View root;
 
     @BindView(R.id.skuList)
@@ -39,6 +41,8 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
 
     private MainContract.MainPresenter mainPresenter;
     private PurchaseListContract.PurchaseInAppListPresenter presenter;
+
+    private PurchaseType purchaseTypeAction;
 
     @Nullable
     @Override
@@ -52,6 +56,12 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
 
         initToolbar();
         initRV();
+
+        if (getArguments() != null)
+        {
+            String rawPurchaseType = getArguments().getString(PURCHASE_ID_ACTION);
+            purchaseTypeAction = StringUtils.isEmpty(rawPurchaseType) ? null : PurchaseType.getByProductId(rawPurchaseType);
+        }
 
         presenter = new PurchaseListPresenterImpl(mainPresenter.getPurchaseModel(), this);
         mainPresenter.setBillingEventListener(presenter);
@@ -107,6 +117,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
             showEmptyContentView(false);
             skuRV.setAdapter(new PurchaseAdapter(this.getActivity(), purchaseList,
                     purchase -> presenter.onPurchaseClick(purchase)));
+            showPurchaseAction(purchaseList);
         }
         else
         {
@@ -127,5 +138,21 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     private void showEmptyContentView(boolean show)
     {
         purchaseEmptyView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showPurchaseAction(List<Purchase> purchaseList)
+    {
+        if (purchaseTypeAction != null
+                && CollectionUtils.isNotEmpty(purchaseList))
+        {
+            for (Purchase purchase : purchaseList)
+            {
+                if (purchase.getPurchaseType() == purchaseTypeAction)
+                {
+                    presenter.onPurchaseClick(purchase);
+                    return;
+                }
+            }
+        }
     }
 }

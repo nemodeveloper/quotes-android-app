@@ -27,6 +27,7 @@ import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.mvp.category.detail.CategoryDetailFragment;
 import ru.nemodev.project.quotes.mvp.category.list.CategoryListFragment;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseListFragment;
+import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -234,7 +235,18 @@ public class MainActivity extends AppCompatActivity implements
 
     private void showPurchaseListView()
     {
+        showPurchaseListView(null);
+    }
+
+    private void showPurchaseListView(PurchaseType purchaseType)
+    {
         PurchaseListFragment fragment = new PurchaseListFragment();
+        if (purchaseType != null)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(PurchaseListFragment.PURCHASE_ID_ACTION, purchaseType.getProductId());
+            fragment.setArguments(bundle);
+        }
         fragment.setMainPresenter(mainPresenter);
 
         openFragment(fragment);
@@ -250,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements
         {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.adb_disable_dialog_title)
-                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView())
+                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView(PurchaseType.QUOTE_ADB))
                     .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
                     .setCancelable(true)
                     .create()

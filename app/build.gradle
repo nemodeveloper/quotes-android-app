@@ -41,8 +41,8 @@ android {
         applicationId "ru.nemodev.project.quotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 16
-        versionName "1.1.7.5"
+        versionCode 17
+        versionName "1.1.7.6"
         multiDexEnabled false
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

@@ -28,7 +28,7 @@ public class BannerManager
     }
 
     private static final String LOG_TAG = BannerManager.class.getSimpleName();
-    private static final int SHOW_FULL_SCREEN_BANNER_PERIOD_SEC = 2;
+    private static final int SHOW_FULL_SCREEN_BANNER_PERIOD_MINUTE = 2;
 
     private final Context context;
     private final AdView simpleBanner;
@@ -109,7 +109,7 @@ public class BannerManager
                 }
             });
 
-            fullScreenBannerDisposable = Observable.interval(SHOW_FULL_SCREEN_BANNER_PERIOD_SEC, TimeUnit.MINUTES)
+            fullScreenBannerDisposable = Observable.interval(SHOW_FULL_SCREEN_BANNER_PERIOD_MINUTE, TimeUnit.MINUTES)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> showFullScreenBanner(),
