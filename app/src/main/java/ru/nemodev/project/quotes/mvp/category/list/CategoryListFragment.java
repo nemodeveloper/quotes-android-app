@@ -55,7 +55,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.category_fragmet, null, false);
+        root = inflater.inflate(R.layout.category_fragmet, container, false);
         ButterKnife.bind(this, root);
 
         initToolbar();
@@ -191,7 +191,9 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
                     }
                     else
                     {
-                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_categories_message);
+                        AndroidUtils.showSnackBarMessage(
+                                getActivity().findViewById(R.id.viewContainer),
+                                R.string.not_full_categories_message);
                     }
                 });
     }

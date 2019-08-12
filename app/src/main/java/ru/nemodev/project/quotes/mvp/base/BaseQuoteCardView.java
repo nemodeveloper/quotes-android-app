@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -18,8 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observer;
@@ -203,6 +204,7 @@ public class BaseQuoteCardView extends MaterialCardView
                 likeQuote.setLikeDate(null);
             }
 
+            View rootView = getRootView().findViewById(R.id.viewContainer);
             AppDataBase.getInstance().getQuoteDAO().likeAsync(likeQuote)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -224,8 +226,7 @@ public class BaseQuoteCardView extends MaterialCardView
                         public void onError(Throwable e)
                         {
                             LogUtils.logWithReport(TAG_LOG, "Ошибка лайка цитаты!", e);
-                            // TODO показывать нужно SnackBar
-                            AndroidUtils.showToastMessage(R.string.quote_like_error);
+                            AndroidUtils.showSnackBarMessage(rootView, R.string.quote_like_error);
                         }
 
                         @Override

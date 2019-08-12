@@ -51,7 +51,7 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.purchase_list_fragmet, null, false);
+        root = inflater.inflate(R.layout.purchase_list_fragmet, container, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

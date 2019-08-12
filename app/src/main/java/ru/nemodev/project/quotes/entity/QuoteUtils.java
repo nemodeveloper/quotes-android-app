@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -83,13 +84,13 @@ public final class QuoteUtils
 
     public static List<Long> getQuoteIds(List<QuoteDTO> quoteDTOList)
     {
-        List<Long> quoteIds = new ArrayList<>(quoteDTOList.size());
+        Set<Long> quoteIds = new HashSet<>();
         for (QuoteDTO quoteDTO : quoteDTOList)
         {
             quoteIds.add(quoteDTO.getId());
         }
 
-        return quoteIds;
+        return new ArrayList<>(quoteIds);
     }
 
     public static List<QuoteInfo> toQuotesInfo(List<QuoteDTO> quoteDTOList, Set<Long> likedQuoteIds)

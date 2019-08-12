@@ -56,7 +56,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.author_fragmet, null, false);
+        root = inflater.inflate(R.layout.author_fragmet, container, false);
         ButterKnife.bind(this, root);
 
         initToolbar();
@@ -192,7 +192,9 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
                     }
                     else
                     {
-                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_authors_message);
+                        AndroidUtils.showSnackBarMessage(
+                                getActivity().findViewById(R.id.viewContainer),
+                                R.string.not_full_authors_message);
                     }
                 });
     }

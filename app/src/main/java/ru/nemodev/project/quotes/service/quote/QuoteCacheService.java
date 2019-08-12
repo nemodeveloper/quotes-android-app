@@ -1,10 +1,14 @@
 package ru.nemodev.project.quotes.service.quote;
 
+import androidx.collection.LruCache;
+
+import org.apache.commons.collections4.ListUtils;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import androidx.collection.LruCache;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -139,8 +143,15 @@ public class QuoteCacheService
 
     private List<QuoteInfo> saveToDataBase(List<QuoteDTO> quotes)
     {
-        List<QuoteInfo> quoteInfos = QuoteUtils.toQuotesInfo(quotes,
-                new HashSet<>(AppDataBase.getInstance().getQuoteDAO().getLiked(QuoteUtils.getQuoteIds(quotes))));
+        // Необходимо т.к запрос к БД не держит много переменных в IN ()
+        List<List<Long>> quoteIds = ListUtils.partition(QuoteUtils.getQuoteIds(quotes), 100);
+        Set<Long> likedQuoteIds = new HashSet<>();
+        for (List<Long> list : quoteIds)
+        {
+           likedQuoteIds.addAll(AppDataBase.getInstance().getQuoteDAO().getLiked(list));
+        }
+
+        List<QuoteInfo> quoteInfos = QuoteUtils.toQuotesInfo(quotes, likedQuoteIds);
         AppDataBase.getInstance().getQuoteDAO().addQuoteInfo(quoteInfos);
 
         return quoteInfos;

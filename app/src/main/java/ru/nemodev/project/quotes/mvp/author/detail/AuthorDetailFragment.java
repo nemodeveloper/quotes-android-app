@@ -51,7 +51,7 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.base_quote_fragmet, null, false);
+        root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
         ButterKnife.bind(this, root);
 
         initToolbar();
@@ -90,7 +90,9 @@ public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorD
                     }
                     else
                     {
-                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
+                        AndroidUtils.showSnackBarMessage(
+                                getActivity().findViewById(R.id.viewContainer),
+                                R.string.not_full_quotes_message);
                     }
                 });
     }

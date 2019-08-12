@@ -52,7 +52,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Liked
         if (root != null)
             return root;
 
-        root = inflater.inflate(R.layout.liked_quote_fragmet, null, false);
+        root = inflater.inflate(R.layout.liked_quote_fragmet, container, false);
         ButterKnife.bind(this, root);
 
         initToolbar();

@@ -41,8 +41,8 @@ android {
         applicationId "ru.nemodev.project.quotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 17
-        versionName "1.1.7.6"
+        versionCode 18
+        versionName "1.1.7.7"
         multiDexEnabled false
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -84,10 +84,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // view base
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // view custom
@@ -117,9 +117,9 @@ dependencies {
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.3'
 
     // room
-    implementation 'androidx.room:room-runtime:2.1.0-rc01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-rc01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-rc01'
+    implementation 'androidx.room:room-runtime:2.2.0-alpha02'
+    implementation 'androidx.room:room-rxjava2:2.2.0-alpha02'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0-alpha02'
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -129,7 +129,7 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 
     // system
-    implementation 'com.google.android.gms:play-services-ads:17.2.1'
+    implementation 'com.google.android.gms:play-services-ads:18.1.1'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true
     }
