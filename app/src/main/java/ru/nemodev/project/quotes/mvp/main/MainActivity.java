@@ -215,14 +215,17 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showUpdateDialog()
     {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.app_update_available_title)
-                .setMessage(R.string.app_update_available_desc)
-                .setPositiveButton(R.string.app_update_yes_text, (dialog, which) -> AndroidUtils.openAppPage(this))
-                .setNeutralButton(R.string.app_update_pass_text, (dialog, which) -> {})
-                .setCancelable(false)
-                .create()
-                .show();
+        if (!this.isFinishing())
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.app_update_available_title)
+                    .setMessage(R.string.app_update_available_desc)
+                    .setPositiveButton(R.string.app_update_yes_text, (dialog, which) -> AndroidUtils.openAppPage(this))
+                    .setNeutralButton(R.string.app_update_pass_text, (dialog, which) -> {})
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        }
     }
 
     @Override

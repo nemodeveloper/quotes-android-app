@@ -205,6 +205,14 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             internetEventsDisposable.dispose();
     }
 
+    private void clearSearchFocus()
+    {
+        if (searchView != null)
+        {
+            searchView.clearFocus();
+        }
+    }
+
     @Override
     public void showLoader()
     {
@@ -224,7 +232,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
         {
             authorLoadRV.setAdapter(new AuthorRVAdapter(getActivity(), authors, item ->
             {
-                searchView.clearFocus();
+                clearSearchFocus();
                 MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_MENU);
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
@@ -241,10 +249,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     @Override
     public void onDestroyOptionsMenu()
     {
-        if (searchView != null)
-        {
-            searchView.clearFocus();
-        }
+        clearSearchFocus();
         super.onDestroyOptionsMenu();
     }
 

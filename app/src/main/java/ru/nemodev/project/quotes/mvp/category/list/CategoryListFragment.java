@@ -204,6 +204,14 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             internetEventsDisposable.dispose();
     }
 
+    private void clearSearchFocus()
+    {
+        if (searchView != null)
+        {
+            searchView.clearFocus();
+        }
+    }
+
     @Override
     public void showLoader()
     {
@@ -223,7 +231,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
         {
             categoryLoadRV.setAdapter(new CategoryListAdapter(getActivity(), categories, item ->
             {
-                searchView.clearFocus();
+                clearSearchFocus();
                 MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_MENU);
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
@@ -240,10 +248,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     @Override
     public void onDestroyOptionsMenu()
     {
-        if (searchView != null)
-        {
-            searchView.clearFocus();
-        }
+        clearSearchFocus();
         super.onDestroyOptionsMenu();
     }
 
