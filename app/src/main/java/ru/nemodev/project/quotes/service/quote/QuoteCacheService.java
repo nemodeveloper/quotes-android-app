@@ -13,12 +13,13 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
-import ru.nemodev.project.quotes.api.dto.QuoteDTO;
-import ru.nemodev.project.quotes.database.AppDataBase;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.entity.QuoteUtils;
-import ru.nemodev.project.quotes.utils.LogUtils;
+import ru.nemodev.core.utils.LogUtils;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
+import ru.nemodev.project.quotes.gateway.RetrofitGatewayFactory;
+import ru.nemodev.project.quotes.gateway.dto.QuoteDTO;
+import ru.nemodev.project.quotes.repository.database.AppDataBase;
+
 
 public class QuoteCacheService
 {
@@ -54,7 +55,7 @@ public class QuoteCacheService
 
     public Observable<List<QuoteInfo>> getRandom(Map<String, String> queryParams)
     {
-        return RetrofitAPIFactory.getQuoteAPI().getRandom(queryParams)
+        return RetrofitGatewayFactory.getQuoteAPI().getRandom(queryParams)
                 .map(this::saveToDataBase)
                 .subscribeOn(Schedulers.io());
     }
@@ -68,7 +69,7 @@ public class QuoteCacheService
             List<QuoteInfo> quotesByAuthor = quoteCache.get(byAuthorKey);
             if (quotesByAuthor == null)
             {
-                Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByAuthor(authorId)
+                Observable<List<QuoteInfo>> observable = RetrofitGatewayFactory.getQuoteAPI().getByAuthor(authorId)
                         .map(this::saveToDataBase)
                         .subscribeOn(Schedulers.io());
 
@@ -86,7 +87,7 @@ public class QuoteCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения цитат по автору в кеш!", e);
+                        LogUtils.error(LOG_TAG, "Ошибка сохранения цитат по автору в кеш!", e);
                     }
 
                     @Override
@@ -109,7 +110,7 @@ public class QuoteCacheService
             List<QuoteInfo> quotesByCategory = quoteCache.get(byCategoryKey);
             if (quotesByCategory == null)
             {
-                Observable<List<QuoteInfo>> observable = RetrofitAPIFactory.getQuoteAPI().getByCategory(categoryId)
+                Observable<List<QuoteInfo>> observable = RetrofitGatewayFactory.getQuoteAPI().getByCategory(categoryId)
                         .map(this::saveToDataBase)
                         .subscribeOn(Schedulers.io());
 
@@ -127,7 +128,7 @@ public class QuoteCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения цитат по категории в кеш!", e);
+                        LogUtils.error(LOG_TAG, "Ошибка сохранения цитат по категории в кеш!", e);
                     }
 
                     @Override

@@ -12,15 +12,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.fabric.sdk.android.Fabric;
+import ru.nemodev.core.utils.AndroidUtils;
+import ru.nemodev.core.utils.LogUtils;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.author.Author;
+import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.mvp.author.detail.AuthorDetailFragment;
 import ru.nemodev.project.quotes.mvp.author.list.AuthorListFragment;
 import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
@@ -30,8 +30,8 @@ import ru.nemodev.project.quotes.mvp.purchase.PurchaseListFragment;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.LogUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
+
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, OnQuoteCardClickListener, MainContract.MainView
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initFabricIO();
 
         initNavigationMenu();
 
@@ -124,14 +123,17 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 }
                 case R.id.nav_item_telegram_channel: {
-                    AndroidUtils.openTelegramChannel(this);
+                    MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
+                    AndroidUtils.openTelegramChannel(this, drawer, AndroidUtils.getString(R.string.telegram_channel_name));
                     break;
                 }
                 case R.id.nav_item_share: {
+                    MetricUtils.inviteEvent(MetricUtils.InviteType.APP_LINK);
                     AndroidUtils.sendPlayMarketAppInfo(this);
                     break;
                 }
                 case R.id.nav_item_rate_app: {
+                    MetricUtils.rateEvent(MetricUtils.RateType.APP);
                     AndroidUtils.openAppPage(this);
                     break;
                 }
@@ -195,11 +197,6 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void initFabricIO()
-    {
-        Fabric.with(this, new Crashlytics());
-    }
-
     @Override
     public void onAuthorClick(Author author)
     {
@@ -256,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void showDisableAdbDialog()
+    public void showDisableAdsDialog()
     {
         if (isFinishing())
             return;
@@ -273,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         catch (Exception e)
         {
-            LogUtils.logWithReport(LOG_TAG, "Ошибка показа диалога отключения рекламы!", e);
+            LogUtils.error(LOG_TAG, "Ошибка показа диалога отключения рекламы!", e);
         }
     }
 }

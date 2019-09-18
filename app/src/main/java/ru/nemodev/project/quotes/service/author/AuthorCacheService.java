@@ -1,17 +1,19 @@
 package ru.nemodev.project.quotes.service.author;
 
+import androidx.collection.LruCache;
+
 import java.util.List;
 
-import androidx.collection.LruCache;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.project.quotes.api.RetrofitAPIFactory;
-import ru.nemodev.project.quotes.database.AppDataBase;
-import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.entity.AuthorUtils;
-import ru.nemodev.project.quotes.utils.LogUtils;
+import ru.nemodev.core.utils.LogUtils;
+import ru.nemodev.project.quotes.entity.author.Author;
+import ru.nemodev.project.quotes.entity.author.AuthorUtils;
+import ru.nemodev.project.quotes.gateway.RetrofitGatewayFactory;
+import ru.nemodev.project.quotes.repository.database.AppDataBase;
+
 
 public class AuthorCacheService
 {
@@ -49,7 +51,7 @@ public class AuthorCacheService
             List<Author> cachedAuthors = authorCache.get(AUTHOR_GET_ALL_CACHE_KEY);
             if (cachedAuthors == null)
             {
-                Observable<List<Author>> authorObservable = RetrofitAPIFactory.getAuthorAPI().getAll()
+                Observable<List<Author>> authorObservable = RetrofitGatewayFactory.getAuthorAPI().getAll()
                         .map(AuthorUtils::convertAuthors)
                         .subscribeOn(Schedulers.io());
 
@@ -69,7 +71,7 @@ public class AuthorCacheService
                     @Override
                     public void onError(Throwable e)
                     {
-                        LogUtils.logWithReport(LOG_TAG, "Ошибка сохранения авторов в кеш!", e);
+                        LogUtils.error(LOG_TAG, "Ошибка сохранения авторов в кеш!", e);
                     }
 
                     @Override

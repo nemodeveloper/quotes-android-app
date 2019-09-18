@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.category.list;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.category.Category;
 
 public interface CategoryListContract
 {
@@ -18,7 +18,7 @@ public interface CategoryListContract
         void loadCategory();
     }
 
-    interface CategoryListIntractor
+    interface CategoryListInteractor
     {
         interface OnFinishLoadListener
         {

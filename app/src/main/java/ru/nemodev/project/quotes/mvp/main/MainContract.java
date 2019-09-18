@@ -3,7 +3,7 @@ package ru.nemodev.project.quotes.mvp.main;
 import android.content.Intent;
 
 import ru.nemodev.project.quotes.mvp.purchase.BillingEventListener;
-import ru.nemodev.project.quotes.mvp.purchase.PurchaseModel;
+import ru.nemodev.project.quotes.mvp.purchase.PurchaseInteractor;
 
 public interface MainContract
 {
@@ -12,7 +12,7 @@ public interface MainContract
         void onActivityResult(int requestCode, int resultCode, Intent data);
         void onDestroy();
 
-        PurchaseModel getPurchaseModel();
+        PurchaseInteractor getPurchaseInteractor();
         void setBillingEventListener(BillingEventListener billingEventListener);
 
         void checkAppUpdate();
@@ -22,7 +22,7 @@ public interface MainContract
     {
         void showUpdateDialog();
         void showMainContent();
-        void showDisableAdbDialog();
+        void showDisableAdsDialog();
     }
 
 }

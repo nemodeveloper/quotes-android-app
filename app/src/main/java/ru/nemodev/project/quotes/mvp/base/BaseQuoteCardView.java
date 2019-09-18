@@ -27,15 +27,18 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.core.utils.AndroidUtils;
+import ru.nemodev.core.utils.LogUtils;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.database.AppDataBase;
-import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.entity.Quote;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.entity.QuoteUtils;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.LogUtils;
+import ru.nemodev.project.quotes.entity.author.Author;
+import ru.nemodev.project.quotes.entity.quote.Quote;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
+import ru.nemodev.project.quotes.repository.database.AppDataBase;
 import ru.nemodev.project.quotes.utils.MetricUtils;
+import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
+
 
 public class BaseQuoteCardView extends MaterialCardView
 {
@@ -225,7 +228,7 @@ public class BaseQuoteCardView extends MaterialCardView
                         @Override
                         public void onError(Throwable e)
                         {
-                            LogUtils.logWithReport(TAG_LOG, "Ошибка лайка цитаты!", e);
+                            LogUtils.error(TAG_LOG, "Ошибка лайка цитаты!", e);
                             AndroidUtils.showSnackBarMessage(rootView, R.string.quote_like_error);
                         }
 
@@ -242,7 +245,8 @@ public class BaseQuoteCardView extends MaterialCardView
             quoteToWidget.setOnClickListener(v ->
             {
                 MetricUtils.viewEvent(MetricUtils.ViewType.QUOTE_TO_WIDGET);
-                AndroidUtils.openAddWidgetDialog(getContext(), quote.getQuote().getId());
+                AndroidApplication.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quote.getQuote().getId());
+                AndroidUtils.openAddWidgetDialog(getContext(), QuoteWidgetProvider.class);
             });
         }
         else

@@ -5,20 +5,20 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.Purchase;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
 
 public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseInAppListPresenter
 {
     private final PurchaseListContract.SkuInAppListView skuInAppListView;
-    private final PurchaseModel purchaseModel;
+    private final PurchaseInteractor purchaseInteractor;
 
-    public PurchaseListPresenterImpl(PurchaseModel purchaseModel,
+    public PurchaseListPresenterImpl(PurchaseInteractor purchaseInteractor,
                                      PurchaseListContract.SkuInAppListView skuInAppListView)
     {
-        this.purchaseModel = purchaseModel;
+        this.purchaseInteractor = purchaseInteractor;
         this.skuInAppListView = skuInAppListView;
     }
 
@@ -27,7 +27,7 @@ public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseI
     {
         skuInAppListView.showLoader();
 
-        purchaseModel.loadPurchaseInAppList(AndroidUtils.getStringList(R.array.inapp_products))
+        purchaseInteractor.loadPurchaseInAppList(AndroidUtils.getStringList(R.array.inapp_products))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Purchase>>()
                 {
@@ -64,14 +64,14 @@ public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseI
         }
         else
         {
-            purchaseModel.purchase(purchase.getPurchaseType());
+            purchaseInteractor.purchase(purchase.getPurchaseType());
         }
     }
 
     @Override
     public void onPurchase(String productId)
     {
-        purchaseModel.loadPurchase(productId)
+        purchaseInteractor.loadPurchase(productId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(purchase -> loadPurchaseList());
     }

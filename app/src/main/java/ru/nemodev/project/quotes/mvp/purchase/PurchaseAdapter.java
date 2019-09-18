@@ -4,13 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
-import ru.nemodev.project.quotes.entity.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
 public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
 {

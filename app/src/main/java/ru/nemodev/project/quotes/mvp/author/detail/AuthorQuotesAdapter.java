@@ -1,10 +1,11 @@
 package ru.nemodev.project.quotes.mvp.author.detail;
 
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.List;
 
-import androidx.fragment.app.FragmentActivity;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.OnQuoteCardClickListener;
 

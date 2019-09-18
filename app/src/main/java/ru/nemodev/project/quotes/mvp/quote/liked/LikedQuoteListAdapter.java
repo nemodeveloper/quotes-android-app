@@ -1,13 +1,14 @@
 package ru.nemodev.project.quotes.mvp.quote.liked;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteAdapter;
 import ru.nemodev.project.quotes.mvp.base.BaseQuoteCardView;
 import ru.nemodev.project.quotes.mvp.base.EmptyAdapterDataListener;

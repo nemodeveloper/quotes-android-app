@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.author.list;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.Author;
+import ru.nemodev.project.quotes.entity.author.Author;
 
 public interface AuthorListContract
 {
@@ -18,7 +18,7 @@ public interface AuthorListContract
         void loadAuthors();
     }
 
-    interface AuthorListIntractor
+    interface AuthorListInteractor
     {
         interface OnFinishLoadListener
         {

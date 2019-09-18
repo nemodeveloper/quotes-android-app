@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">core</string>
+
+    <!-- Технические -->
+    <string name="telegram_channel_uri">tg://resolve?domain=</string>
+    <string name="telegram_app_not_found">Приложение Telegram не найдено на устройстве!</string>
+
+    <string name="play_market_app_http_link">https://play.google.com/store/apps/details?id=</string>
+    <string name="play_market_app_link">market://details?id=</string>
+    <string name="tell_about_app_title">Рассказать о приложении</string>
+
+
+</resources>

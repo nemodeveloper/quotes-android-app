@@ -10,24 +10,30 @@ import com.github.javiersantos.appupdater.enums.AppUpdaterError;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.github.javiersantos.appupdater.objects.Update;
 
+import java.util.Arrays;
+
+import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.adb.BannerManager;
-import ru.nemodev.project.quotes.app.AppSetting;
-import ru.nemodev.project.quotes.app.QuoteApp;
+import ru.nemodev.project.quotes.ads.AdsBanner;
+import ru.nemodev.project.quotes.ads.BannerManager;
+import ru.nemodev.project.quotes.ads.FullscreenBanner;
+import ru.nemodev.project.quotes.ads.SimpleBanner;
 import ru.nemodev.project.quotes.mvp.purchase.BillingEventListener;
-import ru.nemodev.project.quotes.mvp.purchase.PurchaseModel;
-import ru.nemodev.project.quotes.mvp.purchase.PurchaseModelImpl;
+import ru.nemodev.project.quotes.mvp.purchase.PurchaseInteractor;
+import ru.nemodev.project.quotes.mvp.purchase.PurchaseInteractorImpl;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
+import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
+
 
 public class MainPresenterImpl implements MainContract.MainPresenter,
-        BillingProcessor.IBillingHandler, AppUpdaterUtils.UpdateListener, BannerManager.OnAdListener
+        BillingProcessor.IBillingHandler, AppUpdaterUtils.UpdateListener, AdsBanner.OnAdsListener
 {
     private final MainContract.MainView mainView;
     private final Activity activity;
     private final BillingProcessor billingProcessor;
-    private final PurchaseModel purchaseModel;
+    private final PurchaseInteractor purchaseInteractor;
 
     private BillingEventListener billingEventListener;
     private BannerManager bannerManager;
@@ -39,12 +45,12 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
         this.mainView = mainView;
 
         this.billingProcessor = BillingProcessor.newBillingProcessor(
-                QuoteApp.getInstance(),
+                AndroidApplication.getInstance(),
                 AndroidUtils.getString(R.string.APP_GOOGLE_RSA_PUBLIC_KEY),
                 this);
 
         this.billingProcessor.initialize();
-        this.purchaseModel = new PurchaseModelImpl(activity, billingProcessor);
+        this.purchaseInteractor = new PurchaseInteractorImpl(activity, billingProcessor);
 
         appUpdater = new AppUpdaterUtils(activity)
                 .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
@@ -64,9 +70,9 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     }
 
     @Override
-    public PurchaseModel getPurchaseModel()
+    public PurchaseInteractor getPurchaseInteractor()
     {
-        return purchaseModel;
+        return purchaseInteractor;
     }
 
     @Override
@@ -89,16 +95,16 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
             billingEventListener.onPurchase(productId);
         }
 
-        if (PurchaseType.QUOTE_ADB.getProductId().equals(productId))
+        if (PurchaseType.QUOTE_ADB.getProductId().equals(productId) && bannerManager != null)
         {
-            bannerManager.disableAdb();
+            bannerManager.hideAds();
         }
         else if (PurchaseType.QUOTE_WIDGET.getProductId().equals(productId))
         {
-            QuoteApp.getInstance().getAppSetting().setBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
+            AndroidApplication.getInstance().getAppSetting().setBoolean(QuoteWidgetProvider.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
         }
 
-        purchaseModel.loadPurchase(productId).subscribe(MetricUtils::purchaseEvent);
+        purchaseInteractor.loadPurchase(productId).subscribe(MetricUtils::purchaseEvent);
     }
 
     @Override
@@ -110,14 +116,22 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     @Override
     public void onBillingInitialized()
     {
-        bannerManager = new BannerManager(activity, activity.findViewById(R.id.adView), this,
-                false);
+        purchaseInteractor.loadOwnedPurchaseList();
 
-        QuoteApp.getInstance().getAppSetting().setBoolean(
-                AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY,
-                purchaseModel.isPurchase(PurchaseType.QUOTE_WIDGET));
+        if (!purchaseInteractor.isPurchase(PurchaseType.QUOTE_ADB))
+        {
+            SimpleBanner simpleBanner = new SimpleBanner(activity.findViewById(R.id.adView));
+            FullscreenBanner fullscreenBanner =
+                    new FullscreenBanner(activity, this,
+                            AndroidUtils.getInteger(R.integer.ads_fullscreen_banner_show_period));
 
-        purchaseModel.loadOwnedPurchaseList();
+            bannerManager = new BannerManager(activity, Arrays.asList(simpleBanner, fullscreenBanner));
+        }
+
+        AndroidApplication.getInstance().getAppSetting().setBoolean(
+                QuoteWidgetProvider.IS_PURCHASE_QUOTE_WIDGET_KEY,
+                purchaseInteractor.isPurchase(PurchaseType.QUOTE_WIDGET));
+
     }
 
     @Override
@@ -131,8 +145,8 @@ public class MainPresenterImpl implements MainContract.MainPresenter,
     public void onFailed(AppUpdaterError error) { }
 
     @Override
-    public void onAdClose()
+    public void onClose()
     {
-        mainView.showDisableAdbDialog();
+        mainView.showDisableAdsDialog();
     }
 }

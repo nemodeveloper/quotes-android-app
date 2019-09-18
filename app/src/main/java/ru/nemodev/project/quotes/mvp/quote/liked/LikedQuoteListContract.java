@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.quote.liked;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 
 public interface LikedQuoteListContract
 {

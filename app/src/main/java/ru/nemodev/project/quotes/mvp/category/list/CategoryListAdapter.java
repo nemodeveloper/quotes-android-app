@@ -4,15 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.core.recyclerView.FastSearchRVAdapter;
 import ru.nemodev.project.quotes.core.recyclerView.OnItemClickRVListener;
-import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.category.Category;
 
 public class CategoryListAdapter extends FastSearchRVAdapter<Category, CategoryListAdapter.CategoryViewHolder>
 {

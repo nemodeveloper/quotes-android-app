@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -14,10 +17,8 @@ import com.google.android.material.card.MaterialCardView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.category.Category;
 
 
 public class CategoryCardView extends MaterialCardView

@@ -13,20 +13,21 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 
+import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.app.AppSetting;
-import ru.nemodev.project.quotes.app.QuoteApp;
-import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.entity.QuoteUtils;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractor;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractorImpl;
 
 
 public class QuoteWidgetProvider extends AppWidgetProvider
 {
     private static final String UPDATE_WIDGET_BUTTON_ACTION = "UPDATE_WIDGET_BUTTON_ACTION";
-    private static final QuoteIntractor quoteLoader = new QuoteIntractorImpl();
+    private static final QuoteInteractor quoteLoader = new QuoteInteractorImpl();
+
+    public static final String IS_PURCHASE_QUOTE_WIDGET_KEY = "IS_PURCHASE_QUOTE_WIDGET";
 
     public static final String QUOTE_ID_BUNDLE_KEY = "quote_id";
 
@@ -49,9 +50,9 @@ public class QuoteWidgetProvider extends AppWidgetProvider
 
     private void updateQuote(final AppWidgetManager appWidgetManager, final int appWidgetId, final RemoteViews remoteViews, final boolean fromCache)
     {
-        if (QuoteApp.getInstance().getAppSetting().getBoolean(AppSetting.IS_PURCHASE_QUOTE_WIDGET_KEY))
+        if (AndroidApplication.getInstance().getAppSetting().getBoolean(IS_PURCHASE_QUOTE_WIDGET_KEY))
         {
-            Long selectQuoteId = QuoteApp.getInstance().getAppSetting().getLong(QUOTE_ID_BUNDLE_KEY);
+            Long selectQuoteId = AndroidApplication.getInstance().getAppSetting().getLong(QUOTE_ID_BUNDLE_KEY);
             if (selectQuoteId != null && selectQuoteId != 0L)
             {
                 quoteLoader.getById(selectQuoteId)
@@ -61,7 +62,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
             }
             else
             {
-                quoteLoader.loadRandom(new QuoteIntractor.OnFinishLoadListener()
+                quoteLoader.loadRandom(new QuoteInteractor.OnFinishLoadListener()
                 {
                     @Override
                     public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
@@ -105,7 +106,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
             showNotPurchaseInfo(appWidgetManager, appWidgetId, remoteViews);
         }
 
-        QuoteApp.getInstance().getAppSetting().removeValue(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY);
+        AndroidApplication.getInstance().getAppSetting().removeValue(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY);
     }
 
     @Override

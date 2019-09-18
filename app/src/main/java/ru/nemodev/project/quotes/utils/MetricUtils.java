@@ -10,7 +10,7 @@ import com.crashlytics.android.answers.ShareEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ru.nemodev.project.quotes.entity.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
 public final class MetricUtils
 {

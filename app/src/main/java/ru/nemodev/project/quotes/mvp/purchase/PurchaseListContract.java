@@ -2,7 +2,7 @@ package ru.nemodev.project.quotes.mvp.purchase;
 
 import java.util.List;
 
-import ru.nemodev.project.quotes.entity.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
 public interface PurchaseListContract
 {

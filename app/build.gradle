@@ -28,14 +28,14 @@ repositories {
 apply plugin: 'io.fabric'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'nemodev-quotes'
-            keyPassword 'dsytujnjds1'
-            storeFile file('D:/work/android-keystore/nemodev-quotes.jks')
-            storePassword 'dsytujnjds1'
-        }
-    }
+//    signingConfigs {
+//        config {
+//            keyAlias 'nemodev-quotes'
+//            keyPassword 'dsytujnjds1'
+//            storeFile file('D:/work/android-keystore/nemodev-quotes.jks')
+//            storePassword 'dsytujnjds1'
+//        }
+//    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.nemodev.project.quotes"
@@ -65,7 +65,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -81,17 +81,19 @@ android {
 }
 
 dependencies {
+    implementation project(':core')
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // view base
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta04'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // view custom
-    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.92'
+    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     //    implementation 'at.blogc:expandabletextview:1.0.5'
@@ -117,9 +119,9 @@ dependencies {
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.3'
 
     // room
-    implementation 'androidx.room:room-runtime:2.2.0-alpha02'
-    implementation 'androidx.room:room-rxjava2:2.2.0-alpha02'
-    annotationProcessor 'androidx.room:room-compiler:2.2.0-alpha02'
+    implementation 'androidx.room:room-runtime:2.2.0-rc01'
+    implementation 'androidx.room:room-rxjava2:2.2.0-rc01'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0-rc01'
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -129,7 +131,7 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 
     // system
-    implementation 'com.google.android.gms:play-services-ads:18.1.1'
+    implementation 'com.google.android.gms:play-services-ads:18.2.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true
     }
@@ -137,8 +139,4 @@ dependencies {
     //    implementation 'com.android.support:multidex:1.0.3'
 
     // test
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
-    testImplementation 'junit:junit:4.13-beta-3'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

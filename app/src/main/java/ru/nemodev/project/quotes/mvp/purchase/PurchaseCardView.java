@@ -17,7 +17,7 @@ import com.google.android.material.card.MaterialCardView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.entity.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
 public class PurchaseCardView extends MaterialCardView
 {

@@ -1,7 +1,7 @@
 package ru.nemodev.project.quotes.mvp.base;
 
-import ru.nemodev.project.quotes.entity.Author;
-import ru.nemodev.project.quotes.entity.Category;
+import ru.nemodev.project.quotes.entity.author.Author;
+import ru.nemodev.project.quotes.entity.category.Category;
 
 public interface OnQuoteCardClickListener
 {

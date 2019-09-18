@@ -5,26 +5,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractor;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractorImpl;
 
 
 public class RandomQuoteListPresenterImpl implements
         RandomQuoteListContract.RandomQuoteListPresenter,
-        QuoteIntractor.OnFinishLoadListener
+        QuoteInteractor.OnFinishLoadListener
 {
     private static final Map<String, String> randomLoadParams = Collections.singletonMap("count", "200");
 
     private final RandomQuoteListContract.RandomQuoteListView view;
-    private final QuoteIntractor quoteIntractor;
+    private final QuoteInteractor quoteInteractor;
 
     private volatile AtomicBoolean isFirstDataLoading = new AtomicBoolean(true);
 
     public RandomQuoteListPresenterImpl(RandomQuoteListContract.RandomQuoteListView view)
     {
         this.view = view;
-        this.quoteIntractor = new QuoteIntractorImpl();
+        this.quoteInteractor = new QuoteInteractorImpl();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class RandomQuoteListPresenterImpl implements
             isFirstDataLoading.set(false);
         }
 
-        quoteIntractor.loadRandom(this, randomLoadParams, false);
+        quoteInteractor.loadRandom(this, randomLoadParams, false);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class RandomQuoteListPresenterImpl implements
     @Override
     public void onLoadError(Throwable t, boolean fromCache)
     {
-        quoteIntractor.loadRandom(this, randomLoadParams, true);
+        quoteInteractor.loadRandom(this, randomLoadParams, true);
     }
 }

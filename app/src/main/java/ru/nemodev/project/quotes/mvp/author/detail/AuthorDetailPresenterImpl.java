@@ -4,15 +4,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import ru.nemodev.project.quotes.entity.QuoteInfo;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractor;
-import ru.nemodev.project.quotes.mvp.quote.QuoteIntractorImpl;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractor;
+import ru.nemodev.project.quotes.mvp.quote.QuoteInteractorImpl;
 
 
-public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDetailPresenter, QuoteIntractor.OnFinishLoadListener
+public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDetailPresenter, QuoteInteractor.OnFinishLoadListener
 {
     private final AuthorDetailContract.AuthorDetailView view;
-    private final QuoteIntractor quoteIntractor;
+    private final QuoteInteractor quoteInteractor;
     private final Long authorId;
 
     private volatile AtomicBoolean isAllDataLoaded = new AtomicBoolean(false);
@@ -22,7 +22,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
     {
         this.authorId = authorId;
         this.view = view;
-        this.quoteIntractor = new QuoteIntractorImpl();
+        this.quoteInteractor = new QuoteInteractorImpl();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
         isDataLoading.set(true);
 
         view.showLoader();
-        quoteIntractor.loadByAuthor(this, authorId,  false);
+        quoteInteractor.loadByAuthor(this, authorId,  false);
     }
 
     @Override
@@ -53,6 +53,6 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
     public void onLoadError(Throwable t, boolean fromCache)
     {
         isDataLoading.set(false);
-        quoteIntractor.loadByAuthor(this, authorId, true);
+        quoteInteractor.loadByAuthor(this, authorId, true);
     }
 }
