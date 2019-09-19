@@ -13,6 +13,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.core.utils.NetworkUtils;
@@ -37,7 +37,7 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     private View root;
 
     @BindView(R.id.categoryList)
-    IndexFastScrollRecyclerView categoryLoadRV;
+    RecyclerView categoryLoadRV;
 
     @BindView(R.id.contentLoadingProgressBar)
     ProgressBar progressBar;
@@ -113,15 +113,11 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
             });
             searchView.setOnSearchClickListener(v ->
             {
-                categoryLoadRV.setIndexBarVisibility(false);
-
                 CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
                 adapter.setAnimationEnable(false);
             });
             searchView.setOnCloseListener(() ->
             {
-                categoryLoadRV.setIndexBarVisibility(true);
-
                 CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
                 adapter.setAnimationEnable(true);
 
@@ -171,13 +167,6 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
     {
         categoryLoadRV.setHasFixedSize(true);
         categoryLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        categoryLoadRV.setIndexBarVisibility(false);
-        categoryLoadRV.setIndexBarCornerRadius(0);
-        categoryLoadRV.setIndexBarTransparentValue(0.5f);
-        categoryLoadRV.setPreviewPadding(0);
-        categoryLoadRV.setIndexbarMargin(0);
-        categoryLoadRV.setIndexBarColor(R.color.search_bar_background);
     }
 
     private void connectToNetworkEvents()
@@ -237,7 +226,6 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
             }));
-            categoryLoadRV.setIndexBarVisibility(true);
 
             if (getActivity() != null)
             {

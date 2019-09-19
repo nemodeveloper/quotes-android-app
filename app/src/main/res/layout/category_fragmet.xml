@@ -31,12 +31,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE">
-            </in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
             <include layout="@layout/content_loader_view"/>
         </RelativeLayout>

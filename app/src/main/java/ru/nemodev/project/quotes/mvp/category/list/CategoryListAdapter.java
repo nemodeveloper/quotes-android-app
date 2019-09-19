@@ -26,12 +26,6 @@ public class CategoryListAdapter extends FastSearchRVAdapter<Category, CategoryL
     }
 
     @Override
-    protected String getSearchSectionName(Category item)
-    {
-        return item.getName().substring(0, 1).toUpperCase();
-    }
-
-    @Override
     protected List<Category> getFilteredData(String rawSearch)
     {
         String searchLowerCase = rawSearch.toLowerCase();

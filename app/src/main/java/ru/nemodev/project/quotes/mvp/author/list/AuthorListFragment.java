@@ -13,6 +13,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.core.utils.NetworkUtils;
@@ -37,7 +37,7 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     private View root;
 
     @BindView(R.id.authorList)
-    IndexFastScrollRecyclerView authorLoadRV;
+    RecyclerView authorLoadRV;
 
     @BindView(R.id.contentLoadingProgressBar)
     ProgressBar progressBar;
@@ -113,15 +113,11 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
             });
             searchView.setOnSearchClickListener(v ->
             {
-                authorLoadRV.setIndexBarVisibility(false);
-
                 AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
                 adapter.setAnimationEnable(false);
             });
             searchView.setOnCloseListener(() ->
             {
-                authorLoadRV.setIndexBarVisibility(true);
-
                 AuthorRVAdapter adapter = (AuthorRVAdapter) authorLoadRV.getAdapter();
                 adapter.setAnimationEnable(true);
 
@@ -171,13 +167,6 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
     {
         authorLoadRV.setHasFixedSize(true);
         authorLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        authorLoadRV.setIndexBarVisibility(false);
-        authorLoadRV.setIndexBarCornerRadius(0);
-        authorLoadRV.setIndexBarTransparentValue(0.5f);
-        authorLoadRV.setPreviewPadding(0);
-        authorLoadRV.setIndexbarMargin(0);
-        authorLoadRV.setIndexBarColor(R.color.search_bar_background);
     }
 
     private void connectToNetworkEvents()
@@ -237,7 +226,6 @@ public class AuthorListFragment extends BaseToolbarFragment implements AuthorLis
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.openQuoteFragment(item);
             }));
-            authorLoadRV.setIndexBarVisibility(true);
 
             if (getActivity() != null)
             {

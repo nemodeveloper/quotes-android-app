@@ -3,61 +3,23 @@ package ru.nemodev.project.quotes.core.recyclerView;
 import android.content.Context;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.SectionIndexer;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends AnimationRVAdapter<T, VH> implements SectionIndexer, Filterable
+        extends AnimationRVAdapter<T, VH> implements Filterable
 {
-    private List<Integer> sectionPositions;
     protected List<T> filteredData;
 
     public FastSearchRVAdapter(Context context, List<T> data)
     {
         super(context, data);
         this.filteredData = data;
-        this.sectionPositions = Collections.emptyList();
-    }
-
-    protected abstract String getSearchSectionName(T item);
-
-    @Override
-    public String[] getSections()
-    {
-        this.sectionPositions = new ArrayList<>(filteredData.size());
-        List<String> symbols = new ArrayList<>();
-
-        for (int i = 0; i < filteredData.size(); ++i)
-        {
-            String symbol = getSearchSectionName(filteredData.get(i));
-            if (!symbols.contains(symbol))
-            {
-                symbols.add(symbol);
-                sectionPositions.add(i);
-            }
-        }
-
-        return symbols.toArray(new String[0]);
-    }
-
-    @Override
-    public int getPositionForSection(int i)
-    {
-        return sectionPositions.get(i);
-    }
-
-    @Override
-    public int getSectionForPosition(int i)
-    {
-        return 0;
     }
 
     @Override

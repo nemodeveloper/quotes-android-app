@@ -93,7 +93,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // view custom
-    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     //    implementation 'at.blogc:expandabletextview:1.0.5'

@@ -26,12 +26,6 @@ public class AuthorRVAdapter extends FastSearchRVAdapter<Author, AuthorRVAdapter
     }
 
     @Override
-    protected String getSearchSectionName(Author item)
-    {
-        return item.getFullName().substring(0, 1).toUpperCase();
-    }
-
-    @Override
     protected List<Author> getFilteredData(String rawSearch)
     {
         String searchLowerCase = rawSearch.toLowerCase();
