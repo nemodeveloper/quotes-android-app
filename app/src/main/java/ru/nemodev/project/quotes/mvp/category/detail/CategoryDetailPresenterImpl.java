@@ -36,7 +36,7 @@ public class CategoryDetailPresenterImpl implements
         isDataLoading.set(true);
 
         view.showLoader();
-        quoteInteractor.loadByCategory(this, categoryId, false);
+        quoteInteractor.loadByCategory(this, categoryId);
     }
 
     @Override
@@ -55,6 +55,7 @@ public class CategoryDetailPresenterImpl implements
     public void onLoadError(Throwable t, boolean fromCache)
     {
         isDataLoading.set(false);
-        quoteInteractor.loadByCategory(this, categoryId, true);
+        isAllDataLoaded.set(false);
+        view.hideLoader();
     }
 }

@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.gateway;
+package ru.nemodev.project.quotes.repository.gateway;
 
 
 import androidx.annotation.NonNull;
@@ -20,8 +20,11 @@ import okhttp3.Protocol;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import ru.nemodev.project.quotes.repository.gateway.author.AuthorGateway;
+import ru.nemodev.project.quotes.repository.gateway.category.CategoryGateway;
+import ru.nemodev.project.quotes.repository.gateway.quote.QuoteGateway;
 
-public class RetrofitGatewayFactory
+public class RetrofitFactory
 {
     private static final int CONNECT_TIMEOUT = 10;
     private static final int WRITE_TIMEOUT = 10;

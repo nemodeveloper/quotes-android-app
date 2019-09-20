@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.gateway;
+package ru.nemodev.project.quotes.repository.gateway.quote;
 
 import java.util.List;
 import java.util.Map;
@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import ru.nemodev.project.quotes.gateway.dto.QuoteDTO;
+import ru.nemodev.project.quotes.repository.gateway.dto.QuoteDTO;
 
 public interface QuoteGateway
 {

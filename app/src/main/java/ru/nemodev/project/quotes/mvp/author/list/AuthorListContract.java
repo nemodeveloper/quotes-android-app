@@ -26,6 +26,6 @@ public interface AuthorListContract
             void onLoadError(Throwable t);
         }
 
-        void loadAuthors(OnFinishLoadListener onFinishLoadListener, boolean fromCache);
+        void loadAuthors(OnFinishLoadListener onFinishLoadListener);
     }
 }

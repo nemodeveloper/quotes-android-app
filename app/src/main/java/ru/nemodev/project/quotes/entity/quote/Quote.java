@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import ru.nemodev.project.quotes.repository.database.DataTypeConverter;
+import ru.nemodev.project.quotes.repository.db.room.DataTypeConverter;
 
 @Entity(tableName = "quotes",
         indices = {

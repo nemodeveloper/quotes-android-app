@@ -29,7 +29,7 @@ public class CategoryListPresenterImpl implements CategoryListContract.CategoryL
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadCategories(this, false);
+        model.loadCategories(this);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class CategoryListPresenterImpl implements CategoryListContract.CategoryL
     public void onLoadError(Throwable t)
     {
         isDataLoading.set(false);
-        model.loadCategories(this, true);
+        isAllDataLoaded.set(false);
+        model.loadCategories(this);
     }
 }

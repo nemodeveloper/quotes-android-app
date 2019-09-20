@@ -46,7 +46,7 @@ public class LikedQuoteListPresenterImpl implements
     @Override
     public void onLoadError(Throwable t, boolean fromCache)
     {
-        view.hideLoader();
         isDataLoading.set(false);
+        view.hideLoader();
     }
 }

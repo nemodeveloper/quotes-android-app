@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.repository.database;
+package ru.nemodev.project.quotes.repository.db.room;
 
 import androidx.annotation.NonNull;
 import androidx.room.migration.Migration;

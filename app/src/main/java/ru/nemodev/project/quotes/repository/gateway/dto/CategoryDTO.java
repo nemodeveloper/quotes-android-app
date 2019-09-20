@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.gateway.dto;
+package ru.nemodev.project.quotes.repository.gateway.dto;
 
 import java.io.Serializable;
 

@@ -29,7 +29,7 @@ public class AuthorListPresenterImpl implements AuthorListContract.AuthorListPre
         isDataLoading.set(true);
 
         view.showLoader();
-        model.loadAuthors(this, false);
+        model.loadAuthors(this);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class AuthorListPresenterImpl implements AuthorListContract.AuthorListPre
     public void onLoadError(Throwable t)
     {
         isDataLoading.set(false);
-        model.loadAuthors(this, true);
+        isAllDataLoaded.set(false);
+        loadAuthors();
     }
 }

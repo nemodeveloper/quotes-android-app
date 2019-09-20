@@ -26,6 +26,6 @@ public interface CategoryListContract
             void onLoadError(Throwable t);
         }
 
-        void loadCategories(OnFinishLoadListener onFinishLoadListener, boolean fromCache);
+        void loadCategories(OnFinishLoadListener onFinishLoadListener);
     }
 }

@@ -35,7 +35,7 @@ import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.quote.Quote;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
-import ru.nemodev.project.quotes.repository.database.AppDataBase;
+import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
@@ -208,7 +208,7 @@ public class BaseQuoteCardView extends MaterialCardView
             }
 
             View rootView = getRootView().findViewById(R.id.viewContainer);
-            AppDataBase.getInstance().getQuoteDAO().likeAsync(likeQuote)
+            AppDataBase.getInstance().getQuoteRepository().likeAsync(likeQuote)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Quote>()

@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.repository.database;
+package ru.nemodev.project.quotes.repository.db.room;
 
 
 import androidx.room.Database;
@@ -9,9 +9,9 @@ import ru.nemodev.core.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.entity.quote.Quote;
-import ru.nemodev.project.quotes.repository.author.AuthorRepository;
-import ru.nemodev.project.quotes.repository.category.CategoryRepository;
-import ru.nemodev.project.quotes.repository.quote.QuoteRepository;
+import ru.nemodev.project.quotes.repository.db.author.AuthorRepository;
+import ru.nemodev.project.quotes.repository.db.category.CategoryRepository;
+import ru.nemodev.project.quotes.repository.db.quote.QuoteRepository;
 
 @Database(entities = {Quote.class, Author.class, Category.class}, version = 5)
 public abstract class AppDataBase extends RoomDatabase
@@ -20,9 +20,9 @@ public abstract class AppDataBase extends RoomDatabase
 
     private static volatile AppDataBase instance;
 
-    public abstract QuoteRepository getQuoteDAO();
-    public abstract AuthorRepository getAuthorDAO();
-    public abstract CategoryRepository getCategoryDAO();
+    public abstract QuoteRepository getQuoteRepository();
+    public abstract AuthorRepository getAuthorRepository();
+    public abstract CategoryRepository getCategoryRepository();
 
     public static AppDataBase getInstance()
     {

@@ -10,7 +10,6 @@ import android.widget.RemoteViews;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import ru.nemodev.core.app.AndroidApplication;
@@ -98,7 +97,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
                             showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                         }
                     }
-                }, Collections.singletonMap("count", "50"), fromCache);
+                }, 50);
             }
         }
         else

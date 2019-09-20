@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.repository.author;
+package ru.nemodev.project.quotes.repository.db.author;
 
 
 import androidx.room.Dao;
@@ -9,7 +9,7 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Observable;
 import ru.nemodev.project.quotes.entity.author.Author;
 
 @Dao
@@ -17,7 +17,7 @@ public interface AuthorRepository
 {
     @Transaction
     @Query("SELECT * FROM authors ORDER BY full_name")
-    Single<List<Author>> getAll();
+    Observable<List<Author>> getAll();
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

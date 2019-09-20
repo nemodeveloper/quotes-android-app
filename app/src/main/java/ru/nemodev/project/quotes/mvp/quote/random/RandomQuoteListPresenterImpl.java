@@ -1,8 +1,6 @@
 package ru.nemodev.project.quotes.mvp.quote.random;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
@@ -14,8 +12,6 @@ public class RandomQuoteListPresenterImpl implements
         RandomQuoteListContract.RandomQuoteListPresenter,
         QuoteInteractor.OnFinishLoadListener
 {
-    private static final Map<String, String> randomLoadParams = Collections.singletonMap("count", "200");
-
     private final RandomQuoteListContract.RandomQuoteListView view;
     private final QuoteInteractor quoteInteractor;
 
@@ -36,7 +32,7 @@ public class RandomQuoteListPresenterImpl implements
             isFirstDataLoading.set(false);
         }
 
-        quoteInteractor.loadRandom(this, randomLoadParams, false);
+        quoteInteractor.loadRandom(this, 200);
     }
 
     @Override
@@ -49,6 +45,6 @@ public class RandomQuoteListPresenterImpl implements
     @Override
     public void onLoadError(Throwable t, boolean fromCache)
     {
-        quoteInteractor.loadRandom(this, randomLoadParams, true);
+        view.hideLoader();
     }
 }

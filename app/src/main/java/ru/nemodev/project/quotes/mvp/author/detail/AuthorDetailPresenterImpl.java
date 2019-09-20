@@ -34,7 +34,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
         isDataLoading.set(true);
 
         view.showLoader();
-        quoteInteractor.loadByAuthor(this, authorId,  false);
+        quoteInteractor.loadByAuthor(this, authorId);
     }
 
     @Override
@@ -53,6 +53,7 @@ public class AuthorDetailPresenterImpl implements AuthorDetailContract.AuthorDet
     public void onLoadError(Throwable t, boolean fromCache)
     {
         isDataLoading.set(false);
-        quoteInteractor.loadByAuthor(this, authorId, true);
+        isAllDataLoaded.set(false);
+        view.hideLoader();
     }
 }

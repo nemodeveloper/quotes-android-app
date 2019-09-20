@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.repository.quote;
+package ru.nemodev.project.quotes.repository.db.quote;
 
 
 import androidx.room.Dao;
@@ -16,8 +16,8 @@ import ru.nemodev.project.quotes.entity.category.CategoryUtils;
 import ru.nemodev.project.quotes.entity.quote.Quote;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
-import ru.nemodev.project.quotes.repository.database.AppDataBase;
-import ru.nemodev.project.quotes.repository.database.DataTypeConverter;
+import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
+import ru.nemodev.project.quotes.repository.db.room.DataTypeConverter;
 
 @Dao
 public abstract class QuoteRepository
@@ -47,8 +47,8 @@ public abstract class QuoteRepository
     @Transaction
     public void addQuoteInfo(List<QuoteInfo> quoteInfoList)
     {
-        AppDataBase.getInstance().getCategoryDAO().add(CategoryUtils.getCategories(quoteInfoList));
-        AppDataBase.getInstance().getAuthorDAO().add(AuthorUtils.getAuthors(quoteInfoList));
+        AppDataBase.getInstance().getCategoryRepository().add(CategoryUtils.getCategories(quoteInfoList));
+        AppDataBase.getInstance().getAuthorRepository().add(AuthorUtils.getAuthors(quoteInfoList));
         add(QuoteUtils.fromQuotesInfo(quoteInfoList));
     }
 
