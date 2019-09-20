@@ -3,8 +3,8 @@ package ru.nemodev.project.quotes.ads;
 import android.content.Context;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,7 @@ public class FullscreenBanner implements AdsBanner
     private final OnAdsListener onAdsListener;
     private final int showPeriodMinute;
 
-    private InterstitialAd fullScreenBanner;
+    private PublisherInterstitialAd fullScreenBanner;
     private Disposable fullScreenBannerDisposable;
 
     public FullscreenBanner(Context context, OnAdsListener onAdsListener, int showPeriodMinute)
@@ -44,7 +44,7 @@ public class FullscreenBanner implements AdsBanner
 
         try
         {
-            fullScreenBanner = new InterstitialAd(context);
+            fullScreenBanner = new PublisherInterstitialAd(context);
             fullScreenBanner.setAdUnitId(BuildConfig.DEBUG
                     ? AndroidUtils.getString(R.string.ads_fullscreen_banner_id_test)
                     : AndroidUtils.getString(R.string.ads_fullscreen_banner_id));
@@ -108,9 +108,9 @@ public class FullscreenBanner implements AdsBanner
         }
     }
 
-    private AdRequest buildAdRequest()
+    private PublisherAdRequest buildAdRequest()
     {
-        AdRequest.Builder builder = new AdRequest.Builder();
+        PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
         if (BuildConfig.DEBUG)
         {
             builder.addTestDevice(AndroidUtils.getString(R.string.device_id_test));
