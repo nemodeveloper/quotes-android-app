@@ -1,4 +1,4 @@
-package ru.nemodev.core.utils;
+package ru.nemodev.project.quotes.utils;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,7 +10,7 @@ import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 
 
 public final class NetworkUtils

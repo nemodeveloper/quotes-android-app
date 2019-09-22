@@ -27,15 +27,15 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.core.app.AndroidApplication;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.LogUtils;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.quote.Quote;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
 import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 

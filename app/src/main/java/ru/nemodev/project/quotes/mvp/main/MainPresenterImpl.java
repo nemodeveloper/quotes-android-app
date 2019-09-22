@@ -12,17 +12,17 @@ import com.github.javiersantos.appupdater.objects.Update;
 
 import java.util.Arrays;
 
-import ru.nemodev.core.app.AndroidApplication;
-import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ads.AdsBanner;
 import ru.nemodev.project.quotes.ads.BannerManager;
 import ru.nemodev.project.quotes.ads.FullscreenBanner;
 import ru.nemodev.project.quotes.ads.SimpleBanner;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.mvp.purchase.BillingEventListener;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseInteractor;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseInteractorImpl;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 

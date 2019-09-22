@@ -16,8 +16,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.LogUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
@@ -30,6 +28,8 @@ import ru.nemodev.project.quotes.mvp.purchase.PurchaseListFragment;
 import ru.nemodev.project.quotes.mvp.purchase.PurchaseType;
 import ru.nemodev.project.quotes.mvp.quote.liked.LikedQuoteListFragment;
 import ru.nemodev.project.quotes.mvp.quote.random.RandomQuoteListFragment;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 

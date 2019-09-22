@@ -3,6 +3,13 @@
     <!-- Технические -->
     <string name="telegram_channel_name">quotemuse</string>
 
+    <string name="telegram_channel_uri">tg://resolve?domain=</string>
+    <string name="telegram_app_not_found">Приложение Telegram не найдено на устройстве!</string>
+
+    <string name="play_market_app_http_link">https://play.google.com/store/apps/details?id=</string>
+    <string name="play_market_app_link">market://details?id=</string>
+    <string name="tell_about_app_title">Рассказать о приложении</string>
+
     <!-- Реклама -->
     <string name="ads_app_id">ca-app-pub-5449253846737836~3312376789</string>
     <string name="device_id_test">7FE03AE2B40677A6643CDC9F76B378FC</string>

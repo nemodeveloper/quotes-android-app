@@ -1,4 +1,4 @@
-package ru.nemodev.core.app;
+package ru.nemodev.project.quotes.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;

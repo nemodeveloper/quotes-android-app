@@ -19,12 +19,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.NetworkUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.main.MainActivity;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class AuthorDetailFragment extends BaseToolbarFragment implements AuthorDetailContract.AuthorDetailView

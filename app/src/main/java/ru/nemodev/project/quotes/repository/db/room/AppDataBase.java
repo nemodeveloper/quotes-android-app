@@ -5,7 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.entity.quote.Quote;

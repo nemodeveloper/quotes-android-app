@@ -28,21 +28,21 @@ repositories {
 apply plugin: 'io.fabric'
 
 android {
-//    signingConfigs {
-//        config {
-//            keyAlias 'nemodev-quotes'
-//            keyPassword 'dsytujnjds1'
-//            storeFile file('D:/work/android-keystore/nemodev-quotes.jks')
-//            storePassword 'dsytujnjds1'
-//        }
-//    }
+    signingConfigs {
+        config {
+            keyAlias 'nemodev-quotes'
+            keyPassword 'dsytujnjds1'
+            storeFile file('D:/work/android-keystore/nemodev-quotes.jks')
+            storePassword 'dsytujnjds1'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.nemodev.project.quotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 18
-        versionName "1.1.7.7"
+        versionCode 19
+        versionName "1.1.7.8"
         multiDexEnabled false
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -65,7 +65,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
-//            signingConfig signingConfigs.config
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -81,7 +81,6 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 

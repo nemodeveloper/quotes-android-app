@@ -12,13 +12,13 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-import ru.nemodev.core.app.AndroidApplication;
-import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
 import ru.nemodev.project.quotes.mvp.quote.QuoteInteractor;
 import ru.nemodev.project.quotes.mvp.quote.QuoteInteractorImpl;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public class QuoteWidgetProvider extends AppWidgetProvider

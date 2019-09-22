@@ -1,4 +1,4 @@
-package ru.nemodev.core.utils;
+package ru.nemodev.project.quotes.utils;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -15,8 +15,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.nemodev.core.R;
-import ru.nemodev.core.app.AndroidApplication;
+import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 
 
 public final class AndroidUtils

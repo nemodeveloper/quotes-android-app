@@ -1,4 +1,4 @@
-package ru.nemodev.core.utils;
+package ru.nemodev.project.quotes.utils;
 
 import android.util.Log;
 

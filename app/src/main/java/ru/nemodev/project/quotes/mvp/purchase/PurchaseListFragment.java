@@ -19,11 +19,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.main.MainContract;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 

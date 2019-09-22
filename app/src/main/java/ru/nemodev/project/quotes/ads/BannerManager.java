@@ -6,8 +6,8 @@ import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 
-import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public class BannerManager

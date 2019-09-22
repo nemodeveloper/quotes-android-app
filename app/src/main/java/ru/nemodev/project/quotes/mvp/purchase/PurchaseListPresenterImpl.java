@@ -5,9 +5,9 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import ru.nemodev.core.utils.AndroidUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public class PurchaseListPresenterImpl implements PurchaseListContract.PurchaseInAppListPresenter

@@ -12,10 +12,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.nemodev.core.BuildConfig;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.LogUtils;
+import ru.nemodev.project.quotes.BuildConfig;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 
 public class FullscreenBanner implements AdsBanner

@@ -5,10 +5,10 @@ import android.view.View;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import ru.nemodev.core.BuildConfig;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.LogUtils;
+import ru.nemodev.project.quotes.BuildConfig;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 
 public class SimpleBanner implements AdsBanner

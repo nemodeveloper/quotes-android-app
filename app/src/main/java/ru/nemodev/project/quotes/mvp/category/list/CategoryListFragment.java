@@ -23,13 +23,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
-import ru.nemodev.core.utils.AndroidUtils;
-import ru.nemodev.core.utils.NetworkUtils;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.mvp.base.BaseToolbarFragment;
 import ru.nemodev.project.quotes.mvp.main.MainActivity;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
+import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class CategoryListFragment extends BaseToolbarFragment implements CategoryListContract.CategoryListView
