@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.core.recyclerView.AnimationRVAdapter;
+import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
-public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
+public class PurchaseAdapter extends SimpleRVAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
 {
     private final OnPurchaseClickListener onPurchaseClickListener;
 
@@ -44,7 +44,7 @@ public class PurchaseAdapter extends AnimationRVAdapter<Purchase, PurchaseAdapte
     }
 
     @Override
-    protected void doOnBindViewHolder(@NonNull PurchaseViewHolder purchaseViewHolder, int position)
+    public void onBindViewHolder(@NonNull PurchaseViewHolder purchaseViewHolder, int position)
     {
         final Purchase purchase = getItem(position);
 

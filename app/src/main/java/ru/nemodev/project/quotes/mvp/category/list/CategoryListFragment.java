@@ -111,18 +111,6 @@ public class CategoryListFragment extends BaseToolbarFragment implements Categor
                     return false;
                 }
             });
-            searchView.setOnSearchClickListener(v ->
-            {
-                CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
-                adapter.setAnimationEnable(false);
-            });
-            searchView.setOnCloseListener(() ->
-            {
-                CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
-                adapter.setAnimationEnable(true);
-
-                return false;
-            });
         }
     }
 

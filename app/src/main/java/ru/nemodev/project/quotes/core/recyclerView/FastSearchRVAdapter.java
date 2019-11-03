@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public abstract class FastSearchRVAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends AnimationRVAdapter<T, VH> implements Filterable
+        extends SimpleRVAdapter<T, VH> implements Filterable
 {
     protected List<T> filteredData;
 

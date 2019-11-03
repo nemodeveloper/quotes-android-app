@@ -71,7 +71,7 @@ public class CategoryListAdapter extends FastSearchRVAdapter<Category, CategoryL
     }
 
     @Override
-    protected void doOnBindViewHolder(@NonNull CategoryViewHolder categoryViewHolder, int position)
+    public void onBindViewHolder(@NonNull CategoryViewHolder categoryViewHolder, int position)
     {
         categoryViewHolder.setCategory(getItem(position));
         categoryViewHolder.categoryCardView.setOnClickListener(view -> onItemClickRVListener.onItemClick(categoryViewHolder.getCategory()));

@@ -34,9 +34,9 @@ public class LikedQuoteListAdapter extends BaseQuoteAdapter
     }
 
     @Override
-    protected void doOnBindViewHolder(@NonNull BaseQuoteViewHolder baseQuoteViewHolder, int position)
+    public void onBindViewHolder(@NonNull BaseQuoteViewHolder baseQuoteViewHolder, int position)
     {
-        super.doOnBindViewHolder(baseQuoteViewHolder, position);
+        super.onBindViewHolder(baseQuoteViewHolder, position);
 
         baseQuoteViewHolder.setOnLikeQuoteEvent(new BaseQuoteCardView.OnLikeQuoteListener()
         {
