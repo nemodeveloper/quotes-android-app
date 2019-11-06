@@ -12,12 +12,14 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
-import ru.nemodev.project.quotes.mvp.quote.QuoteInteractor;
-import ru.nemodev.project.quotes.mvp.quote.QuoteInteractorImpl;
+import ru.nemodev.project.quotes.ui.quote.QuoteInteractor;
+import ru.nemodev.project.quotes.ui.quote.QuoteInteractorImpl;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
@@ -61,43 +63,47 @@ public class QuoteWidgetProvider extends AppWidgetProvider
             }
             else
             {
-                quoteLoader.loadRandom(new QuoteInteractor.OnFinishLoadListener()
-                {
-                    @Override
-                    public void onFinishLoad(List<QuoteInfo> quotes, boolean fromCache)
-                    {
-                        if (CollectionUtils.isNotEmpty(quotes))
-                        {
-                            QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quotes);
-                            if (quoteInfo == null)
+                quoteLoader.loadRandom(50)
+                    .subscribe(new Observer<List<QuoteInfo>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) { }
+
+                        @Override
+                        public void onNext(List<QuoteInfo> quoteInfos) {
+                            if (CollectionUtils.isNotEmpty(quoteInfos))
                             {
-                                updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
+                                QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quoteInfos);
+                                if (quoteInfo == null)
+                                {
+                                    updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
+                                }
+                                else
+                                {
+                                    updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
+                                            quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName());
+                                }
                             }
                             else
                             {
-                                updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
-                                        quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName());
+                                showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                             }
                         }
-                        else
-                        {
-                            showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
-                        }
-                    }
 
-                    @Override
-                    public void onLoadError(Throwable t, boolean fromCache)
-                    {
-                        if (!fromCache)
-                        {
-                            updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
+                        @Override
+                        public void onError(Throwable e) {
+                            if (!fromCache)
+                            {
+                                updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
+                            }
+                            else
+                            {
+                                showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
+                            }
                         }
-                        else
-                        {
-                            showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
-                        }
-                    }
-                }, 50);
+
+                        @Override
+                        public void onComplete() { }
+                    });
             }
         }
         else

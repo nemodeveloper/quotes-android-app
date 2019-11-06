@@ -28,7 +28,7 @@ public class QuoteCacheRepositoryImpl implements QuoteCacheRepository {
             quoteInfoList = Collections.emptyList();
 
         return Observable.just(quoteInfoList)
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class QuoteCacheRepositoryImpl implements QuoteCacheRepository {
             quoteInfoList = Collections.emptyList();
 
         return Observable.just(quoteInfoList)
-                .observeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

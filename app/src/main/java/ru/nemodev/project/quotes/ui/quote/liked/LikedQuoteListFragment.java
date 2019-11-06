@@ -1,0 +1,105 @@
+package ru.nemodev.project.quotes.ui.quote.liked;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.EmptyAdapterDataListener;
+import ru.nemodev.project.quotes.ui.main.MainActivity;
+import ru.nemodev.project.quotes.ui.quote.liked.viewmodel.LikedQuoteViewModel;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.MetricUtils;
+
+
+public class LikedQuoteListFragment extends BaseToolbarFragment implements EmptyAdapterDataListener, SwipeRefreshLayout.OnRefreshListener {
+    private View root;
+
+    @BindView(R.id.quoteList) RecyclerView quoteRV;
+    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
+    @BindView(R.id.emptyLiked) TextView emptyLikedView;
+    @BindView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
+
+    private LikedQuoteViewModel viewModel;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        root = inflater.inflate(R.layout.liked_quote_fragmet, container, false);
+        ButterKnife.bind(this, root);
+        viewModel = ViewModelProviders.of(this).get(LikedQuoteViewModel.class);
+
+        showLoader();
+        initToolbar();
+        initRV();
+
+        initRefreshLayout();
+        MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
+
+        return root;
+    }
+
+    @Override
+    protected void initToolbar() {
+        super.initToolbar();
+        toolbar.setTitle(AndroidUtils.getString(R.string.like_title));
+    }
+
+    private void initRV() {
+        quoteRV.setHasFixedSize(true);
+        quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LikedQuoteListAdapter adapter = new LikedQuoteListAdapter(getContext(), (MainActivity) getActivity(), this);
+        quoteRV.setAdapter(adapter);
+        viewModel.likedQuoteList.observe(this, quoteInfos -> {
+            if (CollectionUtils.isNotEmpty(quoteInfos)) {
+                showEmptyContentView(false);
+                adapter.submitList(quoteInfos);
+            }
+            else {
+                showEmptyContentView(true);
+            }
+            hideLoader();
+        });
+    }
+
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    public void onRefresh() { }
+
+    public void showLoader() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoader() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void showEmptyContentView(boolean show) {
+        emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onEmptyAdapterData() {
+        showEmptyContentView(true);
+    }
+}

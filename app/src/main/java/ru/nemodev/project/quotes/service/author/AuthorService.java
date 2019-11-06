@@ -2,6 +2,7 @@ package ru.nemodev.project.quotes.service.author;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,26 +17,22 @@ import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 import ru.nemodev.project.quotes.repository.gateway.RetrofitFactory;
 
 
-public class AuthorService
-{
+public class AuthorService {
     private static final AuthorService instance = new AuthorService();
 
     private final AuthorCacheRepository authorCacheRepository;
     private final AuthorRepository authorRepository;
 
-    private AuthorService()
-    {
+    private AuthorService() {
         authorCacheRepository = new AuthorCacheRepositoryImpl();
         authorRepository = AppDataBase.getInstance().getAuthorRepository();
     }
 
-    public static AuthorService getInstance()
-    {
+    public static AuthorService getInstance() {
         return instance;
     }
 
-    public Observable<List<Author>> getAll()
-    {
+    public Observable<List<Author>> getAll() {
         Observable<List<Author>> authorGatewayObservable = RetrofitFactory.getAuthorAPI().getAll()
                 .map(AuthorUtils::convertAuthors)
                 .map(authorList -> {
@@ -58,4 +55,18 @@ public class AuthorService
                     .toObservable()
                     .subscribeOn(Schedulers.io());
     }
+
+    public Observable<List<Author>> findByName(String name) {
+        return getAll()
+                .flatMap(authors -> {
+                    List<Author> filteredAuthors = new ArrayList<>();
+                    for (Author author : authors) {
+                        if (author.getFullName().toLowerCase().contains(name.toLowerCase())) {
+                            filteredAuthors.add(author);
+                        }
+                    }
+                    return Observable.just(filteredAuthors);
+                });
+    }
+
 }

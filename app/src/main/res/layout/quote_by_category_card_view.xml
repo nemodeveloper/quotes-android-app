@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView
+<ru.nemodev.project.quotes.ui.category.detail.CategoryQuoteCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/quoteCardItem"
@@ -36,7 +36,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_centerVertical="true">
                 <TextView
-                    android:id="@+id/authorName"
+                    android:id="@+id/categoryName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -45,7 +45,7 @@
                     android:id="@+id/quoteSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/authorName"
+                    android:layout_below="@+id/categoryName"
                     android:textSize="14sp"
                     android:textColor="@color/quoteSource"/>
             </RelativeLayout>
@@ -94,5 +94,5 @@
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </RelativeLayout>
-</ru.nemodev.project.quotes.mvp.category.detail.CategoryQuoteCardView>
+</ru.nemodev.project.quotes.ui.category.detail.CategoryQuoteCardView>
 

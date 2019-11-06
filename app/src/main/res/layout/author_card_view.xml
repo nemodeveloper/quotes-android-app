@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.nemodev.project.quotes.mvp.author.list.AuthorCardView
+<ru.nemodev.project.quotes.ui.author.list.AuthorCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/authorCardItem"
@@ -28,5 +28,5 @@
             android:textSize="20sp"
             android:textColor="#000000"/>
     </RelativeLayout>
-</ru.nemodev.project.quotes.mvp.author.list.AuthorCardView>
+</ru.nemodev.project.quotes.ui.author.list.AuthorCardView>
 

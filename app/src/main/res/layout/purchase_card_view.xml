@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.nemodev.project.quotes.mvp.purchase.PurchaseCardView
+<ru.nemodev.project.quotes.ui.purchase.PurchaseCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/purchaseCardView"
@@ -44,5 +44,5 @@
             android:layout_centerVertical="true"
             android:textSize="20sp" />
     </RelativeLayout>
-</ru.nemodev.project.quotes.mvp.purchase.PurchaseCardView>
+</ru.nemodev.project.quotes.ui.purchase.PurchaseCardView>
 

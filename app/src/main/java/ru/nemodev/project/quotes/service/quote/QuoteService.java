@@ -20,26 +20,22 @@ import ru.nemodev.project.quotes.repository.gateway.RetrofitFactory;
 import ru.nemodev.project.quotes.repository.gateway.dto.QuoteDTO;
 
 
-public class QuoteService
-{
+public class QuoteService {
     private static volatile QuoteService instance = new QuoteService();
 
     private final QuoteCacheRepository quoteCacheRepository;
     private final QuoteRepository quoteRepository;
 
-    private QuoteService()
-    {
+    private QuoteService() {
         quoteCacheRepository = new QuoteCacheRepositoryImpl();
         quoteRepository = AppDataBase.getInstance().getQuoteRepository();
     }
 
-    public static QuoteService getInstance()
-    {
+    public static QuoteService getInstance() {
         return instance;
     }
 
-    public Observable<List<QuoteInfo>> getRandom(Integer count)
-    {
+    public Observable<List<QuoteInfo>> getRandom(Integer count) {
         Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
                 .getRandom(Collections.singletonMap("count", count.toString()))
                 .map(this::saveToDataBase)
@@ -54,8 +50,7 @@ public class QuoteService
                     .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<QuoteInfo>> getByAuthor(Long authorId)
-    {
+    public Observable<List<QuoteInfo>> getByAuthor(Long authorId) {
         Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
                 .getByAuthor(authorId)
                 .map(this::saveToDataBase)
@@ -69,19 +64,20 @@ public class QuoteService
                 quoteCacheRepository.getByAuthor(authorId),
                 gatewayObservable,
                 quoteRepository.getByAuthorId(authorId)
+                        .filter(CollectionUtils::isNotEmpty)
                         .map(quoteInfoList -> {
                             quoteCacheRepository.putAuthorQuotes(authorId, quoteInfoList);
                             return quoteInfoList;
                         })
                         .toObservable()
+                )
                     .filter(CollectionUtils::isNotEmpty)
                     .first(Collections.emptyList())
                     .toObservable()
-                    .subscribeOn(Schedulers.io()));
+                    .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<QuoteInfo>> getByCategory(Long categoryId)
-    {
+    public Observable<List<QuoteInfo>> getByCategory(Long categoryId) {
         Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
                 .getByCategory(categoryId)
                 .map(this::saveToDataBase)
@@ -94,15 +90,21 @@ public class QuoteService
         return Observable.concat(
                 quoteCacheRepository.getByCategory(categoryId),
                 gatewayObservable,
-                quoteRepository.getByCategoryId(categoryId).toObservable())
+                quoteRepository.getByCategoryId(categoryId)
+                        .filter(CollectionUtils::isNotEmpty)
+                        .map(quoteInfoList -> {
+                            quoteCacheRepository.putCategoryQuotes(categoryId, quoteInfoList);
+                            return quoteInfoList;
+                        })
+                        .toObservable()
+                )
                     .filter(CollectionUtils::isNotEmpty)
                     .first(Collections.emptyList())
                     .toObservable()
                     .subscribeOn(Schedulers.io());
     }
 
-    private List<QuoteInfo> saveToDataBase(List<QuoteDTO> quotes)
-    {
+    private List<QuoteInfo> saveToDataBase(List<QuoteDTO> quotes) {
         // Необходимо т.к запрос к БД не держит много переменных в IN ()
         List<List<Long>> quoteIds = ListUtils.partition(QuoteUtils.getQuoteIds(quotes), 100);
         Set<Long> likedQuoteIds = new HashSet<>();
