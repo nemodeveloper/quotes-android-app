@@ -36,7 +36,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_centerVertical="true">
                 <TextView
-                    android:id="@+id/categoryName"
+                    android:id="@+id/authorName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -45,7 +45,7 @@
                     android:id="@+id/quoteSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/categoryName"
+                    android:layout_below="@+id/authorName"
                     android:textSize="14sp"
                     android:textColor="@color/quoteSource"/>
             </RelativeLayout>

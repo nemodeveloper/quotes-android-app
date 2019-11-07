@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -34,7 +33,6 @@ public class AuthorListFragment extends BaseToolbarFragment {
     private View root;
 
     @BindView(R.id.authorList) RecyclerView authorLoadRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
 
     private SearchView searchView;
     private String whatSearch;
@@ -99,8 +97,7 @@ public class AuthorListFragment extends BaseToolbarFragment {
         }
 
         viewModel.getAuthorList(this, whatSearch).observe(this, authors -> {
-            hideLoader();
-            ((AuthorListAdapter) authorLoadRV.getAdapter()).submitList(authors);
+            ((AuthorListAdapter) authorLoadRV.getAdapter()).submitList(authors, this::hideLoader);
         });
     }
 
@@ -157,14 +154,6 @@ public class AuthorListFragment extends BaseToolbarFragment {
         {
             searchView.clearFocus();
         }
-    }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

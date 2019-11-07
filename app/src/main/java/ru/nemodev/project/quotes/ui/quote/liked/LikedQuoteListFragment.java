@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +30,6 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Empty
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
     @BindView(R.id.emptyLiked) TextView emptyLikedView;
     @BindView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
 
@@ -69,7 +67,7 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Empty
         viewModel.likedQuoteList.observe(this, quoteInfos -> {
             if (CollectionUtils.isNotEmpty(quoteInfos)) {
                 showEmptyContentView(false);
-                adapter.submitList(quoteInfos);
+                adapter.submitList(quoteInfos, this::hideLoader);
             }
             else {
                 showEmptyContentView(true);
@@ -85,14 +83,6 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Empty
 
     @Override
     public void onRefresh() { }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
-    }
 
     private void showEmptyContentView(boolean show) {
         emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);

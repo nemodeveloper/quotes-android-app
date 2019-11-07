@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +30,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment {
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
 
     private QuoteByCategoryViewModel viewModel;
     private Disposable internetEventsDisposable;
@@ -59,8 +57,7 @@ public class CategoryDetailFragment extends BaseToolbarFragment {
         quoteRV.setAdapter(adapter);
         viewModel.getQuoteByCategoryList(getArguments().getLong(CATEGORY_ID_KEY))
                 .observe(this, quoteInfos -> {
-                    adapter.submitList(quoteInfos);
-                    hideLoader();
+                    adapter.submitList(quoteInfos, this::hideLoader);
                 });
     }
 
@@ -86,14 +83,6 @@ public class CategoryDetailFragment extends BaseToolbarFragment {
     protected void initToolbar() {
         super.initToolbar();
         toolbar.setTitle(getArguments().getString(CATEGORY_NAME_KEY));
-    }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

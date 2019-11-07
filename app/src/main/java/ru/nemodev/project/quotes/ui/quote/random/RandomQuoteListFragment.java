@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +29,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment {
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
 
     private RandomQuoteViewModel viewModel;
     private Disposable internetEventsDisposable;
@@ -65,8 +63,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment {
         RandomQuoteListAdapter adapter = new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity());
         quoteRV.setAdapter(adapter);
         viewModel.randomQuoteList.observe(this, quoteInfos -> {
-            adapter.submitList(quoteInfos);
-            hideLoader();
+            adapter.submitList(quoteInfos, this::hideLoader);
         });
     }
 
@@ -86,14 +83,6 @@ public class RandomQuoteListFragment extends BaseToolbarFragment {
     private void disconnectFromNetworkEvents() {
         if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
             internetEventsDisposable.dispose();
-    }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

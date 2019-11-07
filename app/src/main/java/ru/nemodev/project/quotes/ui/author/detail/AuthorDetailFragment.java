@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +30,6 @@ public class AuthorDetailFragment extends BaseToolbarFragment {
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
 
     private QuoteByAuthorViewModel viewModel;
     private Disposable internetEventsDisposable;
@@ -65,8 +63,7 @@ public class AuthorDetailFragment extends BaseToolbarFragment {
         quoteRV.setAdapter(adapter);
         viewModel.getQuoteByAuthorList(getArguments().getLong(AUTHOR_ID_KEY))
                 .observe(this, quoteInfos -> {
-                    adapter.submitList(quoteInfos);
-                    hideLoader();
+                    adapter.submitList(quoteInfos, this::hideLoader);
                 });
     }
 
@@ -85,14 +82,6 @@ public class AuthorDetailFragment extends BaseToolbarFragment {
     private void disconnectFromNetworkEvents() {
         if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
             internetEventsDisposable.dispose();
-    }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

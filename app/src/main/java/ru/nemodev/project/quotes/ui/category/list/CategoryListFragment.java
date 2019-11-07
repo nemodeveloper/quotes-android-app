@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -34,7 +33,6 @@ public class CategoryListFragment extends BaseToolbarFragment {
     private View root;
 
     @BindView(R.id.categoryList) RecyclerView categoryLoadRV;
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
 
     private SearchView searchView;
     private String whatSearch;
@@ -103,8 +101,7 @@ public class CategoryListFragment extends BaseToolbarFragment {
 
         CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
         viewModel.getCategoryList(this, whatSearch).observe(this, categories-> {
-            adapter.submitList(categories);
-            hideLoader();
+            adapter.submitList(categories, this::hideLoader);
         });
 
     }
@@ -161,14 +158,6 @@ public class CategoryListFragment extends BaseToolbarFragment {
         if (searchView != null) {
             searchView.clearFocus();
         }
-    }
-
-    public void showLoader() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoader() {
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
