@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.repository.gateway.quote;
+package ru.nemodev.project.quotes.repository.api.quote;
 
 import java.util.List;
 import java.util.Map;
@@ -7,9 +7,9 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import ru.nemodev.project.quotes.repository.gateway.dto.QuoteDTO;
+import ru.nemodev.project.quotes.repository.api.dto.QuoteDTO;
 
-public interface QuoteGateway
+public interface QuoteApi
 {
     @GET("random")
     Observable<List<QuoteDTO>> getRandom(@QueryMap Map<String, String> queryParams);

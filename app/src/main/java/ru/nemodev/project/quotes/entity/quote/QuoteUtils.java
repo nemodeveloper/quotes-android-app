@@ -12,7 +12,7 @@ import java.util.Set;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.author.AuthorUtils;
 import ru.nemodev.project.quotes.entity.category.CategoryUtils;
-import ru.nemodev.project.quotes.repository.gateway.dto.QuoteDTO;
+import ru.nemodev.project.quotes.repository.api.dto.QuoteDTO;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 

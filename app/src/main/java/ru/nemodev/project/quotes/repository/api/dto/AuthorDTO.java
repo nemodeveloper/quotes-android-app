@@ -1,11 +1,11 @@
-package ru.nemodev.project.quotes.repository.gateway.dto;
+package ru.nemodev.project.quotes.repository.api.dto;
 
 import java.io.Serializable;
 
-public class CategoryDTO implements Serializable
+public class AuthorDTO implements Serializable
 {
     private Long id;
-    private String name;
+    private String fullName;
     private String imageURL;
 
     public Long getId()
@@ -18,14 +18,14 @@ public class CategoryDTO implements Serializable
         this.id = id;
     }
 
-    public String getName()
+    public String getFullName()
     {
-        return name;
+        return fullName;
     }
 
-    public void setName(String name)
+    public void setFullName(String fullName)
     {
-        this.name = name;
+        this.fullName = fullName;
     }
 
     public String getImageURL()

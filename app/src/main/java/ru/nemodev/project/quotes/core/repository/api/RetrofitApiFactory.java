@@ -1,5 +1,4 @@
-package ru.nemodev.project.quotes.repository.gateway;
-
+package ru.nemodev.project.quotes.core.repository.api;
 
 import androidx.annotation.NonNull;
 
@@ -20,29 +19,16 @@ import okhttp3.Protocol;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-import ru.nemodev.project.quotes.repository.gateway.author.AuthorGateway;
-import ru.nemodev.project.quotes.repository.gateway.category.CategoryGateway;
-import ru.nemodev.project.quotes.repository.gateway.quote.QuoteGateway;
 
-public class RetrofitFactory
-{
+
+public abstract class RetrofitApiFactory<T> {
+
     private static final int CONNECT_TIMEOUT = 10;
     private static final int WRITE_TIMEOUT = 10;
     private static final int READ_TIMEOUT = 10;
 
-    private static final String BASE_ENDPOINT = "https://quoteformuse.ru/quotes/rest/v1/";
-    private static final String QUOTE_ENDPOINT = BASE_ENDPOINT + "quote/";
-    private static final String CATEGORY_ENDPOINT = BASE_ENDPOINT + "category/";
-    private static final String AUTHOR_ENDPOINT = BASE_ENDPOINT + "author/";
-
-    private static final OkHttpClient OK_HTTP_CLIENT = createHttpClient();
-
-    private static final QuoteGateway QUOTE_RETROFIT_API = buildRetrofit(QUOTE_ENDPOINT).create(QuoteGateway.class);
-    private static final CategoryGateway CATEGORY_RETROFIT_API = buildRetrofit(CATEGORY_ENDPOINT).create(CategoryGateway.class);
-    private static final AuthorGateway AUTHOR_RETROFIT_API = buildRetrofit(AUTHOR_ENDPOINT).create(AuthorGateway.class);
-
     @NonNull
-    private static OkHttpClient createHttpClient()
+    protected OkHttpClient.Builder getHttpClientBuilder()
     {
         final TrustManager[] trustAllCerts = new TrustManager[] {
                 new X509TrustManager()
@@ -74,8 +60,7 @@ public class RetrofitFactory
                     .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                     .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                     .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
-                    .hostnameVerifier((hostname, session) -> true)
-                    .build();
+                    .hostnameVerifier((hostname, session) -> true);
         }
         catch (Exception e)
         {
@@ -84,17 +69,16 @@ public class RetrofitFactory
     }
 
     @NonNull
-    private static Retrofit buildRetrofit(String endpoint)
+    protected Retrofit.Builder getRetrofitBuilder(String endpoint)
     {
         return new Retrofit.Builder()
                 .baseUrl(endpoint)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(buildConvertFactory())
-                .client(OK_HTTP_CLIENT)
-                .build();
+                .client(getHttpClientBuilder().build());
     }
 
-    private static JacksonConverterFactory buildConvertFactory()
+    private JacksonConverterFactory buildConvertFactory()
     {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -104,18 +88,6 @@ public class RetrofitFactory
         return jacksonConverterFactory;
     }
 
-    public static QuoteGateway getQuoteAPI()
-    {
-        return QUOTE_RETROFIT_API;
-    }
+    public abstract T createApi();
 
-    public static CategoryGateway getCategoryAPI()
-    {
-        return CATEGORY_RETROFIT_API;
-    }
-
-    public static AuthorGateway getAuthorAPI()
-    {
-        return AUTHOR_RETROFIT_API;
-    }
 }

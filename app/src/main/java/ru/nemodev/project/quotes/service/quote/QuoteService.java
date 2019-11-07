@@ -12,12 +12,13 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
+import ru.nemodev.project.quotes.repository.api.dto.QuoteDTO;
+import ru.nemodev.project.quotes.repository.api.quote.QuoteApi;
+import ru.nemodev.project.quotes.repository.api.quote.QuoteApiFactory;
 import ru.nemodev.project.quotes.repository.cache.quote.QuoteCacheRepository;
 import ru.nemodev.project.quotes.repository.cache.quote.QuoteCacheRepositoryImpl;
 import ru.nemodev.project.quotes.repository.db.quote.QuoteRepository;
 import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
-import ru.nemodev.project.quotes.repository.gateway.RetrofitFactory;
-import ru.nemodev.project.quotes.repository.gateway.dto.QuoteDTO;
 
 
 public class QuoteService {
@@ -25,10 +26,12 @@ public class QuoteService {
 
     private final QuoteCacheRepository quoteCacheRepository;
     private final QuoteRepository quoteRepository;
+    private final QuoteApi quoteApi;
 
     private QuoteService() {
         quoteCacheRepository = new QuoteCacheRepositoryImpl();
         quoteRepository = AppDataBase.getInstance().getQuoteRepository();
+        quoteApi = new QuoteApiFactory().createApi();
     }
 
     public static QuoteService getInstance() {
@@ -36,7 +39,7 @@ public class QuoteService {
     }
 
     public Observable<List<QuoteInfo>> getRandom(Integer count) {
-        Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
+        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
                 .getRandom(Collections.singletonMap("count", count.toString()))
                 .map(this::saveToDataBase)
                 .onErrorResumeNext(Observable.empty());
@@ -51,7 +54,7 @@ public class QuoteService {
     }
 
     public Observable<List<QuoteInfo>> getByAuthor(Long authorId) {
-        Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
+        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
                 .getByAuthor(authorId)
                 .map(this::saveToDataBase)
                 .map(quoteInfoList -> {
@@ -78,7 +81,7 @@ public class QuoteService {
     }
 
     public Observable<List<QuoteInfo>> getByCategory(Long categoryId) {
-        Observable<List<QuoteInfo>> gatewayObservable = RetrofitFactory.getQuoteAPI()
+        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
                 .getByCategory(categoryId)
                 .map(this::saveToDataBase)
                 .map(quoteInfoList -> {

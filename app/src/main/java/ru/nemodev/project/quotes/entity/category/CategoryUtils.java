@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
-import ru.nemodev.project.quotes.repository.gateway.dto.CategoryDTO;
+import ru.nemodev.project.quotes.repository.api.dto.CategoryDTO;
 
 public final class CategoryUtils
 {

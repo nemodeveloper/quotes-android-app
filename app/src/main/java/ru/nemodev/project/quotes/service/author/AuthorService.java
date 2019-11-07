@@ -10,11 +10,12 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.author.AuthorUtils;
+import ru.nemodev.project.quotes.repository.api.author.AuthorApi;
+import ru.nemodev.project.quotes.repository.api.author.AuthorApiFactory;
 import ru.nemodev.project.quotes.repository.cache.author.AuthorCacheRepository;
 import ru.nemodev.project.quotes.repository.cache.author.AuthorCacheRepositoryImpl;
 import ru.nemodev.project.quotes.repository.db.author.AuthorRepository;
 import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
-import ru.nemodev.project.quotes.repository.gateway.RetrofitFactory;
 
 
 public class AuthorService {
@@ -22,10 +23,12 @@ public class AuthorService {
 
     private final AuthorCacheRepository authorCacheRepository;
     private final AuthorRepository authorRepository;
+    private final AuthorApi authorApi;
 
     private AuthorService() {
         authorCacheRepository = new AuthorCacheRepositoryImpl();
         authorRepository = AppDataBase.getInstance().getAuthorRepository();
+        authorApi = new AuthorApiFactory().createApi();
     }
 
     public static AuthorService getInstance() {
@@ -33,7 +36,7 @@ public class AuthorService {
     }
 
     public Observable<List<Author>> getAll() {
-        Observable<List<Author>> authorGatewayObservable = RetrofitFactory.getAuthorAPI().getAll()
+        Observable<List<Author>> authorGatewayObservable = authorApi.getAll()
                 .map(AuthorUtils::convertAuthors)
                 .map(authorList -> {
                     authorRepository.add(authorList);
