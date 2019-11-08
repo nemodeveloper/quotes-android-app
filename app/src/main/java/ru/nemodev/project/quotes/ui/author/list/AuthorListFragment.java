@@ -22,14 +22,14 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.author.list.viewmodel.AuthorListViewModel;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
-public class AuthorListFragment extends BaseToolbarFragment {
+public class AuthorListFragment extends BaseFragment {
     private View root;
 
     @BindView(R.id.authorList) RecyclerView authorLoadRV;
@@ -43,26 +43,17 @@ public class AuthorListFragment extends BaseToolbarFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        root = inflater.inflate(R.layout.author_fragmet, container, false);
+        root = inflater.inflate(R.layout.author_fragment, container, false);
         ButterKnife.bind(this, root);
         viewModel = ViewModelProviders.of(getActivity()).get(AuthorListViewModel.class);
 
-        initToolbar();
+        setHasOptionsMenu(true);
         initRV();
 
         connectToNetworkEvents();
-
         MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_LIST);
 
         return root;
-    }
-
-    @Override
-    protected void initToolbar() {
-        super.initToolbar();
-        toolbar.setTitle(AndroidUtils.getString(R.string.author_title));
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -96,9 +87,8 @@ public class AuthorListFragment extends BaseToolbarFragment {
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, AuthorListFragment.this.whatSearch);
         }
 
-        viewModel.getAuthorList(this, whatSearch).observe(this, authors -> {
-            ((AuthorListAdapter) authorLoadRV.getAdapter()).submitList(authors, this::hideLoader);
-        });
+        viewModel.getAuthorList(this, whatSearch).observe(this,
+                authors -> ((AuthorListAdapter) authorLoadRV.getAdapter()).submitList(authors, this::hideLoader));
     }
 
     @Override

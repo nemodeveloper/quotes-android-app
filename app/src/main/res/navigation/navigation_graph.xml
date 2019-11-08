@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@+id/navigation_random_quote">
+
+    <fragment
+        android:id="@+id/navigation_random_quote"
+        android:name="ru.nemodev.project.quotes.ui.quote.random.RandomQuoteListFragment"
+        android:label="@string/random_title"
+        tools:layout="@layout/random_quote_fragment" >
+        <action
+            android:id="@+id/action_open_author_detail"
+            app:destination="@+id/navigation_author_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_open_category_detail"
+            app:destination="@+id/navigation_category_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_author_list"
+        android:name="ru.nemodev.project.quotes.ui.author.list.AuthorListFragment"
+        android:label="@string/author_title"
+        tools:layout="@layout/author_fragment">
+        <action
+            android:id="@+id/action_open_author_detail"
+            app:destination="@+id/navigation_author_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_author_detail"
+        android:name="ru.nemodev.project.quotes.ui.author.detail.AuthorDetailFragment"
+        android:label="@string/author_title"
+        tools:layout="@layout/base_quote_fragment" >
+        <argument
+            android:name="authorId"
+            app:argType="long"/>
+        <argument
+            android:name="authorName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_open_category_detail"
+            app:destination="@+id/navigation_category_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_category_list"
+        android:name="ru.nemodev.project.quotes.ui.category.list.CategoryListFragment"
+        android:label="@string/category_title"
+        tools:layout="@layout/category_fragment" >
+        <action
+            android:id="@+id/action_open_category_detail"
+            app:destination="@+id/navigation_category_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_category_detail"
+        android:name="ru.nemodev.project.quotes.ui.category.detail.CategoryDetailFragment"
+        android:label="@string/category_title"
+        tools:layout="@layout/base_quote_fragment" >
+        <argument
+            android:name="categoryId"
+            app:argType="long"/>
+        <argument
+            android:name="categoryName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_open_author_detail"
+            app:destination="@+id/navigation_author_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_liked_list"
+        android:name="ru.nemodev.project.quotes.ui.quote.liked.LikedQuoteListFragment"
+        android:label="@string/like_title"
+        tools:layout="@layout/liked_quote_fragment" >
+        <action
+            android:id="@+id/action_open_author_detail"
+            app:destination="@+id/navigation_author_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_open_category_detail"
+            app:destination="@+id/navigation_category_detail"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_purchase_list"
+        android:name="ru.nemodev.project.quotes.ui.purchase.PurchaseListFragment"
+        android:label="@string/menu_item_purchase"
+        tools:layout="@layout/purchase_list_fragment" />
+
+</navigation>

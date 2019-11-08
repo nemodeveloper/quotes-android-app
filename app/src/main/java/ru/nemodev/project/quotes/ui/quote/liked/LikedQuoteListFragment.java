@@ -18,15 +18,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.base.EmptyAdapterDataListener;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.liked.viewmodel.LikedQuoteViewModel;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
-public class LikedQuoteListFragment extends BaseToolbarFragment implements EmptyAdapterDataListener, SwipeRefreshLayout.OnRefreshListener {
+public class LikedQuoteListFragment extends BaseFragment implements EmptyAdapterDataListener, SwipeRefreshLayout.OnRefreshListener {
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
@@ -38,24 +37,17 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Empty
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.liked_quote_fragmet, container, false);
+        root = inflater.inflate(R.layout.liked_quote_fragment, container, false);
         ButterKnife.bind(this, root);
         viewModel = ViewModelProviders.of(this).get(LikedQuoteViewModel.class);
 
         showLoader();
-        initToolbar();
         initRV();
 
         initRefreshLayout();
         MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
 
         return root;
-    }
-
-    @Override
-    protected void initToolbar() {
-        super.initToolbar();
-        toolbar.setTitle(AndroidUtils.getString(R.string.like_title));
     }
 
     private void initRV() {
@@ -82,7 +74,9 @@ public class LikedQuoteListFragment extends BaseToolbarFragment implements Empty
     }
 
     @Override
-    public void onRefresh() { }
+    public void onRefresh() {
+        // TODO починить апдейт и сделать для всех фрагментов такое
+    }
 
     private void showEmptyContentView(boolean show) {
         emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);

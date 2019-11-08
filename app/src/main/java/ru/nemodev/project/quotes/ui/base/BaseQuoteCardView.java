@@ -207,7 +207,7 @@ public class BaseQuoteCardView extends MaterialCardView
                 likeQuote.setLikeDate(null);
             }
 
-            View rootView = getRootView().findViewById(R.id.viewContainer);
+            View rootView = getRootView().findViewById(R.id.nav_host_fragment);
             AppDataBase.getInstance().getQuoteRepository().likeAsync(likeQuote)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

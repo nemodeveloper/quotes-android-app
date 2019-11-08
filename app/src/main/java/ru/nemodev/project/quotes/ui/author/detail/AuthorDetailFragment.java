@@ -17,15 +17,13 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.author.detail.viewmodel.QuoteByAuthorViewModel;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
-public class AuthorDetailFragment extends BaseToolbarFragment {
-    public static final String AUTHOR_ID_KEY = "authorId";
-    public static final String AUTHOR_NAME_KEY = "authorName";
+public class AuthorDetailFragment extends BaseFragment {
 
     private View root;
 
@@ -37,34 +35,29 @@ public class AuthorDetailFragment extends BaseToolbarFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.base_quote_fragmet, container, false);
+        root = inflater.inflate(R.layout.base_quote_fragment, container, false);
         ButterKnife.bind(this, root);
         viewModel = ViewModelProviders.of(this).get(QuoteByAuthorViewModel.class);
 
         showLoader();
-        initToolbar();
         initRV();
         connectToNetworkEvents();
 
         return root;
     }
 
-    @Override
-    protected void initToolbar() {
-        super.initToolbar();
-        toolbar.setTitle(getArguments().getString(AUTHOR_NAME_KEY));
-    }
-
     private void initRV() {
+        AuthorDetailFragmentArgs args = AuthorDetailFragmentArgs.fromBundle(getArguments());
+        // TODO подумать как лучше обыграть
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(args.getAuthorName());
+
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         QuoteByAuthorAdapter adapter = new QuoteByAuthorAdapter(getContext(), (MainActivity) getActivity());
         quoteRV.setAdapter(adapter);
-        viewModel.getQuoteByAuthorList(getArguments().getLong(AUTHOR_ID_KEY))
-                .observe(this, quoteInfos -> {
-                    adapter.submitList(quoteInfos, this::hideLoader);
-                });
+        viewModel.getQuoteByAuthorList(args.getAuthorId())
+                .observe(this, quoteInfos -> adapter.submitList(quoteInfos, this::hideLoader));
     }
 
     private void connectToNetworkEvents() {

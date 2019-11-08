@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.random.viewmodel.RandomQuoteViewModel;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -24,36 +24,31 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
-public class RandomQuoteListFragment extends BaseToolbarFragment {
+public class RandomQuoteListFragment extends BaseFragment {
 
     private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
 
     private RandomQuoteViewModel viewModel;
+
+    // TODO вынести во viewmodel
     private Disposable internetEventsDisposable;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.random_quote_fragmet, container, false);
+        root = inflater.inflate(R.layout.random_quote_fragment, container, false);
         ButterKnife.bind(this, root);
         viewModel = ViewModelProviders.of(getActivity()).get(RandomQuoteViewModel.class);
 
         showLoader();
-        initToolbar();
         initRV();
         connectToNetworkEvents();
 
         MetricUtils.viewEvent(MetricUtils.ViewType.RANDOM_QUOTES);
 
         return root;
-    }
-
-    @Override
-    protected void initToolbar() {
-        super.initToolbar();
-        toolbar.setTitle(AndroidUtils.getString(R.string.random_title));
     }
 
     private void initRV() {
@@ -72,7 +67,7 @@ public class RandomQuoteListFragment extends BaseToolbarFragment {
         internetEventsDisposable = NetworkUtils.getNetworkObservable()
                 .subscribe(connectivity -> {
                     if (connectivity.state() == NetworkInfo.State.CONNECTED) {
-
+                        // TODO обновлять данные и перед этим чистить кеш так же во всех фрагментах
                     }
                     else {
                         AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,22 +20,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainContract;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
-public class PurchaseListFragment extends BaseToolbarFragment implements PurchaseListContract.SkuInAppListView
+public class PurchaseListFragment extends BaseFragment implements PurchaseListContract.SkuInAppListView
 {
     public static final String PURCHASE_ID_ACTION = "PURCHASE_ID_ACTION";
 
     private View root;
 
-    @BindView(R.id.skuList)
-    RecyclerView skuRV;
-    @BindView(R.id.contentLoadingProgressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.skuList) RecyclerView skuRV;
     @BindView(R.id.purchaseEmptyView)
     TextView purchaseEmptyView;
 
@@ -49,13 +45,9 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        if (root != null)
-            return root;
-
-        root = inflater.inflate(R.layout.purchase_list_fragmet, container, false);
+        root = inflater.inflate(R.layout.purchase_list_fragment, container, false);
         ButterKnife.bind(this, root);
 
-        initToolbar();
         initRV();
 
         if (getArguments() != null)
@@ -85,13 +77,6 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
         super.onDestroy();
     }
 
-    @Override
-    protected void initToolbar()
-    {
-        super.initToolbar();
-        this.toolbar.setTitle(AndroidUtils.getString(R.string.menu_item_purchase));
-    }
-
     private void initRV()
     {
         skuRV.setHasFixedSize(true);
@@ -101,13 +86,13 @@ public class PurchaseListFragment extends BaseToolbarFragment implements Purchas
     @Override
     public void showLoader()
     {
-        progressBar.setVisibility(View.VISIBLE);
+        super.showLoader();
     }
 
     @Override
     public void hideLoader()
     {
-        progressBar.setVisibility(View.GONE);
+        super.hideLoader();
     }
 
     @Override

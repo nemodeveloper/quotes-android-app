@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.ui.base.BaseToolbarFragment;
+import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.category.list.viewmodel.CategoryListViewModel;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
@@ -29,7 +29,7 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
-public class CategoryListFragment extends BaseToolbarFragment {
+public class CategoryListFragment extends BaseFragment {
     private View root;
 
     @BindView(R.id.categoryList) RecyclerView categoryLoadRV;
@@ -43,27 +43,17 @@ public class CategoryListFragment extends BaseToolbarFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        root = inflater.inflate(R.layout.category_fragmet, container, false);
+        root = inflater.inflate(R.layout.category_fragment, container, false);
         ButterKnife.bind(this, root);
         viewModel = ViewModelProviders.of(getActivity()).get(CategoryListViewModel.class);
 
-        initToolbar();
+        setHasOptionsMenu(true);
         initRV();
 
         connectToNetworkEvents();
         MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_LIST);
 
         return root;
-    }
-
-    @Override
-    protected void initToolbar()
-    {
-        super.initToolbar();
-        toolbar.setTitle((AndroidUtils.getString(R.string.category_title)));
-
-        setHasOptionsMenu(true);
     }
 
     @Override

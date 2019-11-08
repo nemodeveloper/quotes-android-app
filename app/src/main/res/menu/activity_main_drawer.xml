@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_item_random"
+            android:id="@+id/navigation_random_quote"
             android:icon="@drawable/random"
             android:title="@string/random_title" />
         <item
-            android:id="@+id/nav_item_author"
+            android:id="@+id/navigation_author_list"
             android:icon="@drawable/author"
             android:title="@string/author_title" />
         <item
-            android:id="@+id/nav_item_category"
+            android:id="@+id/navigation_category_list"
             android:icon="@drawable/category"
             android:title="@string/category_title" />
         <item
-            android:id="@+id/nav_item_like"
+            android:id="@+id/navigation_liked_list"
             android:icon="@drawable/ic_menu_like"
             android:title="@string/like_title" />
     </group>
@@ -26,7 +26,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_item_purchase"
+                    android:id="@+id/navigation_purchase_list"
                     android:icon="@drawable/ic_menu_purchase"
                     android:title="@string/menu_item_purchase" />
             </group>

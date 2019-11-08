@@ -21,7 +21,6 @@ public interface MainContract
     interface MainView
     {
         void showUpdateDialog();
-        void showMainContent();
         void showDisableAdsDialog();
     }
 
