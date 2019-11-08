@@ -7,8 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-import ru.nemodev.project.quotes.ui.purchase.PurchaseType;
-
 public class Purchase
 {
     private final SkuDetails skuDetails;

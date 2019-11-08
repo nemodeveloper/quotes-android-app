@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.ui.purchase;
+package ru.nemodev.project.quotes.entity.purchase;
 
 public enum PurchaseType
 {

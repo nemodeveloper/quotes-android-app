@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,19 +22,20 @@ import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.ui.author.list.AuthorListFragmentDirections;
 import ru.nemodev.project.quotes.ui.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.ui.category.list.CategoryListFragmentDirections;
-import ru.nemodev.project.quotes.ui.purchase.PurchaseListFragment;
-import ru.nemodev.project.quotes.ui.purchase.PurchaseType;
+import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
+import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,
-        OnQuoteCardClickListener, MainContract.MainView {
+        NavigationView.OnNavigationItemSelectedListener, OnQuoteCardClickListener {
+
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements
     NavController navController;
     AppBarConfiguration appBarConfiguration;
 
-    private MainContract.MainPresenter mainPresenter;
+    private MainViewModel mainViewModel;
+    private PurchaseViewModel purchaseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +54,26 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        mainPresenter = new MainPresenterImpl(this, this);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.setActivity(this);
 
+        purchaseViewModel = ViewModelProviders.of(this).get(PurchaseViewModel.class);
+        purchaseViewModel.setActivity(this);
+
+        setSupportActionBar(toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navigationView.setNavigationItemSelectedListener(this);
-        appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_random_quote, R.id.navigation_author_list)
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(drawer)
                         .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        mainPresenter.checkAppUpdate();
+        mainViewModel.updateAppEvent.observe(this, aBoolean -> showUpdateDialog());
+        mainViewModel.buyAdsEvent.observe(this, aBoolean -> showDisableAdsDialog());
+
+        purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
+        purchaseViewModel.onAdsByEvent.observe(this, mainViewModel::onAdsBuy);
     }
 
     @Override
@@ -73,14 +84,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        mainPresenter.onActivityResult(requestCode, resultCode, data);
+        purchaseViewModel.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mainPresenter.onDestroy();
-        super.onDestroy();
     }
 
     // TODO обработка нажатия простых элементов не работает
@@ -90,10 +95,6 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.navigation_purchase_list: {
-                showPurchaseListView();
-                return true;
-            }
             case R.id.nav_item_telegram_channel: {
                 MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
                 AndroidUtils.openTelegramChannel(this, drawer, AndroidUtils.getString(R.string.telegram_channel_name));
@@ -132,8 +133,7 @@ public class MainActivity extends AppCompatActivity implements
         openQuoteFragment(category);
     }
 
-    @Override
-    public void showUpdateDialog() {
+    private void showUpdateDialog() {
         if (!isFinishing()) {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.app_update_available_title)
@@ -146,31 +146,14 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    // TODO перенести покупки и главный Activity на MVVM и навигацию
-    private void showPurchaseListView() {
-        showPurchaseListView(null);
-    }
-
-    private void showPurchaseListView(PurchaseType purchaseType) {
-        PurchaseListFragment fragment = new PurchaseListFragment();
-        if (purchaseType != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(PurchaseListFragment.PURCHASE_ID_ACTION, purchaseType.getProductId());
-            fragment.setArguments(bundle);
-        }
-        fragment.setMainPresenter(mainPresenter);
-
-    }
-
-    @Override
-    public void showDisableAdsDialog() {
+    private void showDisableAdsDialog() {
         if (isFinishing())
             return;
 
         try {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.adb_disable_dialog_title)
-                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> showPurchaseListView(PurchaseType.QUOTE_ADB))
+                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> purchaseViewModel.purchase(PurchaseType.QUOTE_ADB))
                     .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
                     .setCancelable(true)
                     .create()

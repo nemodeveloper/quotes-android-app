@@ -13,7 +13,10 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 public class PurchaseInteractorImpl implements PurchaseInteractor
 {
@@ -27,12 +30,17 @@ public class PurchaseInteractorImpl implements PurchaseInteractor
     }
 
     @Override
-    public Observable<List<Purchase>> loadPurchaseInAppList(List<String> productIds)
+    public Observable<List<Purchase>> loadPurchaseInAppList()
+    {
+        return loadPurchaseInAppList(AndroidUtils.getStringList(R.array.inapp_products));
+    }
+
+    private Observable<List<Purchase>> loadPurchaseInAppList(List<String> purchaseIds)
     {
         return Observable.fromCallable(() ->
-                billingProcessor.getPurchaseListingDetails(new ArrayList<>(productIds)))
-            .map(this::toPurchase)
-            .subscribeOn(Schedulers.io());
+                billingProcessor.getPurchaseListingDetails(new ArrayList<>(purchaseIds)))
+                .map(this::toPurchase)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

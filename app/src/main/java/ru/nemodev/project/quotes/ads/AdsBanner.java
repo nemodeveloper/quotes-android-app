@@ -7,6 +7,6 @@ public interface AdsBanner
 
     interface OnAdsListener
     {
-        void onClose();
+        void onAdsClose();
     }
 }

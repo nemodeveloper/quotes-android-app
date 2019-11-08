@@ -54,7 +54,7 @@ public class FullscreenBanner implements AdsBanner
                 public void onAdClosed()
                 {
                     loadNewFullscreenBanner();
-                    onAdsListener.onClose();
+                    onAdsListener.onAdsClose();
                 }
             });
 

@@ -5,21 +5,34 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import ru.nemodev.project.quotes.R;
-import ru.nemodev.project.quotes.core.recyclerView.SimpleRVAdapter;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
-public class PurchaseAdapter extends SimpleRVAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
+public class PurchaseAdapter extends PagedListAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder>
 {
+    private static DiffUtil.ItemCallback<Purchase> DIFF_CALLBACK = new DiffUtil.ItemCallback<Purchase>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Purchase oldItem, @NonNull Purchase newItem) {
+            return oldItem.getPurchaseType().equals(newItem.getPurchaseType());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Purchase oldItem, @NonNull Purchase newItem) {
+            return oldItem.getPurchaseType().equals(newItem.getPurchaseType());
+        }
+    };
+
+    private final Context context;
     private final OnPurchaseClickListener onPurchaseClickListener;
 
-    public PurchaseAdapter(Context context, List<Purchase> data, OnPurchaseClickListener onPurchaseClickListener)
+    public PurchaseAdapter(Context context, OnPurchaseClickListener onPurchaseClickListener)
     {
-        super(context, data);
+        super(DIFF_CALLBACK);
+        this.context = context;
         this.onPurchaseClickListener = onPurchaseClickListener;
     }
 
