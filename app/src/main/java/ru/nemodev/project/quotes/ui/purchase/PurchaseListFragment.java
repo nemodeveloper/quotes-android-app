@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
@@ -26,18 +25,19 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class PurchaseListFragment extends BaseFragment {
 
-    private View root;
-
     @BindView(R.id.skuList) RecyclerView recyclerView;
     @BindView(R.id.purchaseEmptyView) TextView purchaseEmptyView;
 
     private PurchaseViewModel viewModel;
 
+    public PurchaseListFragment() {
+        super(R.layout.purchase_list_fragment);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.purchase_list_fragment, container, false);
-        ButterKnife.bind(this, root);
+        super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PurchaseViewModel.class);
 
         initialize();
@@ -56,8 +56,8 @@ public class PurchaseListFragment extends BaseFragment {
     }
 
     private void initialize() {
-        MetricUtils.viewEvent(MetricUtils.ViewType.PURCHASE_LIST);
         showLoader();
+        MetricUtils.viewEvent(MetricUtils.ViewType.PURCHASE_LIST);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

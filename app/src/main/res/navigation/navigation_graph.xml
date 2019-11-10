@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/navigation_author_detail"
         android:name="ru.nemodev.project.quotes.ui.author.detail.AuthorDetailFragment"
-        android:label="@string/author_title"
+        android:label="{authorName}"
         tools:layout="@layout/base_quote_fragment" >
         <argument
             android:name="authorId"
@@ -77,7 +77,7 @@
     <fragment
         android:id="@+id/navigation_category_detail"
         android:name="ru.nemodev.project.quotes.ui.category.detail.CategoryDetailFragment"
-        android:label="@string/category_title"
+        android:label="{categoryName}"
         tools:layout="@layout/base_quote_fragment" >
         <argument
             android:name="categoryId"

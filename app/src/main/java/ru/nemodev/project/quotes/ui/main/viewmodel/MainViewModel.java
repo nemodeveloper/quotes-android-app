@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.ui.main.viewmodel;
 
 import android.app.Activity;
+import android.net.NetworkInfo;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +13,7 @@ import com.github.javiersantos.appupdater.objects.Update;
 
 import java.util.Arrays;
 
+import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ads.AdsBanner;
 import ru.nemodev.project.quotes.ads.BannerManager;
@@ -21,6 +23,7 @@ import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
+import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class MainViewModel extends ViewModel implements
@@ -28,6 +31,9 @@ public class MainViewModel extends ViewModel implements
 
     public final MutableLiveData<Boolean> updateAppEvent;
     public final MutableLiveData<Boolean> buyAdsEvent;
+
+    public final MutableLiveData<NetworkInfo.State> networkState;
+    private final Disposable internetEventsDisposable;
 
     private Activity activity;
     private BannerManager bannerManager;
@@ -39,6 +45,10 @@ public class MainViewModel extends ViewModel implements
                 .withListener(this).start();
 
         buyAdsEvent = new MutableLiveData<>();
+
+        networkState = new MutableLiveData<>();
+        internetEventsDisposable = NetworkUtils.getNetworkObservable()
+                .subscribe(connectivity -> networkState.postValue(connectivity.state()));
     }
 
     public void setActivity(Activity activity) {
@@ -76,5 +86,11 @@ public class MainViewModel extends ViewModel implements
     @Override
     public void onAdsClose() {
         buyAdsEvent.postValue(true);
+    }
+
+    @Override
+    protected void onCleared() {
+        internetEventsDisposable.dispose();
+        super.onCleared();
     }
 }

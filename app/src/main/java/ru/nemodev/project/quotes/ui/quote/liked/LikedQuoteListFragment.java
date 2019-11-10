@@ -16,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.apache.commons.collections4.CollectionUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.base.EmptyAdapterDataListener;
@@ -26,7 +25,6 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class LikedQuoteListFragment extends BaseFragment implements EmptyAdapterDataListener, SwipeRefreshLayout.OnRefreshListener {
-    private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
     @BindView(R.id.emptyLiked) TextView emptyLikedView;
@@ -34,23 +32,26 @@ public class LikedQuoteListFragment extends BaseFragment implements EmptyAdapter
 
     private LikedQuoteViewModel viewModel;
 
+    public LikedQuoteListFragment() {
+        super(R.layout.liked_quote_fragment);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.liked_quote_fragment, container, false);
-        ButterKnife.bind(this, root);
+        super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(LikedQuoteViewModel.class);
-
-        showLoader();
-        initRV();
-
-        initRefreshLayout();
+        initialize();
         MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
 
         return root;
     }
 
-    private void initRV() {
+    private void initialize() {
+        showLoader();
+
+        initRefreshLayout();
+
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 

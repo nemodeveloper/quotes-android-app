@@ -18,37 +18,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.category.list.viewmodel.CategoryListViewModel;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
-import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class CategoryListFragment extends BaseFragment {
-    private View root;
 
-    @BindView(R.id.categoryList) RecyclerView categoryLoadRV;
+    @BindView(R.id.categoryList) RecyclerView categoryRV;
 
     private SearchView searchView;
     private String whatSearch;
 
     private CategoryListViewModel viewModel;
-    private Disposable internetEventsDisposable;
+
+    public CategoryListFragment() {
+        super(R.layout.category_fragment);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.category_fragment, container, false);
-        ButterKnife.bind(this, root);
+        super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(CategoryListViewModel.class);
 
         setHasOptionsMenu(true);
-        initRV();
+        initialize();
 
         connectToNetworkEvents();
         MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_LIST);
@@ -58,7 +56,6 @@ public class CategoryListFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.menu_category_bar, menu);
 
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -83,13 +80,14 @@ public class CategoryListFragment extends BaseFragment {
     }
 
     private void searchCategory(String search) {
-        if (StringUtils.isNotEmpty(search))
-        {
+        showLoader();
+
+        if (StringUtils.isNotEmpty(search)) {
             whatSearch = search;
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, CategoryListFragment.this.whatSearch);
         }
 
-        CategoryListAdapter adapter = (CategoryListAdapter) categoryLoadRV.getAdapter();
+        CategoryListAdapter adapter = (CategoryListAdapter) categoryRV.getAdapter();
         viewModel.getCategoryList(this, whatSearch).observe(this, categories-> {
             adapter.submitList(categories, this::hideLoader);
         });
@@ -107,9 +105,9 @@ public class CategoryListFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initRV() {
-        categoryLoadRV.setHasFixedSize(true);
-        categoryLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+    private void initialize() {
+        categoryRV.setHasFixedSize(true);
+        categoryRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         CategoryListAdapter adapter = new CategoryListAdapter(getContext(), item -> {
             clearSearchFocus();
@@ -118,7 +116,7 @@ public class CategoryListFragment extends BaseFragment {
             mainActivity.openQuoteFragment(item);
         });
 
-        categoryLoadRV.setAdapter(adapter);
+        categoryRV.setAdapter(adapter);
         searchCategory(whatSearch);
 
         if (getActivity() != null) {
@@ -127,50 +125,20 @@ public class CategoryListFragment extends BaseFragment {
     }
 
     private void connectToNetworkEvents() {
-        disconnectFromNetworkEvents();
-        internetEventsDisposable = NetworkUtils.getNetworkObservable()
-                .subscribe(connectivity -> {
-                    if (connectivity.state() == NetworkInfo.State.CONNECTED) {
+        mainViewModel.networkState.observe(this, state -> {
+            if (state == NetworkInfo.State.CONNECTED) {
 
-                    }
-                    else {
-                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_categories_message);
-                    }
-                });
+            }
+            else {
+                AndroidUtils.showSnackBarMessage(root, R.string.not_full_categories_message);
+            }
+        });
     }
 
-    private void disconnectFromNetworkEvents() {
-        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
-            internetEventsDisposable.dispose();
-    }
 
     private void clearSearchFocus() {
         if (searchView != null) {
             searchView.clearFocus();
         }
-    }
-
-    @Override
-    public void onDestroyOptionsMenu() {
-        clearSearchFocus();
-        super.onDestroyOptionsMenu();
-    }
-
-    @Override
-    public void onDestroy() {
-        disconnectFromNetworkEvents();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        disconnectFromNetworkEvents();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        connectToNetworkEvents();
-        super.onResume();
     }
 }

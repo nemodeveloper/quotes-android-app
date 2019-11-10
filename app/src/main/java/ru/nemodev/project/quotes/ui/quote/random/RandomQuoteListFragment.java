@@ -13,45 +13,40 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.random.viewmodel.RandomQuoteViewModel;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
-import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class RandomQuoteListFragment extends BaseFragment {
-
-    private View root;
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
 
     private RandomQuoteViewModel viewModel;
 
-    // TODO вынести во viewmodel
-    private Disposable internetEventsDisposable;
+    public RandomQuoteListFragment() {
+        super(R.layout.random_quote_fragment);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.random_quote_fragment, container, false);
-        ButterKnife.bind(this, root);
+        super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(RandomQuoteViewModel.class);
 
-        showLoader();
-        initRV();
+        initialize();
         connectToNetworkEvents();
-
         MetricUtils.viewEvent(MetricUtils.ViewType.RANDOM_QUOTES);
 
         return root;
     }
 
-    private void initRV() {
+    private void initialize() {
+        showLoader();
+
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -63,38 +58,13 @@ public class RandomQuoteListFragment extends BaseFragment {
     }
 
     private void connectToNetworkEvents() {
-        disconnectFromNetworkEvents();
-        internetEventsDisposable = NetworkUtils.getNetworkObservable()
-                .subscribe(connectivity -> {
-                    if (connectivity.state() == NetworkInfo.State.CONNECTED) {
-                        // TODO обновлять данные и перед этим чистить кеш так же во всех фрагментах
-                    }
-                    else {
-                        AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
-                    }
-                });
-    }
-
-    private void disconnectFromNetworkEvents() {
-        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
-            internetEventsDisposable.dispose();
-    }
-
-    @Override
-    public void onDestroy() {
-        disconnectFromNetworkEvents();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        disconnectFromNetworkEvents();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        connectToNetworkEvents();
-        super.onResume();
+        mainViewModel.networkState.observe(this, state -> {
+            if (state == NetworkInfo.State.CONNECTED) {
+                // TODO обновлять данные и перед этим чистить кеш так же во всех фрагментах
+            }
+            else {
+                AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
+            }
+        });
     }
 }

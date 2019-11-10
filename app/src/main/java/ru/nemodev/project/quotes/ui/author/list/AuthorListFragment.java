@@ -18,37 +18,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.author.list.viewmodel.AuthorListViewModel;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
-import ru.nemodev.project.quotes.utils.NetworkUtils;
 
 
 public class AuthorListFragment extends BaseFragment {
-    private View root;
 
-    @BindView(R.id.authorList) RecyclerView authorLoadRV;
+    @BindView(R.id.authorList) RecyclerView authorRV;
 
     private SearchView searchView;
     private String whatSearch;
 
     private AuthorListViewModel viewModel;
-    private Disposable internetEventsDisposable;
+
+    public AuthorListFragment() {
+        super(R.layout.author_fragment);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.author_fragment, container, false);
-        ButterKnife.bind(this, root);
+        super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(AuthorListViewModel.class);
 
         setHasOptionsMenu(true);
-        initRV();
+        initialize();
 
         connectToNetworkEvents();
         MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_LIST);
@@ -88,7 +86,7 @@ public class AuthorListFragment extends BaseFragment {
         }
 
         viewModel.getAuthorList(this, whatSearch).observe(this,
-                authors -> ((AuthorListAdapter) authorLoadRV.getAdapter()).submitList(authors, this::hideLoader));
+                authors -> ((AuthorListAdapter) authorRV.getAdapter()).submitList(authors, this::hideLoader));
     }
 
     @Override
@@ -102,9 +100,9 @@ public class AuthorListFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initRV() {
-        authorLoadRV.setHasFixedSize(true);
-        authorLoadRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+    private void initialize() {
+        authorRV.setHasFixedSize(true);
+        authorRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         AuthorListAdapter adapter = new AuthorListAdapter(getContext(), item -> {
             clearSearchFocus(); // TODO если вернуться обратно показываются результаты поиска без строки поиска
@@ -113,7 +111,7 @@ public class AuthorListFragment extends BaseFragment {
             mainActivity.openQuoteFragment(item);
         });
 
-        authorLoadRV.setAdapter(adapter);
+        authorRV.setAdapter(adapter);
         searchAuthor(whatSearch);
 
         if (getActivity() != null) {
@@ -122,21 +120,14 @@ public class AuthorListFragment extends BaseFragment {
     }
 
     private void connectToNetworkEvents() {
-        disconnectFromNetworkEvents();
-        internetEventsDisposable = NetworkUtils.getNetworkObservable()
-            .subscribe(connectivity -> {
-                if (connectivity.state() == NetworkInfo.State.CONNECTED) {
-                    // TODO разобраться как обновлять
-                }
-                else {
-                    AndroidUtils.showSnackBarMessage(root, R.string.not_full_authors_message);
-                }
-            });
-    }
-
-    private void disconnectFromNetworkEvents() {
-        if (internetEventsDisposable != null && !internetEventsDisposable.isDisposed())
-            internetEventsDisposable.dispose();
+        mainViewModel.networkState.observe(this, state -> {
+            if (state == NetworkInfo.State.CONNECTED) {
+                // TODO разобраться как обновлять
+            }
+            else {
+                AndroidUtils.showSnackBarMessage(root, R.string.not_full_authors_message);
+            }
+        });
     }
 
     private void clearSearchFocus() {
@@ -144,29 +135,5 @@ public class AuthorListFragment extends BaseFragment {
         {
             searchView.clearFocus();
         }
-    }
-
-    @Override
-    public void onDestroyOptionsMenu() {
-        clearSearchFocus();
-        super.onDestroyOptionsMenu();
-    }
-
-    @Override
-    public void onDestroy() {
-        disconnectFromNetworkEvents();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        disconnectFromNetworkEvents();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        connectToNetworkEvents();
-        super.onResume();
     }
 }
