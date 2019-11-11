@@ -62,12 +62,10 @@ public class MainActivity extends AppCompatActivity implements
 
         setSupportActionBar(toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navigationView.setNavigationItemSelectedListener(this);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
-                        .setDrawerLayout(drawer)
-                        .build();
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(drawer).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
 
         mainViewModel.updateAppEvent.observe(this, aBoolean -> showUpdateDialog());
         mainViewModel.buyAdsEvent.observe(this, aBoolean -> showDisableAdsDialog());
@@ -88,12 +86,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // TODO обработка нажатия простых элементов не работает
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
+        final int id = item.getItemId();
         switch (id) {
             case R.id.nav_item_telegram_channel: {
                 MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
@@ -112,7 +107,12 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        return false;//NavigationUI.onNavDestinationSelected(item, navController);
+        boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+        if (handled) {
+            drawer.closeDrawer(navigationView);
+        }
+
+        return handled;
     }
 
     public void openQuoteFragment(Category category) {
