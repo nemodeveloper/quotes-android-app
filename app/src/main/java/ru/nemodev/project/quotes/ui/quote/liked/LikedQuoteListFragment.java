@@ -53,13 +53,7 @@ public class LikedQuoteListFragment extends BaseFragment {
         LikedQuoteListAdapter adapter = new LikedQuoteListAdapter(getContext(), (MainActivity) getActivity());
         quoteRV.setAdapter(adapter);
         viewModel.likedQuoteList.observe(this, quoteInfos -> {
-            if (CollectionUtils.isNotEmpty(quoteInfos)) {
-                showEmptyContentView(false);
-            }
-            else {
-                showEmptyContentView(true);
-                hideLoader();
-            }
+            showEmptyContentView(CollectionUtils.isEmpty(quoteInfos));
             adapter.submitList(quoteInfos, this::hideLoader);
         });
     }

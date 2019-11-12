@@ -80,7 +80,7 @@ public class AuthorListFragment extends BaseFragment {
     private void searchAuthor(String search) {
         showLoader();
 
-        if (StringUtils.isNotEmpty(search)) {
+        if (StringUtils.isNotEmpty(search) && !search.equals(whatSearch)) {
             whatSearch = search;
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, AuthorListFragment.this.whatSearch);
         }
@@ -101,6 +101,7 @@ public class AuthorListFragment extends BaseFragment {
     }
 
     private void initialize() {
+        showLoader();
         authorRV.setHasFixedSize(true);
         authorRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
