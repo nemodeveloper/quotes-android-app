@@ -1,6 +1,6 @@
 package ru.nemodev.project.quotes.repository.db.quote;
 
-
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -70,5 +70,5 @@ public abstract class QuoteRepository
 
     @Transaction
     @Query("SELECT * FROM quotes WHERE liked = 1 ORDER BY like_date DESC")
-    public abstract Single<List<QuoteInfo>> getLiked();
+    public abstract DataSource.Factory<Integer, QuoteInfo> getLiked();
 }

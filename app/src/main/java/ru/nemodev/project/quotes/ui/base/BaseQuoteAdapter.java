@@ -21,7 +21,7 @@ public abstract class BaseQuoteAdapter extends PagedListAdapter<QuoteInfo, BaseQ
 
         @Override
         public boolean areContentsTheSame(@NonNull QuoteInfo oldItem, @NonNull QuoteInfo newItem) {
-            return oldItem.getQuote().getId().equals(newItem.getQuote().getId());
+            return oldItem.equals(newItem);
         }
     };
 

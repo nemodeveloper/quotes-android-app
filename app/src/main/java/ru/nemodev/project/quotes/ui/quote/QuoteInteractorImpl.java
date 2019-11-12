@@ -36,15 +36,6 @@ public class QuoteInteractorImpl implements QuoteInteractor
     }
 
     @Override
-    public Observable<List<QuoteInfo>> loadLiked()
-    {
-        return AppDataBase.getInstance().getQuoteRepository().getLiked()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toObservable();
-    }
-
-    @Override
     public Single<QuoteInfo> getById(Long quoteId)
     {
         return AppDataBase.getInstance().getQuoteRepository().getById(quoteId)

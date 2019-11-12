@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.entity.quote;
 
 
+import androidx.annotation.Nullable;
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -84,5 +85,19 @@ public class QuoteInfo implements Serializable
     public void setCategory(Category category)
     {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof QuoteInfo)) {
+            return false;
+        }
+        Quote what = ((QuoteInfo) obj).getQuote();
+        return quote.getId().equals(what.getId())
+                && quote.getLiked().equals(what.getLiked());
     }
 }

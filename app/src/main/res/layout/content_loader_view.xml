@@ -4,5 +4,5 @@
     style="@android:style/Widget.Material.ProgressBar.Large"
     android:layout_centerInParent="true"
     android:indeterminate="true"
-    android:visibility="gone"
+    android:visibility="visible"
     xmlns:android="http://schemas.android.com/apk/res/android" />

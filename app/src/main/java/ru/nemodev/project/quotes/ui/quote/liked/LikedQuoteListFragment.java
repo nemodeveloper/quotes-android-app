@@ -11,24 +11,21 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.commons.collections4.CollectionUtils;
 
 import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
-import ru.nemodev.project.quotes.ui.base.EmptyAdapterDataListener;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.liked.viewmodel.LikedQuoteViewModel;
 import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
-public class LikedQuoteListFragment extends BaseFragment implements EmptyAdapterDataListener, SwipeRefreshLayout.OnRefreshListener {
+public class LikedQuoteListFragment extends BaseFragment {
 
     @BindView(R.id.quoteList) RecyclerView quoteRV;
     @BindView(R.id.emptyLiked) TextView emptyLikedView;
-    @BindView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
 
     private LikedQuoteViewModel viewModel;
 
@@ -50,41 +47,24 @@ public class LikedQuoteListFragment extends BaseFragment implements EmptyAdapter
     private void initialize() {
         showLoader();
 
-        initRefreshLayout();
-
         quoteRV.setHasFixedSize(true);
         quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        LikedQuoteListAdapter adapter = new LikedQuoteListAdapter(getContext(), (MainActivity) getActivity(), this);
+        LikedQuoteListAdapter adapter = new LikedQuoteListAdapter(getContext(), (MainActivity) getActivity());
         quoteRV.setAdapter(adapter);
         viewModel.likedQuoteList.observe(this, quoteInfos -> {
             if (CollectionUtils.isNotEmpty(quoteInfos)) {
                 showEmptyContentView(false);
-                adapter.submitList(quoteInfos, this::hideLoader);
             }
             else {
                 showEmptyContentView(true);
+                hideLoader();
             }
-            hideLoader();
+            adapter.submitList(quoteInfos, this::hideLoader);
         });
-    }
-
-    private void initRefreshLayout() {
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(this);
-    }
-
-    @Override
-    public void onRefresh() {
-        // TODO починить апдейт и сделать для всех фрагментов такое
     }
 
     private void showEmptyContentView(boolean show) {
         emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onEmptyAdapterData() {
-        showEmptyContentView(true);
     }
 }

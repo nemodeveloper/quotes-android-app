@@ -11,7 +11,6 @@ public interface QuoteInteractor
     Observable<List<QuoteInfo>> loadRandom(Integer count);
     Observable<List<QuoteInfo>> loadByAuthor(Long authorId);
     Observable<List<QuoteInfo>> loadByCategory(Long categoryId);
-    Observable<List<QuoteInfo>> loadLiked();
 
     Single<QuoteInfo> getById(Long quoteId);
 }
