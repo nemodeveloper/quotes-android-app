@@ -31,7 +31,6 @@ public class CategoryListFragment extends BaseFragment {
     @BindView(R.id.categoryList) RecyclerView categoryRV;
 
     private SearchView searchView;
-    private String whatSearch;
 
     private CategoryListViewModel viewModel;
 
@@ -83,15 +82,12 @@ public class CategoryListFragment extends BaseFragment {
         showLoader();
 
         if (StringUtils.isNotEmpty(search)) {
-            whatSearch = search;
-            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, CategoryListFragment.this.whatSearch);
+            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
         }
 
         CategoryListAdapter adapter = (CategoryListAdapter) categoryRV.getAdapter();
-        viewModel.getCategoryList(this, whatSearch).observe(this, categories-> {
-            adapter.submitList(categories, this::hideLoader);
-        });
-
+        viewModel.getCategoryList(this, search).observe(this,
+                categories-> adapter.submitList(categories, this::hideLoader));
     }
 
     @Override
@@ -117,7 +113,7 @@ public class CategoryListFragment extends BaseFragment {
         });
 
         categoryRV.setAdapter(adapter);
-        searchCategory(whatSearch);
+        searchCategory(null);
 
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();
@@ -127,14 +123,13 @@ public class CategoryListFragment extends BaseFragment {
     private void connectToNetworkEvents() {
         mainViewModel.networkState.observe(this, state -> {
             if (state == NetworkInfo.State.CONNECTED) {
-
+                viewModel.onInternetEvent(true);
             }
             else {
                 AndroidUtils.showSnackBarMessage(root, R.string.not_full_categories_message);
             }
         });
     }
-
 
     private void clearSearchFocus() {
         if (searchView != null) {

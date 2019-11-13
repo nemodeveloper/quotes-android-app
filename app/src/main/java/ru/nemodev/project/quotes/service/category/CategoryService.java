@@ -3,7 +3,6 @@ package ru.nemodev.project.quotes.service.category;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,17 +62,14 @@ public class CategoryService
                     .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<Category>> findByName(String name) {
-        return getAll()
-            .flatMap(categories -> {
-                List<Category> filteredCategories = new ArrayList<>();
-                for (Category category : categories) {
-                    if (category.getName().toLowerCase().contains(name.toLowerCase())) {
-                        filteredCategories.add(category);
-                    }
-                }
-                return Observable.just(filteredCategories);
-            });
+    public Observable<Boolean> syncWithServer() {
+        return categoryApi.getAll()
+                .map(CategoryUtils::convertCategories)
+                .map(categoryList -> {
+                    categoryRepository.add(categoryList);
+                    return categoryList;
+                })
+                .flatMap(categoryList -> Observable.just(true))
+                .subscribeOn(Schedulers.io());
     }
-
 }

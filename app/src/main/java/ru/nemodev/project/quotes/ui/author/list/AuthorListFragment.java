@@ -31,8 +31,6 @@ public class AuthorListFragment extends BaseFragment {
     @BindView(R.id.authorList) RecyclerView authorRV;
 
     private SearchView searchView;
-    private String whatSearch;
-
     private AuthorListViewModel viewModel;
 
     public AuthorListFragment() {
@@ -80,12 +78,11 @@ public class AuthorListFragment extends BaseFragment {
     private void searchAuthor(String search) {
         showLoader();
 
-        if (StringUtils.isNotEmpty(search) && !search.equals(whatSearch)) {
-            whatSearch = search;
-            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, AuthorListFragment.this.whatSearch);
+        if (StringUtils.isNotEmpty(search)) {
+            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
         }
 
-        viewModel.getAuthorList(this, whatSearch).observe(this,
+        viewModel.getAuthorList(this, search).observe(this,
                 authors -> ((AuthorListAdapter) authorRV.getAdapter()).submitList(authors, this::hideLoader));
     }
 
@@ -113,7 +110,7 @@ public class AuthorListFragment extends BaseFragment {
         });
 
         authorRV.setAdapter(adapter);
-        searchAuthor(whatSearch);
+        searchAuthor(null);
 
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();

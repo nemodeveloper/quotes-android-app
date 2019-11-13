@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.repository.db.category;
 
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,6 +19,14 @@ public interface CategoryRepository
     @Transaction
     @Query("SELECT * FROM categories ORDER BY name")
     Observable<List<Category>> getAll();
+
+    @Transaction
+    @Query("SELECT * FROM categories ORDER BY name")
+    DataSource.Factory<Integer, Category> getAllLiveData();
+
+    @Transaction
+    @Query("SELECT * FROM categories c WHERE upper(c.name) like '%' || upper(:name) || '%' ORDER BY c.name")
+    DataSource.Factory<Integer, Category> findByNameLiveData(String name);
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
