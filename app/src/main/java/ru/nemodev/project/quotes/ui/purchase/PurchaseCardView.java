@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
+
+// TODO перевести на DataBinding
 public class PurchaseCardView extends MaterialCardView
 {
     private Purchase purchase;

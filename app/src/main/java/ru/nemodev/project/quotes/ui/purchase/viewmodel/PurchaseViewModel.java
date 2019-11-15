@@ -2,6 +2,8 @@ package ru.nemodev.project.quotes.ui.purchase.viewmodel;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,6 +11,8 @@ import androidx.paging.PagedList;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -49,6 +53,7 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
         this.billingProcessor.initialize();
         this.purchaseInteractor = new PurchaseInteractorImpl(activity, billingProcessor);
 
+        // TODO тут подумать лучше перейти на List с PagedList
         purchaseList.postValue(new PagedList.Builder<>(
                 new PurchaseListDataSource(purchaseInteractor),
                 new PagedList.Config.Builder()
@@ -56,6 +61,8 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
                         .setPageSize(10)
                         .setPrefetchDistance(5)
                         .build())
+                .setFetchExecutor(Executors.newCachedThreadPool())
+                .setNotifyExecutor(command -> new Handler(Looper.getMainLooper()).post(command))
                 .build());
     }
 

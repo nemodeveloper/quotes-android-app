@@ -4,18 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.LikedQuoteFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.liked.viewmodel.LikedQuoteViewModel;
@@ -24,10 +23,8 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class LikedQuoteListFragment extends BaseFragment {
 
-    @BindView(R.id.quoteList) RecyclerView quoteRV;
-    @BindView(R.id.emptyLiked) TextView emptyLikedView;
-
     private LikedQuoteViewModel viewModel;
+    private LikedQuoteFragmentBinding binding;
 
     public LikedQuoteListFragment() {
         super(R.layout.liked_quote_fragment);
@@ -38,6 +35,8 @@ public class LikedQuoteListFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(LikedQuoteViewModel.class);
+        binding = DataBindingUtil.bind(root);
+
         initialize();
         MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
 
@@ -47,11 +46,11 @@ public class LikedQuoteListFragment extends BaseFragment {
     private void initialize() {
         showLoader();
 
-        quoteRV.setHasFixedSize(true);
-        quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.quoteList.setHasFixedSize(true);
+        binding.quoteList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         LikedQuoteListAdapter adapter = new LikedQuoteListAdapter(getContext(), (MainActivity) getActivity());
-        quoteRV.setAdapter(adapter);
+        binding.quoteList.setAdapter(adapter);
         viewModel.likedQuoteList.observe(this, quoteInfos -> {
             showEmptyContentView(CollectionUtils.isEmpty(quoteInfos));
             adapter.submitList(quoteInfos, this::hideLoader);
@@ -59,6 +58,6 @@ public class LikedQuoteListFragment extends BaseFragment {
     }
 
     private void showEmptyContentView(boolean show) {
-        emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.emptyLikedView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.CategoryListFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.category.list.viewmodel.CategoryListViewModel;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
@@ -28,14 +28,12 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class CategoryListFragment extends BaseFragment {
 
-    @BindView(R.id.categoryList) RecyclerView categoryRV;
-
     private SearchView searchView;
-
+    private CategoryListFragmentBinding binding;
     private CategoryListViewModel viewModel;
 
     public CategoryListFragment() {
-        super(R.layout.category_fragment);
+        super(R.layout.category_list_fragment);
     }
 
     @Nullable
@@ -43,6 +41,7 @@ public class CategoryListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(CategoryListViewModel.class);
+        binding = DataBindingUtil.bind(root);
 
         setHasOptionsMenu(true);
         initialize();
@@ -85,7 +84,7 @@ public class CategoryListFragment extends BaseFragment {
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
         }
 
-        CategoryListAdapter adapter = (CategoryListAdapter) categoryRV.getAdapter();
+        CategoryListAdapter adapter = (CategoryListAdapter) binding.categoryList.getAdapter();
         viewModel.getCategoryList(this, search).observe(this,
                 categories-> adapter.submitList(categories, this::hideLoader));
     }
@@ -113,8 +112,8 @@ public class CategoryListFragment extends BaseFragment {
             }
         });
 
-        categoryRV.setHasFixedSize(true);
-        categoryRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.categoryList.setHasFixedSize(true);
+        binding.categoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         CategoryListAdapter adapter = new CategoryListAdapter(getContext(), item -> {
             clearSearchFocus();
@@ -123,7 +122,7 @@ public class CategoryListFragment extends BaseFragment {
             mainActivity.openQuoteFragment(item);
         });
 
-        categoryRV.setAdapter(adapter);
+        binding.categoryList.setAdapter(adapter);
         searchCategory(null);
 
         if (getActivity() != null) {

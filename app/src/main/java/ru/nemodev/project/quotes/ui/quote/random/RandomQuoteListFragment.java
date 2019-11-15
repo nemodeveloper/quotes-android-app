@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.QuoteListFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.random.viewmodel.RandomQuoteViewModel;
@@ -23,12 +23,11 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class RandomQuoteListFragment extends BaseFragment {
 
-    @BindView(R.id.quoteList) RecyclerView quoteRV;
-
+    private QuoteListFragmentBinding binding;
     private RandomQuoteViewModel viewModel;
 
     public RandomQuoteListFragment() {
-        super(R.layout.random_quote_fragment);
+        super(R.layout.quote_list_fragment);
     }
 
     @Nullable
@@ -36,6 +35,7 @@ public class RandomQuoteListFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(RandomQuoteViewModel.class);
+        binding = DataBindingUtil.bind(root);
 
         initialize();
         connectToNetworkEvents();
@@ -47,11 +47,11 @@ public class RandomQuoteListFragment extends BaseFragment {
     private void initialize() {
         showLoader();
 
-        quoteRV.setHasFixedSize(true);
-        quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.quoteList.setHasFixedSize(true);
+        binding.quoteList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RandomQuoteListAdapter adapter = new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity());
-        quoteRV.setAdapter(adapter);
+        binding.quoteList.setAdapter(adapter);
         viewModel.randomQuoteList.observe(this, quoteInfos -> {
             adapter.submitList(quoteInfos, this::hideLoader);
         });

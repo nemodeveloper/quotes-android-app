@@ -4,18 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.PurchaseListFragmentBinding;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
@@ -25,10 +24,8 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class PurchaseListFragment extends BaseFragment {
 
-    @BindView(R.id.skuList) RecyclerView recyclerView;
-    @BindView(R.id.purchaseEmptyView) TextView purchaseEmptyView;
-
     private PurchaseViewModel viewModel;
+    private PurchaseListFragmentBinding binding;
 
     public PurchaseListFragment() {
         super(R.layout.purchase_list_fragment);
@@ -39,6 +36,7 @@ public class PurchaseListFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PurchaseViewModel.class);
+        binding = DataBindingUtil.bind(root);
 
         initialize();
 
@@ -59,12 +57,12 @@ public class PurchaseListFragment extends BaseFragment {
         showLoader();
         MetricUtils.viewEvent(MetricUtils.ViewType.PURCHASE_LIST);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.purchaseList.setHasFixedSize(true);
+        binding.purchaseList.setLayoutManager(new LinearLayoutManager(getActivity()));
         showEmptyContentView(false);
 
         PurchaseAdapter adapter = new PurchaseAdapter(getContext(), this::onPurchaseClick);
-        recyclerView.setAdapter(adapter);
+        binding.purchaseList.setAdapter(adapter);
         viewModel.purchaseList.observe(this,
                 purchases -> adapter.submitList(purchases, this::hideLoader));
     }
@@ -77,6 +75,6 @@ public class PurchaseListFragment extends BaseFragment {
 
     // TODO сделать общее view как с загрузкой для всех фрагментов
     private void showEmptyContentView(boolean show) {
-        purchaseEmptyView.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.purchaseEmptyView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

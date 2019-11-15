@@ -40,6 +40,7 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 
+// TODO перевести на DataBinding
 public class BaseQuoteCardView extends MaterialCardView
 {
     protected final String TAG_LOG = this.getClass().getSimpleName();

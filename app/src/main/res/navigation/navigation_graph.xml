@@ -26,7 +26,7 @@
         android:id="@+id/navigation_author_list"
         android:name="ru.nemodev.project.quotes.ui.author.list.AuthorListFragment"
         android:label="@string/author_title"
-        tools:layout="@layout/author_fragment">
+        tools:layout="@layout/author_list_fragment">
         <action
             android:id="@+id/action_open_author_detail"
             app:destination="@+id/navigation_author_detail"
@@ -38,7 +38,7 @@
         android:id="@+id/navigation_author_detail"
         android:name="ru.nemodev.project.quotes.ui.author.detail.AuthorDetailFragment"
         android:label="{authorName}"
-        tools:layout="@layout/base_quote_fragment" >
+        tools:layout="@layout/quote_list_fragment" >
         <argument
             android:name="authorId"
             app:argType="long"/>
@@ -56,7 +56,7 @@
         android:id="@+id/navigation_category_list"
         android:name="ru.nemodev.project.quotes.ui.category.list.CategoryListFragment"
         android:label="@string/category_title"
-        tools:layout="@layout/category_fragment" >
+        tools:layout="@layout/category_list_fragment" >
         <action
             android:id="@+id/action_open_category_detail"
             app:destination="@+id/navigation_category_detail"
@@ -68,7 +68,7 @@
         android:id="@+id/navigation_category_detail"
         android:name="ru.nemodev.project.quotes.ui.category.detail.CategoryDetailFragment"
         android:label="{categoryName}"
-        tools:layout="@layout/base_quote_fragment" >
+        tools:layout="@layout/quote_list_fragment" >
         <argument
             android:name="categoryId"
             app:argType="long"/>

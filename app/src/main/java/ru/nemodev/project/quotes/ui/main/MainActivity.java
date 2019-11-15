@@ -7,8 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,9 +16,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.MainActivityBinding;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
@@ -38,21 +36,17 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view) NavigationView navigationView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-
     NavController navController;
     AppBarConfiguration appBarConfiguration;
 
     private MainViewModel mainViewModel;
     private PurchaseViewModel purchaseViewModel;
+    private MainActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.setActivity(this);
@@ -60,12 +54,12 @@ public class MainActivity extends AppCompatActivity implements
         purchaseViewModel = ViewModelProviders.of(this).get(PurchaseViewModel.class);
         purchaseViewModel.setActivity(this);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(drawer).build();
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(binding.drawerLayout).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationUI.setupWithNavController(binding.navView, navController);
+        binding.navView.setNavigationItemSelectedListener(this);
 
         mainViewModel.updateAppEvent.observe(this, aBoolean -> showUpdateDialog());
         mainViewModel.buyAdsEvent.observe(this, aBoolean -> showDisableAdsDialog());
@@ -92,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.nav_item_telegram_channel: {
                 MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
-                AndroidUtils.openTelegramChannel(this, drawer, AndroidUtils.getString(R.string.telegram_channel_name));
+                AndroidUtils.openTelegramChannel(this, binding.drawerLayout, AndroidUtils.getString(R.string.telegram_channel_name));
                 return true;
             }
             case R.id.nav_item_share: {
@@ -109,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
 
         boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
         if (handled) {
-            drawer.closeDrawer(navigationView);
+            binding.drawerLayout.closeDrawer(binding.navView);
         }
 
         return handled;

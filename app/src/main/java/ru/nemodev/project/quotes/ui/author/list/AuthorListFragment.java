@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.AuthorListFragmentBinding;
 import ru.nemodev.project.quotes.ui.author.list.viewmodel.AuthorListViewModel;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
@@ -28,13 +28,12 @@ import ru.nemodev.project.quotes.utils.MetricUtils;
 
 public class AuthorListFragment extends BaseFragment {
 
-    @BindView(R.id.authorList) RecyclerView authorRV;
-
     private SearchView searchView;
     private AuthorListViewModel viewModel;
+    private AuthorListFragmentBinding binding;
 
     public AuthorListFragment() {
-        super(R.layout.author_fragment);
+        super(R.layout.author_list_fragment);
     }
 
     @Nullable
@@ -42,6 +41,7 @@ public class AuthorListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(AuthorListViewModel.class);
+        binding = DataBindingUtil.bind(root);
 
         setHasOptionsMenu(true);
         initialize();
@@ -83,7 +83,7 @@ public class AuthorListFragment extends BaseFragment {
         }
 
         viewModel.getAuthorList(this, search).observe(this,
-                authors -> ((AuthorListAdapter) authorRV.getAdapter()).submitList(authors, this::hideLoader));
+                authors -> ((AuthorListAdapter) binding.authorList.getAdapter()).submitList(authors, this::hideLoader));
     }
 
     @Override
@@ -108,8 +108,8 @@ public class AuthorListFragment extends BaseFragment {
             }
         });
 
-        authorRV.setHasFixedSize(true);
-        authorRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.authorList.setHasFixedSize(true);
+        binding.authorList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         AuthorListAdapter adapter = new AuthorListAdapter(getContext(), item -> {
             clearSearchFocus(); // TODO если вернуться обратно показываются результаты поиска без строки поиска
@@ -118,7 +118,7 @@ public class AuthorListFragment extends BaseFragment {
             mainActivity.openQuoteFragment(item);
         });
 
-        authorRV.setAdapter(adapter);
+        binding.authorList.setAdapter(adapter);
         searchAuthor(null);
 
         if (getActivity() != null) {

@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.databinding.QuoteListFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.category.detail.viewmodel.QuoteByCategoryViewModel;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
@@ -22,12 +22,11 @@ import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 public class CategoryDetailFragment extends BaseFragment {
 
-    @BindView(R.id.quoteList) RecyclerView quoteRV;
-
     private QuoteByCategoryViewModel viewModel;
+    private QuoteListFragmentBinding binding;
 
     public CategoryDetailFragment() {
-        super(R.layout.base_quote_fragment);
+        super(R.layout.quote_list_fragment);
     }
 
     @Nullable
@@ -35,6 +34,7 @@ public class CategoryDetailFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(QuoteByCategoryViewModel.class);
+        binding = DataBindingUtil.bind(root);
 
         initialize();
         connectToNetworkEvents();
@@ -56,11 +56,11 @@ public class CategoryDetailFragment extends BaseFragment {
 
         CategoryDetailFragmentArgs args = CategoryDetailFragmentArgs.fromBundle(getArguments());
 
-        quoteRV.setHasFixedSize(true);
-        quoteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.quoteList.setHasFixedSize(true);
+        binding.quoteList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         QuoteByCategoryAdapter adapter = new QuoteByCategoryAdapter(getContext(), (MainActivity) getActivity());
-        quoteRV.setAdapter(adapter);
+        binding.quoteList.setAdapter(adapter);
         viewModel.getQuoteByCategoryList(args.getCategoryId())
                 .observe(this, quoteInfos -> adapter.submitList(quoteInfos, this::hideLoader));
     }

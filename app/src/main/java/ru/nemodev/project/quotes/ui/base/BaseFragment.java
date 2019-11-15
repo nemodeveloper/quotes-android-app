@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
 
@@ -21,7 +19,7 @@ public abstract class BaseFragment extends Fragment {
     protected View root;
     protected MainViewModel mainViewModel;
 
-    @BindView(R.id.contentLoadingProgressBar) ProgressBar progressBar;
+    protected ProgressBar progressBar;
 
     public BaseFragment() {
         super();
@@ -35,7 +33,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         root = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, root);
+        // TODO создавать программно
+        progressBar = root.findViewById(R.id.contentLoadingProgressBar);
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
         return root;
