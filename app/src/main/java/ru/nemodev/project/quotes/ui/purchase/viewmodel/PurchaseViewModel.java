@@ -3,13 +3,8 @@ package ru.nemodev.project.quotes.ui.purchase.viewmodel;
 import android.app.Activity;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.paging.DataSource;
-import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
@@ -38,11 +33,13 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
 
     public final MutableLiveData<Purchase> onPurchaseEvent;
     public final MutableLiveData<Boolean> onAdsByEvent;
-    private LiveData<PagedList<Purchase>> purchaseList;
+    public MutableLiveData<PagedList<Purchase>> purchaseList;
 
     public PurchaseViewModel() {
         onPurchaseEvent = new MutableLiveData<>();
         onAdsByEvent = new MutableLiveData<>();
+
+        purchaseList = new MutableLiveData<>();
 
         this.billingProcessor = BillingProcessor.newBillingProcessor(
                 AndroidApplication.getInstance(),
@@ -51,6 +48,15 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
 
         this.billingProcessor.initialize();
         this.purchaseInteractor = new PurchaseInteractorImpl(activity, billingProcessor);
+
+        purchaseList.postValue(new PagedList.Builder<>(
+                new PurchaseListDataSource(purchaseInteractor),
+                new PagedList.Config.Builder()
+                        .setEnablePlaceholders(false)
+                        .setPageSize(10)
+                        .setPrefetchDistance(5)
+                        .build())
+                .build());
     }
 
     public void setActivity(Activity activity) {
@@ -75,6 +81,14 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
             public void onNext(Purchase purchase) {
                 MetricUtils.purchaseEvent(purchase);
                 onPurchaseEvent.postValue(purchase);
+                purchaseList.postValue(new PagedList.Builder<>(
+                        new PurchaseListDataSource(purchaseInteractor),
+                        new PagedList.Config.Builder()
+                                .setEnablePlaceholders(false)
+                                .setPageSize(10)
+                                .setPrefetchDistance(5)
+                                .build())
+                        .build());
             }
 
             @Override
@@ -105,32 +119,6 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
         AndroidApplication.getInstance().getAppSetting().setBoolean(
                 QuoteWidgetProvider.IS_PURCHASE_QUOTE_WIDGET_KEY,
                 purchaseInteractor.isPurchase(PurchaseType.QUOTE_WIDGET));
-    }
-
-    public LiveData<PagedList<Purchase>> getPurchaseList(LifecycleOwner lifecycleOwner) {
-
-        if (purchaseList != null) {
-            purchaseList.removeObservers(lifecycleOwner);
-        }
-
-        DataSource.Factory<Integer, Purchase> factFactory = new DataSource.Factory<Integer, Purchase>() {
-            @NonNull
-            @Override
-            public DataSource<Integer, Purchase> create() {
-                return new PurchaseListDataSource(purchaseInteractor);
-            }
-        };
-
-        purchaseList = new LivePagedListBuilder<>(
-                    factFactory,
-                    new PagedList.Config.Builder()
-                            .setEnablePlaceholders(false)
-                            .setPageSize(10)
-                            .setPrefetchDistance(5)
-                            .build())
-                    .build();
-
-        return purchaseList;
     }
 
     public void purchase(Purchase purchase) {

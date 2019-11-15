@@ -45,6 +45,15 @@ public class CategoryDetailFragment extends BaseFragment {
     private void initialize() {
         showLoader();
 
+        viewModel.startWorkEvent.observe(this, aBoolean -> {
+            if (aBoolean) {
+                showLoader();
+            }
+            else {
+                hideLoader();
+            }
+        });
+
         CategoryDetailFragmentArgs args = CategoryDetailFragmentArgs.fromBundle(getArguments());
 
         quoteRV.setHasFixedSize(true);
@@ -59,7 +68,7 @@ public class CategoryDetailFragment extends BaseFragment {
     private void connectToNetworkEvents() {
         mainViewModel.networkState.observe(this, state -> {
             if (state == NetworkInfo.State.CONNECTED) {
-
+                viewModel.onInternetEvent(true);
             }
             else {
                 AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);

@@ -1,44 +1,65 @@
 package ru.nemodev.project.quotes.ui.category.detail.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 import ru.nemodev.project.quotes.service.quote.QuoteService;
-import ru.nemodev.project.quotes.ui.category.detail.source.QuoteByCategoryDataSource;
+import ru.nemodev.project.quotes.ui.base.BaseViewModel;
 
-public class QuoteByCategoryViewModel extends ViewModel {
+
+public class QuoteByCategoryViewModel extends BaseViewModel {
 
     private LiveData<PagedList<QuoteInfo>> quoteByCategoryList;
+    private Long categoryId;
 
     public QuoteByCategoryViewModel() { }
 
     public LiveData<PagedList<QuoteInfo>> getQuoteByCategoryList(Long categoryId) {
 
         if (quoteByCategoryList == null) {
-            DataSource.Factory<Integer, QuoteInfo> factFactory = new DataSource.Factory<Integer, QuoteInfo>() {
-                @NonNull
-                @Override
-                public DataSource<Integer, QuoteInfo> create() {
-                    return new QuoteByCategoryDataSource(categoryId, QuoteService.getInstance());
-                }
-            };
+            this.categoryId = categoryId;
 
             quoteByCategoryList = new LivePagedListBuilder<>(
-                    factFactory,
+                    AppDataBase.getInstance().getQuoteRepository().getByCategoryId(categoryId),
                     new PagedList.Config.Builder()
                             .setEnablePlaceholders(false)
-                            .setPageSize(10)
-                            .setPrefetchDistance(5)
+                            .setPageSize(500)
+                            .setPrefetchDistance(100)
                             .build())
                     .build();
         }
 
         return quoteByCategoryList;
+    }
+
+    public void onInternetEvent(boolean isAvailable) {
+        if (!synced.get() && isAvailable) {
+            startWorkEvent.postValue(true);
+            QuoteService.getInstance().syncWithServerByCategory(categoryId)
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onSubscribe(Disposable d) { }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            synced.set(aBoolean);
+                            startWorkEvent.postValue(false);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            startWorkEvent.postValue(false);
+                        }
+
+                        @Override
+                        public void onComplete() { }
+                    });
+        }
     }
 
 }

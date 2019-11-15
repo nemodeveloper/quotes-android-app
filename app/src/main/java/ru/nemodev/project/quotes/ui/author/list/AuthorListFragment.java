@@ -99,6 +99,15 @@ public class AuthorListFragment extends BaseFragment {
 
     private void initialize() {
         showLoader();
+        viewModel.startWorkEvent.observe(this, aBoolean -> {
+            if (aBoolean) {
+                showLoader();
+            }
+            else {
+                hideLoader();
+            }
+        });
+
         authorRV.setHasFixedSize(true);
         authorRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -120,7 +129,7 @@ public class AuthorListFragment extends BaseFragment {
     private void connectToNetworkEvents() {
         mainViewModel.networkState.observe(this, state -> {
             if (state == NetworkInfo.State.CONNECTED) {
-                // TODO разобраться как обновлять
+                viewModel.onInternetEvent(true);
             }
             else {
                 AndroidUtils.showSnackBarMessage(root, R.string.not_full_authors_message);

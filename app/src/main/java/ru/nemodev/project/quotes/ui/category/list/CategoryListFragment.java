@@ -102,6 +102,17 @@ public class CategoryListFragment extends BaseFragment {
     }
 
     private void initialize() {
+        showLoader();
+
+        viewModel.startWorkEvent.observe(this, aBoolean -> {
+            if (aBoolean) {
+                showLoader();
+            }
+            else {
+                hideLoader();
+            }
+        });
+
         categoryRV.setHasFixedSize(true);
         categoryRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 

@@ -18,28 +18,23 @@ import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
-import ru.nemodev.project.quotes.ui.quote.QuoteInteractor;
-import ru.nemodev.project.quotes.ui.quote.QuoteInteractorImpl;
+import ru.nemodev.project.quotes.service.quote.QuoteService;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
-public class QuoteWidgetProvider extends AppWidgetProvider
-{
+public class QuoteWidgetProvider extends AppWidgetProvider {
     private static final String UPDATE_WIDGET_BUTTON_ACTION = "UPDATE_WIDGET_BUTTON_ACTION";
-    private static final QuoteInteractor quoteLoader = new QuoteInteractorImpl();
+    private static final QuoteService quoteService = QuoteService.getInstance();
 
     public static final String IS_PURCHASE_QUOTE_WIDGET_KEY = "IS_PURCHASE_QUOTE_WIDGET";
 
     public static final String QUOTE_ID_BUNDLE_KEY = "quote_id";
 
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
-    {
-        if (appWidgetIds.length > 0)
-        {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        if (appWidgetIds.length > 0) {
             final String packageName = context.getPackageName();
 
-            for (int appWidgetId : appWidgetIds)
-            {
+            for (int appWidgetId : appWidgetIds) {
                 RemoteViews remoteViews = new RemoteViews(packageName, R.layout.quote_widget);
                 remoteViews.setOnClickPendingIntent(R.id.updateWidgetButton,
                         getPendingSelfIntent(context, UPDATE_WIDGET_BUTTON_ACTION, appWidgetId));
@@ -49,54 +44,44 @@ public class QuoteWidgetProvider extends AppWidgetProvider
         }
     }
 
-    private void updateQuote(final AppWidgetManager appWidgetManager, final int appWidgetId, final RemoteViews remoteViews, final boolean fromCache)
-    {
-        if (AndroidApplication.getInstance().getAppSetting().getBoolean(IS_PURCHASE_QUOTE_WIDGET_KEY))
-        {
+    private void updateQuote(final AppWidgetManager appWidgetManager, final int appWidgetId, final RemoteViews remoteViews, final boolean fromCache) {
+        if (AndroidApplication.getInstance().getAppSetting().getBoolean(IS_PURCHASE_QUOTE_WIDGET_KEY)) {
             Long selectQuoteId = AndroidApplication.getInstance().getAppSetting().getLong(QUOTE_ID_BUNDLE_KEY);
-            if (selectQuoteId != null && selectQuoteId != 0L)
-            {
-                quoteLoader.getById(selectQuoteId)
+            if (selectQuoteId != null && selectQuoteId != 0L) {
+                quoteService.getById(selectQuoteId)
                         .subscribe(quoteInfo -> updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
                                 quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName()),
                                 exception -> showErrorLoad(appWidgetManager, appWidgetId, remoteViews));
             }
-            else
-            {
-                quoteLoader.loadRandom(50)
+            else {
+                quoteService.getRandom(50)
                     .subscribe(new Observer<List<QuoteInfo>>() {
                         @Override
                         public void onSubscribe(Disposable d) { }
 
                         @Override
                         public void onNext(List<QuoteInfo> quoteInfos) {
-                            if (CollectionUtils.isNotEmpty(quoteInfos))
-                            {
+                            if (CollectionUtils.isNotEmpty(quoteInfos)) {
                                 QuoteInfo quoteInfo = QuoteUtils.getQuoteForWidget(quoteInfos);
-                                if (quoteInfo == null)
-                                {
+                                if (quoteInfo == null) {
                                     updateQuote(appWidgetManager, appWidgetId, remoteViews, fromCache);
                                 }
-                                else
-                                {
+                                else {
                                     updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
                                             quoteInfo.getQuote().getText(), quoteInfo.getAuthor().getFullName());
                                 }
                             }
-                            else
-                            {
+                            else {
                                 showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            if (!fromCache)
-                            {
+                            if (!fromCache) {
                                 updateQuote(appWidgetManager, appWidgetId, remoteViews, true);
                             }
-                            else
-                            {
+                            else {
                                 showErrorLoad(appWidgetManager, appWidgetId, remoteViews);
                             }
                         }
@@ -106,8 +91,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider
                     });
             }
         }
-        else
-        {
+        else {
             showNotPurchaseInfo(appWidgetManager, appWidgetId, remoteViews);
         }
 
@@ -115,12 +99,10 @@ public class QuoteWidgetProvider extends AppWidgetProvider
     }
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (UPDATE_WIDGET_BUTTON_ACTION.equals(intent.getAction()))
-        {
+        if (UPDATE_WIDGET_BUTTON_ACTION.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.quote_widget);
 
@@ -131,19 +113,16 @@ public class QuoteWidgetProvider extends AppWidgetProvider
     }
 
     @Override
-    public void onDeleted(Context context, int[] appWidgetIds)
-    {
+    public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
 
         AppWidgetHost appWidgetHost = new AppWidgetHost(context, 1);
-        for (int widgetId : appWidgetIds)
-        {
+        for (int widgetId : appWidgetIds) {
             appWidgetHost.deleteAppWidgetId(widgetId);
         }
     }
 
-    private PendingIntent getPendingSelfIntent(Context context, String action, int appWidgetId)
-    {
+    private PendingIntent getPendingSelfIntent(Context context, String action, int appWidgetId) {
         Intent intent = new Intent(context, getClass());
         intent.setAction(action);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -152,22 +131,19 @@ public class QuoteWidgetProvider extends AppWidgetProvider
     }
 
     private void updateQuoteInfo(AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews,
-                                 String quoteText, String authorText)
-    {
+                                 String quoteText, String authorText) {
         remoteViews.setTextViewText(R.id.quoteText, quoteText);
         remoteViews.setTextViewText(R.id.quoteAuthorName, QuoteUtils.QUOTE_AUTHOR_SYMBOL + authorText);
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    private void showErrorLoad(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
-    {
+    private void showErrorLoad(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews) {
         updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
                 AndroidUtils.getString(R.string.widget_update_error), AndroidUtils.getString(R.string.dev_author_name));
     }
 
-    private void showNotPurchaseInfo(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews)
-    {
+    private void showNotPurchaseInfo(final AppWidgetManager appWidgetManager, final int appWidgetId, RemoteViews remoteViews) {
         updateQuoteInfo(appWidgetManager, appWidgetId, remoteViews,
                 AndroidUtils.getString(R.string.widget_not_purchase), AndroidUtils.getString(R.string.dev_author_name));
     }

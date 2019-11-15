@@ -65,13 +65,8 @@ public class PurchaseListFragment extends BaseFragment {
 
         PurchaseAdapter adapter = new PurchaseAdapter(getContext(), this::onPurchaseClick);
         recyclerView.setAdapter(adapter);
-        viewModel.getPurchaseList(this).observe(this,
+        viewModel.purchaseList.observe(this,
                 purchases -> adapter.submitList(purchases, this::hideLoader));
-
-        viewModel.onPurchaseEvent.observe(this, purchase ->
-                viewModel.getPurchaseList(this)
-                        .observe(this,
-                                purchases -> adapter.submitList(purchases, this::hideLoader)));
     }
 
     private void showMessage(String message) {

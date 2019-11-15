@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.repository.db.author;
 
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,6 +19,14 @@ public interface AuthorRepository
     @Transaction
     @Query("SELECT * FROM authors ORDER BY full_name")
     Observable<List<Author>> getAll();
+
+    @Transaction
+    @Query("SELECT * FROM authors ORDER BY full_name")
+    DataSource.Factory<Integer, Author> getAllLiveData();
+
+    @Transaction
+    @Query("SELECT * FROM authors a WHERE upper(a.full_name) like '%' || upper(:name) || '%' ORDER BY a.full_name")
+    DataSource.Factory<Integer, Author> findByNameLiveData(String name);
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

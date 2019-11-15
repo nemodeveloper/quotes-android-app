@@ -15,8 +15,6 @@ import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
 import ru.nemodev.project.quotes.repository.api.dto.QuoteDTO;
 import ru.nemodev.project.quotes.repository.api.quote.QuoteApi;
 import ru.nemodev.project.quotes.repository.api.quote.QuoteApiFactory;
-import ru.nemodev.project.quotes.repository.cache.quote.QuoteCacheRepository;
-import ru.nemodev.project.quotes.repository.cache.quote.QuoteCacheRepositoryImpl;
 import ru.nemodev.project.quotes.repository.db.quote.QuoteRepository;
 import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 
@@ -24,12 +22,10 @@ import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 public class QuoteService {
     private static volatile QuoteService instance = new QuoteService();
 
-    private final QuoteCacheRepository quoteCacheRepository;
     private final QuoteRepository quoteRepository;
     private final QuoteApi quoteApi;
 
     private QuoteService() {
-        quoteCacheRepository = new QuoteCacheRepositoryImpl();
         quoteRepository = AppDataBase.getInstance().getQuoteRepository();
         quoteApi = new QuoteApiFactory().createApi();
     }
@@ -46,65 +42,33 @@ public class QuoteService {
 
         return Observable.concat(
                 gatewayObservable,
-                quoteRepository.getRandom(count).toObservable())
+                quoteRepository.getRandom(count))
                     .filter(CollectionUtils::isNotEmpty)
                     .first(Collections.emptyList())
                     .toObservable()
                     .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<QuoteInfo>> getByAuthor(Long authorId) {
-        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
-                .getByAuthor(authorId)
-                .map(this::saveToDataBase)
-                .map(quoteInfoList -> {
-                    quoteCacheRepository.putAuthorQuotes(authorId, quoteInfoList);
-                    return quoteInfoList;
-                })
-                .onErrorResumeNext(Observable.empty());
-
-        return Observable.concat(
-                quoteCacheRepository.getByAuthor(authorId),
-                gatewayObservable,
-                quoteRepository.getByAuthorId(authorId)
-                        .filter(CollectionUtils::isNotEmpty)
-                        .map(quoteInfoList -> {
-                            quoteCacheRepository.putAuthorQuotes(authorId, quoteInfoList);
-                            return quoteInfoList;
-                        })
-                        .toObservable()
-                )
-                    .filter(CollectionUtils::isNotEmpty)
-                    .first(Collections.emptyList())
-                    .toObservable()
-                    .subscribeOn(Schedulers.io());
+    public Observable<QuoteInfo> getById(Long quoteId)
+    {
+        return AppDataBase.getInstance().getQuoteRepository().getById(quoteId)
+                .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<QuoteInfo>> getByCategory(Long categoryId) {
-        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
-                .getByCategory(categoryId)
+    public Observable<Boolean> syncWithServerByAuthor(Long authorId) {
+        return quoteApi.getByAuthor(authorId)
                 .map(this::saveToDataBase)
-                .map(quoteInfoList -> {
-                    quoteCacheRepository.putCategoryQuotes(categoryId, quoteInfoList);
-                    return quoteInfoList;
-                })
-                .onErrorResumeNext(Observable.empty());
+                .flatMap(quoteInfos -> Observable.just(true))
+                .onErrorResumeNext(Observable.just(false))
+                .subscribeOn(Schedulers.io());
+    }
 
-        return Observable.concat(
-                quoteCacheRepository.getByCategory(categoryId),
-                gatewayObservable,
-                quoteRepository.getByCategoryId(categoryId)
-                        .filter(CollectionUtils::isNotEmpty)
-                        .map(quoteInfoList -> {
-                            quoteCacheRepository.putCategoryQuotes(categoryId, quoteInfoList);
-                            return quoteInfoList;
-                        })
-                        .toObservable()
-                )
-                    .filter(CollectionUtils::isNotEmpty)
-                    .first(Collections.emptyList())
-                    .toObservable()
-                    .subscribeOn(Schedulers.io());
+    public Observable<Boolean> syncWithServerByCategory(Long categoryId) {
+        return quoteApi.getByCategory(categoryId)
+                .map(this::saveToDataBase)
+                .flatMap(quoteInfos -> Observable.just(true))
+                .onErrorResumeNext(Observable.just(false))
+                .subscribeOn(Schedulers.io());
     }
 
     private List<QuoteInfo> saveToDataBase(List<QuoteDTO> quotes) {

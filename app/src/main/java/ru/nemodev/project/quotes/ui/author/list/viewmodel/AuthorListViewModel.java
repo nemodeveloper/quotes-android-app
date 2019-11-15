@@ -1,22 +1,28 @@
 package ru.nemodev.project.quotes.ui.author.list.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import ru.nemodev.project.quotes.entity.author.Author;
-import ru.nemodev.project.quotes.service.author.AuthorService;
-import ru.nemodev.project.quotes.ui.author.list.source.AuthorListDataSource;
+import org.apache.commons.lang3.StringUtils;
 
-public class AuthorListViewModel extends ViewModel {
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import ru.nemodev.project.quotes.entity.author.Author;
+import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
+import ru.nemodev.project.quotes.service.author.AuthorService;
+import ru.nemodev.project.quotes.ui.base.BaseViewModel;
+
+
+public class AuthorListViewModel extends BaseViewModel {
 
     private LiveData<PagedList<Author>> authorList;
 
-    public AuthorListViewModel() { }
+    public AuthorListViewModel() {
+        super();
+    }
 
     public LiveData<PagedList<Author>> getAuthorList(LifecycleOwner lifecycleOwner, String authorName) {
 
@@ -24,24 +30,45 @@ public class AuthorListViewModel extends ViewModel {
             authorList.removeObservers(lifecycleOwner);
         }
 
-        DataSource.Factory<Integer, Author> factFactory = new DataSource.Factory<Integer, Author>() {
-            @NonNull
-            @Override
-            public DataSource<Integer, Author> create() {
-                return new AuthorListDataSource(authorName, AuthorService.getInstance());
-            }
-        };
+        DataSource.Factory<Integer, Author> factFactory = StringUtils.isEmpty(authorName)
+                ? AppDataBase.getInstance().getAuthorRepository().getAllLiveData()
+                : AppDataBase.getInstance().getAuthorRepository().findByNameLiveData(authorName);
 
         authorList = new LivePagedListBuilder<>(
                     factFactory,
                     new PagedList.Config.Builder()
                             .setEnablePlaceholders(false)
-                            .setPageSize(10)
-                            .setPrefetchDistance(5)
+                            .setPageSize(500)
+                            .setPrefetchDistance(100)
                             .build())
                     .build();
 
         return authorList;
+    }
+
+    public void onInternetEvent(boolean isAvailable) {
+        if (!synced.get() && isAvailable) {
+            startWorkEvent.postValue(true);
+            AuthorService.getInstance().syncWithServer()
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        synced.set(aBoolean);
+                        startWorkEvent.postValue(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        startWorkEvent.postValue(false);
+                    }
+
+                    @Override
+                    public void onComplete() { }
+                });
+        }
     }
 
 }

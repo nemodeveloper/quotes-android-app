@@ -10,7 +10,6 @@ import androidx.room.Transaction;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import ru.nemodev.project.quotes.entity.author.AuthorUtils;
 import ru.nemodev.project.quotes.entity.category.CategoryUtils;
 import ru.nemodev.project.quotes.entity.quote.Quote;
@@ -24,25 +23,23 @@ public abstract class QuoteRepository
 {
     @Transaction
     @Query("SELECT * FROM quotes ORDER BY RANDOM() LIMIT :count")
-    public abstract Single<List<QuoteInfo>> getRandom(int count);
+    public abstract Observable<List<QuoteInfo>> getRandom(int count);
 
     @Transaction
     @Query("SELECT * FROM quotes WHERE id = :id")
-    public abstract Single<QuoteInfo> getById(Long id);
+    public abstract Observable<QuoteInfo> getById(Long id);
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void add(List<Quote> quotes);
 
     @Transaction
-    @Query("SELECT * FROM quotes" +
-            " WHERE quotes.author_id = :authorId")
-    public abstract Single<List<QuoteInfo>> getByAuthorId(Long authorId);
+    @Query("SELECT * FROM quotes WHERE quotes.author_id = :authorId")
+    public abstract DataSource.Factory<Integer, QuoteInfo> getByAuthorId(Long authorId);
 
     @Transaction
-    @Query("SELECT * FROM quotes" +
-            " WHERE quotes.category_id = :categoryId")
-    public abstract Single<List<QuoteInfo>> getByCategoryId(Long categoryId);
+    @Query("SELECT * FROM quotes WHERE quotes.category_id = :categoryId")
+    public abstract DataSource.Factory<Integer, QuoteInfo> getByCategoryId(Long categoryId);
 
     @Transaction
     public void addQuoteInfo(List<QuoteInfo> quoteInfoList)

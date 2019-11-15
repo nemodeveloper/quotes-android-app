@@ -2,7 +2,6 @@ package ru.nemodev.project.quotes.ui.category.list.viewmodel;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -14,15 +13,15 @@ import io.reactivex.disposables.Disposable;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 import ru.nemodev.project.quotes.service.category.CategoryService;
+import ru.nemodev.project.quotes.ui.base.BaseViewModel;
 
 
-public class CategoryListViewModel extends ViewModel {
+public class CategoryListViewModel extends BaseViewModel {
 
     private LiveData<PagedList<Category>> categoryList;
-    private Boolean synced;
 
     public CategoryListViewModel() {
-        this.synced = false;
+        super();
     }
 
     public LiveData<PagedList<Category>> getCategoryList(LifecycleOwner lifecycleOwner, String categoryName) {
@@ -48,7 +47,8 @@ public class CategoryListViewModel extends ViewModel {
     }
 
     public void onInternetEvent(boolean isAvailable) {
-        if (!synced && isAvailable) {
+        if (!synced.get() && isAvailable) {
+            startWorkEvent.postValue(true);
             CategoryService.getInstance().syncWithServer()
                 .subscribe(new Observer<Boolean>() {
                     @Override
@@ -56,18 +56,17 @@ public class CategoryListViewModel extends ViewModel {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        synced = aBoolean;
+                        synced.set(aBoolean);
+                        startWorkEvent.postValue(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        startWorkEvent.postValue(false);
                     }
 
                     @Override
-                    public void onComplete() {
-
-                    }
+                    public void onComplete() { }
                 });
         }
     }
