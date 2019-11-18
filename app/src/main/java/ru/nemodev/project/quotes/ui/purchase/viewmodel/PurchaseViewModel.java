@@ -53,7 +53,6 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
         this.billingProcessor.initialize();
         this.purchaseInteractor = new PurchaseInteractorImpl(activity, billingProcessor);
 
-        // TODO тут подумать лучше перейти на List с PagedList
         purchaseList.postValue(new PagedList.Builder<>(
                 new PurchaseListDataSource(purchaseInteractor),
                 new PagedList.Config.Builder()

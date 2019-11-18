@@ -52,9 +52,8 @@ public class RandomQuoteListFragment extends BaseFragment {
 
         RandomQuoteListAdapter adapter = new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity());
         binding.quoteList.setAdapter(adapter);
-        viewModel.randomQuoteList.observe(this, quoteInfos -> {
-            adapter.submitList(quoteInfos, this::hideLoader);
-        });
+        viewModel.randomQuoteList.observe(this,
+                quoteInfos -> adapter.submitList(quoteInfos, this::hideLoader));
     }
 
     private void connectToNetworkEvents() {

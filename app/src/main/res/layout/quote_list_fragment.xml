@@ -21,7 +21,6 @@
                 android:background="#EEEEEE">
             </androidx.recyclerview.widget.RecyclerView>
 
-            <include layout="@layout/content_loader_view"/>
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

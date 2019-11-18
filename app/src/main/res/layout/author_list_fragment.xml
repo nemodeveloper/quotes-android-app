@@ -19,7 +19,6 @@
                 android:layout_height="match_parent">
             </androidx.recyclerview.widget.RecyclerView>
 
-            <include layout="@layout/content_loader_view"/>
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
