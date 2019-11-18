@@ -62,4 +62,11 @@ public class QuoteByCategoryViewModel extends BaseViewModel {
         }
     }
 
+    public void refresh() {
+        if (quoteByCategoryList.getValue() != null) {
+            startWorkEvent.postValue(true);
+            quoteByCategoryList.getValue().getDataSource().invalidate();
+        }
+    }
+
 }

@@ -62,4 +62,11 @@ public class QuoteByAuthorViewModel extends BaseViewModel {
         }
     }
 
+    public void refresh() {
+        if (quoteByAuthorList.getValue() != null) {
+            startWorkEvent.postValue(true);
+            quoteByAuthorList.getValue().getDataSource().invalidate();
+        }
+    }
+
 }

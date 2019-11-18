@@ -25,7 +25,8 @@ public class RandomQuoteDataSource extends BaseQuoteDataSource {
 
                     @Override
                     public void onNext(List<QuoteInfo> quoteInfos) {
-                        callback.onResult(quoteInfos, params.requestedStartPosition);
+                        callback.onResult(quoteInfos, params.requestedStartPosition < 0
+                                ? 0 : params.requestedStartPosition);
                     }
 
                     @Override

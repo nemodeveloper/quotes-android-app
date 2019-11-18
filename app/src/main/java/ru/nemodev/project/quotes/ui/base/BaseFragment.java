@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
+import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public abstract class BaseFragment extends Fragment {
@@ -37,6 +39,7 @@ public abstract class BaseFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
+        progressDialog.setMessage(AndroidUtils.getString(R.string.load_message));
 
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 

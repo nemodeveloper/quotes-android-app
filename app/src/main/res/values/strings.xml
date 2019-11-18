@@ -93,5 +93,6 @@
 
     <!-- Ошибки -->
     <string name="quote_like_error">Произошла ошибка, попробуйте повторить действие позже</string>
+    <string name="load_message">Загрузка...</string>
 
 </resources>

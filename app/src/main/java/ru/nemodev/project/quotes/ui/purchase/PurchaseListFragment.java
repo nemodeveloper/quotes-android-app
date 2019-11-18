@@ -73,7 +73,6 @@ public class PurchaseListFragment extends BaseFragment {
         }
     }
 
-    // TODO сделать общее view как с загрузкой для всех фрагментов
     private void showEmptyContentView(boolean show) {
         binding.purchaseEmptyView.setVisibility(show ? View.VISIBLE : View.GONE);
     }

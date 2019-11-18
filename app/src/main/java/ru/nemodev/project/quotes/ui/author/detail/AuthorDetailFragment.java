@@ -50,6 +50,7 @@ public class AuthorDetailFragment extends BaseFragment {
                 showLoader();
             }
             else {
+                binding.swipeRefresh.setRefreshing(false);
                 hideLoader();
             }
         });
@@ -62,7 +63,15 @@ public class AuthorDetailFragment extends BaseFragment {
         QuoteByAuthorAdapter adapter = new QuoteByAuthorAdapter(getContext(), (MainActivity) getActivity());
         binding.quoteList.setAdapter(adapter);
         viewModel.getQuoteByAuthorList(args.getAuthorId())
-                .observe(this, quoteInfos -> adapter.submitList(quoteInfos, this::hideLoader));
+                .observe(this, quoteInfos -> adapter.submitList(quoteInfos, () -> {
+                    binding.quoteList.scrollToPosition(0);
+                    binding.swipeRefresh.setRefreshing(false);
+                    hideLoader();
+                }));
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            viewModel.refresh();
+        });
     }
 
     private void connectToNetworkEvents() {

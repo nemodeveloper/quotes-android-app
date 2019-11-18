@@ -53,13 +53,22 @@ public class RandomQuoteListFragment extends BaseFragment {
         RandomQuoteListAdapter adapter = new RandomQuoteListAdapter(getActivity(), (MainActivity) getActivity());
         binding.quoteList.setAdapter(adapter);
         viewModel.randomQuoteList.observe(this,
-                quoteInfos -> adapter.submitList(quoteInfos, this::hideLoader));
+                quoteInfos -> adapter.submitList(quoteInfos, () -> {
+                    binding.quoteList.scrollToPosition(0);
+                    binding.swipeRefresh.setRefreshing(false);
+                    hideLoader();
+                }));
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            showLoader();
+            viewModel.refresh();
+        });
     }
 
     private void connectToNetworkEvents() {
         mainViewModel.networkState.observe(this, state -> {
             if (state == NetworkInfo.State.CONNECTED) {
-                // TODO обновлять данные и перед этим чистить кеш так же во всех фрагментах
+                viewModel.onInternetEvent(true);
             }
             else {
                 AndroidUtils.showSnackBarMessage(root, R.string.not_full_quotes_message);
