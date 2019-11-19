@@ -2,6 +2,7 @@ package ru.nemodev.project.quotes.ui.author.list.viewmodel;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -18,10 +19,12 @@ import ru.nemodev.project.quotes.ui.base.BaseViewModel;
 
 public class AuthorListViewModel extends BaseViewModel {
 
+    public final MutableLiveData<String> searchString;
     private LiveData<PagedList<Author>> authorList;
 
     public AuthorListViewModel() {
         super();
+        this.searchString = new MutableLiveData<>();
     }
 
     public LiveData<PagedList<Author>> getAuthorList(LifecycleOwner lifecycleOwner, String authorName) {
@@ -33,6 +36,8 @@ public class AuthorListViewModel extends BaseViewModel {
         DataSource.Factory<Integer, Author> factFactory = StringUtils.isEmpty(authorName)
                 ? AppDataBase.getInstance().getAuthorRepository().getAllLiveData()
                 : AppDataBase.getInstance().getAuthorRepository().findByNameLiveData(authorName);
+
+        searchString.postValue(authorName);
 
         authorList = new LivePagedListBuilder<>(
                     factFactory,

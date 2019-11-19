@@ -59,34 +59,34 @@ public class CategoryListFragment extends BaseFragment {
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(AndroidUtils.getString(R.string.category_search_hint));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query)
-            {
+            public boolean onQueryTextSubmit(String query) {
                 searchCategory(query);
-                return false;
+                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String query)
-            {
+            public boolean onQueryTextChange(String query) {
                 searchCategory(query);
-                return false;
+                return true;
             }
         });
+
+        viewModel.searchString.observe(this, s -> searchView.setQuery(s, false));
     }
 
     private void searchCategory(String search) {
-        showLoader();
-
         if (StringUtils.isNotEmpty(search)) {
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
         }
 
         CategoryListAdapter adapter = (CategoryListAdapter) binding.categoryList.getAdapter();
         viewModel.getCategoryList(this, search).observe(this,
-                categories-> adapter.submitList(categories, this::hideLoader));
+                categories-> adapter.submitList(categories, () -> {
+                    binding.categoryList.scrollToPosition(0);
+                    hideLoader();
+                }));
     }
 
     @Override
@@ -145,5 +145,11 @@ public class CategoryListFragment extends BaseFragment {
         if (searchView != null) {
             searchView.clearFocus();
         }
+    }
+
+    @Override
+    public void onPause() {
+        clearSearchFocus();
+        super.onPause();
     }
 }

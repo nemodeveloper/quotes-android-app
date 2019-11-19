@@ -63,27 +63,30 @@ public class AuthorListFragment extends BaseFragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchAuthor(query);
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
                 searchAuthor(query);
-                return false;
+                return true;
             }
         });
 
+        viewModel.searchString.observe(this, s -> searchView.setQuery(s, false));
     }
 
     private void searchAuthor(String search) {
-        showLoader();
-
         if (StringUtils.isNotEmpty(search)) {
             MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
         }
 
         viewModel.getAuthorList(this, search).observe(this,
-                authors -> ((AuthorListAdapter) binding.authorList.getAdapter()).submitList(authors, this::hideLoader));
+                authors -> ((AuthorListAdapter) binding.authorList.getAdapter()).submitList(authors,
+                        () -> {
+                            binding.authorList.scrollToPosition(0);
+                            hideLoader();
+                        }));
     }
 
     @Override
@@ -112,7 +115,7 @@ public class AuthorListFragment extends BaseFragment {
         binding.authorList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         AuthorListAdapter adapter = new AuthorListAdapter(getContext(), item -> {
-            clearSearchFocus(); // TODO если вернуться обратно показываются результаты поиска без строки поиска
+            clearSearchFocus();
             MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_MENU);
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.openQuoteFragment(item);
@@ -138,9 +141,14 @@ public class AuthorListFragment extends BaseFragment {
     }
 
     private void clearSearchFocus() {
-        if (searchView != null)
-        {
+        if (searchView != null) {
             searchView.clearFocus();
         }
+    }
+
+    @Override
+    public void onPause() {
+        clearSearchFocus();
+        super.onPause();
     }
 }

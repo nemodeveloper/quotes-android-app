@@ -2,6 +2,7 @@ package ru.nemodev.project.quotes.ui.category.list.viewmodel;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -18,10 +19,12 @@ import ru.nemodev.project.quotes.ui.base.BaseViewModel;
 
 public class CategoryListViewModel extends BaseViewModel {
 
+    public final MutableLiveData<String> searchString;
     private LiveData<PagedList<Category>> categoryList;
 
     public CategoryListViewModel() {
         super();
+        this.searchString = new MutableLiveData<>();
     }
 
     public LiveData<PagedList<Category>> getCategoryList(LifecycleOwner lifecycleOwner, String categoryName) {
@@ -33,6 +36,8 @@ public class CategoryListViewModel extends BaseViewModel {
         DataSource.Factory<Integer, Category> factFactory = StringUtils.isEmpty(categoryName)
                 ? AppDataBase.getInstance().getCategoryRepository().getAllLiveData()
                 : AppDataBase.getInstance().getCategoryRepository().findByNameLiveData(categoryName);
+
+        searchString.postValue(categoryName);
 
         categoryList = new LivePagedListBuilder<>(
                 factFactory,
