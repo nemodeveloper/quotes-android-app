@@ -53,11 +53,12 @@ public abstract class QuoteRepository
     @Query("UPDATE quotes SET liked = :liked, like_date = :likeDate WHERE id = :id")
     public abstract void like(Long id, boolean liked, Long likeDate);
 
-    public Observable<Quote> likeAsync(Quote quote)
+    public Observable<QuoteInfo> likeAsync(QuoteInfo quoteInfo)
     {
         return Observable.fromCallable(() -> {
-            like(quote.getId(), quote.getLiked(), DataTypeConverter.fromCalendar(quote.getLikeDate()));
-            return quote;
+            like(quoteInfo.getQuote().getId(), quoteInfo.getQuote().getLiked(),
+                    DataTypeConverter.fromCalendar(quoteInfo.getQuote().getLikeDate()));
+            return quoteInfo;
         });
     }
 

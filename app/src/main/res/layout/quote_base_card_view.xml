@@ -1,102 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <import type="ru.nemodev.project.quotes.entity.quote.QuoteUtils" alias="QuoteUtils"/>
+        <variable
+            name="quoteAdapter"
+            type="ru.nemodev.project.quotes.ui.base.BaseQuoteAdapter" />
+        <variable
+            name="quoteInfo"
+            type="ru.nemodev.project.quotes.entity.quote.QuoteInfo" />
+    </data>
 
-<ru.nemodev.project.quotes.ui.base.BaseQuoteCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/quoteCardItem"
-    card_view:cardElevation="2dp"
-    card_view:cardCornerRadius="0dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/mtrl_card_spacing"
-    android:background="@color/quoteCardBackground">
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/quoteCardItem"
+        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="0dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:background="@color/quoteCardBackground">
         <RelativeLayout
-            android:id="@+id/authorBlock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/authorImg"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"/>
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
             <RelativeLayout
-                android:id="@+id/authorNameBlock"
+                android:id="@+id/authorBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/authorImg"
-                android:layout_marginStart="10dp"
+                android:onClick="@{() -> quoteAdapter.onQuoteCardClickListener.onAuthorClick(quoteInfo.author)}">
+                <ImageView
+                    android:id="@+id/authorImg"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    bind:authorAvatar="@{quoteInfo.author}"/>
+                <RelativeLayout
+                    android:id="@+id/authorNameBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/authorImg"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true">
+                    <TextView
+                        android:id="@+id/authorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@color/quoteAuthor"
+                        android:text="@{quoteInfo.author.fullName}"/>
+                    <TextView
+                        android:id="@+id/quoteSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/authorName"
+                        android:textSize="14sp"
+                        android:textColor="@color/quoteSource"
+                        android:text="@{QuoteUtils.getQuoteSource(quoteInfo, true)}" />
+                </RelativeLayout>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/quoteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/authorBlock"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/quoteText"
+                android:text="@{quoteInfo.quote.text}"/>
+            <RelativeLayout
+                android:id="@+id/quoteActions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/quoteText"
                 android:layout_centerVertical="true">
-                <TextView
-                    android:id="@+id/authorName"
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/quoteCategoryButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/quoteAuthor"/>
-                <TextView
-                    android:id="@+id/quoteSource"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/authorName"
-                    android:textSize="14sp"
-                    android:textColor="@color/quoteSource"/>
+                    android:layout_alignParentStart="true"
+                    android:textSize="12sp"
+                    android:text="@{quoteInfo.category.name}"
+                    android:onClick="@{() -> quoteAdapter.onQuoteCardClickListener.onCategoryClick(quoteInfo.category)}"/>
+                <ImageView
+                    android:id="@+id/likeQuote"
+                    android:layout_width="@dimen/quote_but_like_size"
+                    android:layout_height="@dimen/quote_but_like_size"
+                    android:layout_centerVertical="true"
+                    android:src="@{quoteInfo.quote.liked ? @drawable/ic_like : @drawable/ic_unlike}"
+                    android:background="@null"
+                    android:layout_marginEnd="@dimen/quote_like_margin_right"
+                    android:layout_toStartOf="@id/quoteToWidget"
+                    android:onClick="@{(view) -> quoteAdapter.onLikeClick(view, quoteInfo)}"/>
+                <ImageView
+                    android:id="@+id/quoteToWidget"
+                    android:layout_width="@dimen/quote_but_like_size"
+                    android:layout_height="@dimen/quote_but_like_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_widget"
+                    android:background="@null"
+                    android:layout_marginEnd="@dimen/quote_like_margin_right"
+                    android:layout_toStartOf="@id/shareQuote"
+                    android:onClick="@{() -> quoteAdapter.onQuoteCardClickListener.onWidgetClick(quoteInfo)}"/>
+                <ImageView
+                    android:id="@+id/shareQuote"
+                    android:layout_width="@dimen/quote_but_share_size"
+                    android:layout_height="@dimen/quote_but_share_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_share"
+                    android:background="@null"
+                    android:layout_alignParentEnd="true"
+                    android:onClick="@{() -> quoteAdapter.onQuoteCardClickListener.onShareClick(quoteInfo)}"/>
             </RelativeLayout>
         </RelativeLayout>
-        <TextView
-            android:id="@+id/quoteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/authorBlock"
-            android:layout_marginTop="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/quoteText"/>
-        <RelativeLayout
-            android:id="@+id/quoteActions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@+id/quoteText"
-            android:layout_centerVertical="true">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/quoteCategoryButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:textSize="12sp" />
-            <ImageView
-                android:id="@+id/likeQuote"
-                android:layout_width="@dimen/quote_but_like_size"
-                android:layout_height="@dimen/quote_but_like_size"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_unlike"
-                android:background="@null"
-                android:layout_marginEnd="@dimen/quote_like_margin_right"
-                android:layout_toStartOf="@id/quoteToWidget"/>
-            <ImageView
-                android:id="@+id/quoteToWidget"
-                android:layout_width="@dimen/quote_but_like_size"
-                android:layout_height="@dimen/quote_but_like_size"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_widget"
-                android:background="@null"
-                android:layout_marginEnd="@dimen/quote_like_margin_right"
-                android:layout_toStartOf="@id/shareQuote"/>
-            <ImageView
-                android:id="@+id/shareQuote"
-                android:layout_width="@dimen/quote_but_share_size"
-                android:layout_height="@dimen/quote_but_share_size"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_share"
-                android:background="@null"
-                android:layout_alignParentEnd="true"/>
-        </RelativeLayout>
-    </RelativeLayout>
-</ru.nemodev.project.quotes.ui.base.BaseQuoteCardView>
-
+    </com.google.android.material.card.MaterialCardView>
+</layout>

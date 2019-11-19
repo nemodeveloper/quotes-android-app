@@ -1,5 +1,11 @@
 package ru.nemodev.project.quotes.entity.purchase;
 
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.anjlab.android.iab.v3.SkuDetails;
 
 import org.apache.commons.lang3.StringUtils;
@@ -68,5 +74,11 @@ public class Purchase
         }
 
         return StringUtils.strip(title);
+    }
+
+    @BindingAdapter({"purchaseImg"})
+    public static void loadImage(ImageView imageView, Purchase purchase) {
+        imageView.setImageDrawable(TextDrawable.builder()
+                .buildRound("", ColorGenerator.MATERIAL.getColor(purchase.getPurchaseType().getProductId())));
     }
 }

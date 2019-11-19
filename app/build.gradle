@@ -135,10 +135,6 @@ dependencies {
     implementation 'androidx.room:room-rxjava2:2.2.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.1'
 
-    // butterknife
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
-
     // purchase
     implementation 'com.anjlab.android.iab.v3:library:1.1.0'
 

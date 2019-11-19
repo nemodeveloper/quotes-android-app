@@ -1,18 +1,31 @@
 package ru.nemodev.project.quotes.ui.base;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AndroidApplication;
+import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
 
-public abstract class BaseQuoteAdapter extends PagedListAdapter<QuoteInfo, BaseQuoteAdapter.BaseQuoteViewHolder>
-{
+
+public abstract class BaseQuoteAdapter<VH extends RecyclerView.ViewHolder> extends PagedListAdapter<QuoteInfo, VH> {
+
     private static DiffUtil.ItemCallback<QuoteInfo> DIFF_CALLBACK = new DiffUtil.ItemCallback<QuoteInfo>() {
         @Override
         public boolean areItemsTheSame(@NonNull QuoteInfo oldItem, @NonNull QuoteInfo newItem) {
@@ -25,52 +38,42 @@ public abstract class BaseQuoteAdapter extends PagedListAdapter<QuoteInfo, BaseQ
         }
     };
 
-    private final OnQuoteCardClickListener onQuoteCardClickListener;
     protected final Context context;
+    public final OnQuoteCardClickListener onQuoteCardClickListener;
 
-    public BaseQuoteAdapter(Context context, OnQuoteCardClickListener onQuoteCardClickListener)
-    {
+    public BaseQuoteAdapter(Context context, OnQuoteCardClickListener onQuoteCardClickListener) {
         super(DIFF_CALLBACK);
         this.context = context;
         this.onQuoteCardClickListener = onQuoteCardClickListener;
     }
 
-    public static class BaseQuoteViewHolder extends RecyclerView.ViewHolder
-    {
-        private final BaseQuoteCardView quoteCardView;
-
-        public BaseQuoteViewHolder(BaseQuoteCardView itemView)
-        {
-            super(itemView);
-            this.quoteCardView = itemView;
-        }
-
-        public void setQuote(QuoteInfo quote)
-        {
-            quoteCardView.setQuote(quote);
-        }
-
-        public void setOnLikeQuoteEvent(BaseQuoteCardView.OnLikeQuoteListener onLikeQuoteListener)
-        {
-            quoteCardView.setOnLikeQuoteListener(onLikeQuoteListener);
-        }
+    public void onLikeClick(View view, QuoteInfo quoteInfo) {
+        ImageView imageView = (ImageView) view;
+        imageView.setImageResource(quoteInfo.getQuote().getLiked() ? R.drawable.ic_unlike : R.drawable.ic_like);
+        onQuoteCardClickListener.onLikeClick(quoteInfo);
     }
 
-    @NonNull
-    @Override
-    public BaseQuoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        BaseQuoteCardView baseQuoteCardView = (BaseQuoteCardView) LayoutInflater.from(context).inflate(getCardViewLayoutId(), parent, false);
-        baseQuoteCardView.setOnQuoteCardClickListener(onQuoteCardClickListener);
+    @BindingAdapter({"authorAvatar"})
+    public static void loadAuthorAvatar(ImageView imageView, Author author) {
+        String authorNameText = author.getFullName();
 
-        return new BaseQuoteViewHolder(baseQuoteCardView);
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(authorNameText.substring(0, 1),
+                        ColorGenerator.MATERIAL.getColor(author.getId()));
+
+        if (StringUtils.isNotEmpty(author.getImageURL()))
+        {
+            Glide.with(AndroidApplication.getInstance())
+                    .load(author.getImageURL())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(drawable)
+                    .error(drawable)
+                    .transform(new CircleCrop())
+                    .into(imageView);
+        }
+        else
+        {
+            imageView.setImageDrawable(drawable);
+        }
     }
-
-    @Override
-    public void onBindViewHolder(@NonNull BaseQuoteViewHolder baseQuoteViewHolder, int position)
-    {
-        baseQuoteViewHolder.setQuote(getItem(position));
-    }
-
-    protected abstract int getCardViewLayoutId();
 }

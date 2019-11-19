@@ -1,48 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" alias="view"/>
+        <variable
+            name="purchase"
+            type="ru.nemodev.project.quotes.entity.purchase.Purchase" />
+        <variable
+            name="purchaseAdapter"
+            type="ru.nemodev.project.quotes.ui.purchase.PurchaseAdapter" />
+    </data>
 
-<ru.nemodev.project.quotes.ui.purchase.PurchaseCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/purchaseCardView"
-    card_view:cardElevation="2dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/mtrl_card_spacing">
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/purchaseCardView"
+        card_view:cardElevation="2dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:onClick="@{() -> purchaseAdapter.onPurchaseClick(purchase)}">
         <RelativeLayout
-            android:id="@+id/headBlock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/purchaseImg"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:id="@+id/purchaseTitle"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+            <RelativeLayout
+                android:id="@+id/headBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/purchaseImg"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    bind:purchaseImg="@{purchase}"/>
+                <TextView
+                    android:id="@+id/purchaseTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/purchaseImg"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:text="@{purchase.title}"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"/>
+            </RelativeLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/purchaseButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/purchaseImg"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/headBlock"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
-                android:textColor="@color/black"/>
+                android:text="@{purchase.priceText}"
+                android:visibility="@{purchase.purchase ? view.GONE : view.VISIBLE}"
+                android:onClick="@{() -> purchaseAdapter.onPurchaseClick(purchase)}"/>
         </RelativeLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/purchasePrice"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/headBlock"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textSize="20sp" />
-    </RelativeLayout>
-</ru.nemodev.project.quotes.ui.purchase.PurchaseCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
 

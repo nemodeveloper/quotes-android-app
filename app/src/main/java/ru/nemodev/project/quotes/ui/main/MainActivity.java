@@ -16,11 +16,22 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Calendar;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.databinding.MainActivityBinding;
 import ru.nemodev.project.quotes.entity.author.Author;
 import ru.nemodev.project.quotes.entity.category.Category;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
+import ru.nemodev.project.quotes.entity.quote.Quote;
+import ru.nemodev.project.quotes.entity.quote.QuoteInfo;
+import ru.nemodev.project.quotes.entity.quote.QuoteUtils;
+import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 import ru.nemodev.project.quotes.ui.author.list.AuthorListFragmentDirections;
 import ru.nemodev.project.quotes.ui.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.ui.category.list.CategoryListFragmentDirections;
@@ -29,6 +40,7 @@ import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.utils.MetricUtils;
+import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -119,12 +131,62 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onAuthorClick(Author author) {
+        MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD);
         openQuoteFragment(author);
     }
 
     @Override
     public void onCategoryClick(Category category) {
+        MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD);
         openQuoteFragment(category);
+    }
+
+    @Override
+    public void onLikeClick(QuoteInfo quoteInfo) {
+        Quote likeQuote = quoteInfo.getQuote();
+        likeQuote.setLiked(!likeQuote.getLiked());
+        likeQuote.setLikeDate(likeQuote.getLiked() ? Calendar.getInstance() : null);
+
+        AppDataBase.getInstance().getQuoteRepository().likeAsync(quoteInfo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<QuoteInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+
+                    @Override
+                    public void onNext(QuoteInfo quote) {
+                        if (quoteInfo.getQuote().getLiked()) {
+                            MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_LIKE);
+                        }
+                        else {
+                            MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_UNLIKE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.error(LOG_TAG, "Ошибка лайка цитаты!", e);
+                    }
+
+                    @Override
+                    public void onComplete() { }
+                });
+    }
+
+    @Override
+    public void onShareClick(QuoteInfo quoteInfo) {
+        MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
+        AndroidUtils.openShareDialog(this,
+                AndroidUtils.getString(R.string.share_quote_dialog_title),
+                QuoteUtils.getQuoteTextForShare(quoteInfo));
+    }
+
+    @Override
+    public void onWidgetClick(QuoteInfo quoteInfo) {
+        MetricUtils.viewEvent(MetricUtils.ViewType.QUOTE_TO_WIDGET);
+        AndroidApplication.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteInfo.getQuote().getId());
+        AndroidUtils.openAddWidgetDialog(this, QuoteWidgetProvider.class);
     }
 
     private void showUpdateDialog() {
