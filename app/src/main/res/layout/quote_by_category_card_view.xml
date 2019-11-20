@@ -2,6 +2,9 @@
 <layout xmlns:bind="http://schemas.android.com/tools">
     <data>
         <import type="ru.nemodev.project.quotes.entity.quote.QuoteUtils" alias="QuoteUtils"/>
+        <import type="ru.nemodev.project.quotes.utils.AndroidUtils" alias="AndroidUtils"/>
+        <import type="ru.nemodev.project.quotes.app.AndroidApplication" alias="App"/>
+        <import type="android.view.View" alias="View"/>
         <variable
             name="quoteAdapter"
             type="ru.nemodev.project.quotes.ui.base.BaseQuoteAdapter" />
@@ -97,6 +100,7 @@
                     android:background="@null"
                     android:layout_marginEnd="@dimen/quote_like_margin_right"
                     android:layout_toStartOf="@id/shareQuote"
+                    android:visibility="@{AndroidUtils.addWidgetFromAppSupported(App.getInstance()) ? View.VISIBLE : View.GONE}"
                     android:onClick="@{() -> quoteAdapter.onQuoteCardClickListener.onWidgetClick(quoteInfo)}"/>
                 <ImageView
                     android:id="@+id/shareQuote"

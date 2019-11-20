@@ -61,8 +61,7 @@ public abstract class BaseQuoteAdapter<VH extends RecyclerView.ViewHolder> exten
                 .buildRound(authorNameText.substring(0, 1),
                         ColorGenerator.MATERIAL.getColor(author.getId()));
 
-        if (StringUtils.isNotEmpty(author.getImageURL()))
-        {
+        if (StringUtils.isNotEmpty(author.getImageURL())) {
             Glide.with(AndroidApplication.getInstance())
                     .load(author.getImageURL())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -71,8 +70,7 @@ public abstract class BaseQuoteAdapter<VH extends RecyclerView.ViewHolder> exten
                     .transform(new CircleCrop())
                     .into(imageView);
         }
-        else
-        {
+        else {
             imageView.setImageDrawable(drawable);
         }
     }
