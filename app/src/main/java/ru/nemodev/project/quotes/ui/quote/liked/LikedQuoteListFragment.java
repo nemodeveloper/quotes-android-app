@@ -18,7 +18,7 @@ import ru.nemodev.project.quotes.databinding.LikedQuoteFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.liked.viewmodel.LikedQuoteViewModel;
-import ru.nemodev.project.quotes.utils.MetricUtils;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 
 
 public class LikedQuoteListFragment extends BaseFragment {
@@ -38,7 +38,7 @@ public class LikedQuoteListFragment extends BaseFragment {
         binding = DataBindingUtil.bind(root);
 
         initialize();
-        MetricUtils.viewEvent(MetricUtils.ViewType.LIKED_QUOTES);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.LIKED_QUOTES);
 
         return root;
     }

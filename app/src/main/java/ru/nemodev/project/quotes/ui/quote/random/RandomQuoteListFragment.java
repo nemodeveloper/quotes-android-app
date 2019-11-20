@@ -17,8 +17,8 @@ import ru.nemodev.project.quotes.databinding.QuoteListFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
 import ru.nemodev.project.quotes.ui.quote.random.viewmodel.RandomQuoteViewModel;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class RandomQuoteListFragment extends BaseFragment {
@@ -39,7 +39,7 @@ public class RandomQuoteListFragment extends BaseFragment {
 
         initialize();
         connectToNetworkEvents();
-        MetricUtils.viewEvent(MetricUtils.ViewType.RANDOM_QUOTES);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.RANDOM_QUOTES);
 
         return root;
     }

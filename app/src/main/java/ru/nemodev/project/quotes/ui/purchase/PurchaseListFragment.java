@@ -18,8 +18,8 @@ import ru.nemodev.project.quotes.databinding.PurchaseListFragmentBinding;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class PurchaseListFragment extends BaseFragment {
@@ -55,7 +55,7 @@ public class PurchaseListFragment extends BaseFragment {
 
     private void initialize() {
         showLoader();
-        MetricUtils.viewEvent(MetricUtils.ViewType.PURCHASE_LIST);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.PURCHASE_LIST);
 
         binding.purchaseList.setHasFixedSize(true);
         binding.purchaseList.setLayoutManager(new LinearLayoutManager(getActivity()));

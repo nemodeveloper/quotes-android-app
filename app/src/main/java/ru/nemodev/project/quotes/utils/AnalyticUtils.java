@@ -9,9 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
-public final class MetricUtils {
 
-    private MetricUtils() { }
+public final class AnalyticUtils {
+
+    private AnalyticUtils() { }
 
     public static void searchEvent(SearchType searchType, String whatSearch) {
         if (StringUtils.isEmpty(whatSearch))

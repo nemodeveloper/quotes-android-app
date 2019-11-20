@@ -23,8 +23,8 @@ import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.ui.purchase.PurchaseInteractor;
 import ru.nemodev.project.quotes.ui.purchase.PurchaseInteractorImpl;
 import ru.nemodev.project.quotes.ui.purchase.source.PurchaseListDataSource;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 
@@ -85,7 +85,7 @@ public class PurchaseViewModel extends ViewModel implements BillingProcessor.IBi
 
             @Override
             public void onNext(Purchase purchase) {
-                MetricUtils.purchaseEvent(purchase);
+                AnalyticUtils.purchaseEvent(purchase);
                 onPurchaseEvent.postValue(purchase);
                 purchaseList.postValue(new PagedList.Builder<>(
                         new PurchaseListDataSource(purchaseInteractor),

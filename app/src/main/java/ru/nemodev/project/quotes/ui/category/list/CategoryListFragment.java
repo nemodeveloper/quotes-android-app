@@ -12,18 +12,24 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.databinding.CategoryListFragmentBinding;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
+import ru.nemodev.project.quotes.ui.base.observable.RxSearchObservable;
 import ru.nemodev.project.quotes.ui.category.list.viewmodel.CategoryListViewModel;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class CategoryListFragment extends BaseFragment {
@@ -47,7 +53,7 @@ public class CategoryListFragment extends BaseFragment {
         initialize();
 
         connectToNetworkEvents();
-        MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_LIST);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_LIST);
 
         return root;
     }
@@ -59,26 +65,21 @@ public class CategoryListFragment extends BaseFragment {
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(AndroidUtils.getString(R.string.category_search_hint));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchCategory(query);
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                searchCategory(query);
-                return true;
-            }
-        });
+        LiveDataReactiveStreams.fromPublisher(
+            RxSearchObservable.fromview(searchView)
+                    .debounce(1000, TimeUnit.MILLISECONDS)
+                    .distinctUntilChanged()
+                    .subscribeOn(Schedulers.io())
+                    .toFlowable(BackpressureStrategy.BUFFER))
+            .observe(this, this::searchCategory);
 
         viewModel.searchString.observe(this, s -> searchView.setQuery(s, false));
     }
 
     private void searchCategory(String search) {
         if (StringUtils.isNotEmpty(search)) {
-            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
+            AnalyticUtils.searchEvent(AnalyticUtils.SearchType.AUTHOR, search);
         }
 
         CategoryListAdapter adapter = (CategoryListAdapter) binding.categoryList.getAdapter();
@@ -117,7 +118,7 @@ public class CategoryListFragment extends BaseFragment {
 
         CategoryListAdapter adapter = new CategoryListAdapter(getContext(), item -> {
             clearSearchFocus();
-            MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_MENU);
+            AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_MENU);
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.openQuoteFragment(item);
         });

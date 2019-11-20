@@ -12,18 +12,24 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.schedulers.Schedulers;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.databinding.AuthorListFragmentBinding;
 import ru.nemodev.project.quotes.ui.author.list.viewmodel.AuthorListViewModel;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
+import ru.nemodev.project.quotes.ui.base.observable.RxSearchObservable;
 import ru.nemodev.project.quotes.ui.main.MainActivity;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 
 
 public class AuthorListFragment extends BaseFragment {
@@ -47,7 +53,7 @@ public class AuthorListFragment extends BaseFragment {
         initialize();
 
         connectToNetworkEvents();
-        MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_LIST);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.AUTHOR_LIST);
 
         return root;
     }
@@ -59,26 +65,21 @@ public class AuthorListFragment extends BaseFragment {
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(AndroidUtils.getString(R.string.author_search_hint));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchAuthor(query);
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                searchAuthor(query);
-                return true;
-            }
-        });
+        LiveDataReactiveStreams.fromPublisher(
+            RxSearchObservable.fromview(searchView)
+                    .debounce(1000, TimeUnit.MILLISECONDS)
+                    .distinctUntilChanged()
+                    .subscribeOn(Schedulers.io())
+                    .toFlowable(BackpressureStrategy.BUFFER))
+            .observe(this, this::searchAuthor);
 
         viewModel.searchString.observe(this, s -> searchView.setQuery(s, false));
     }
 
     private void searchAuthor(String search) {
         if (StringUtils.isNotEmpty(search)) {
-            MetricUtils.searchEvent(MetricUtils.SearchType.AUTHOR, search);
+            AnalyticUtils.searchEvent(AnalyticUtils.SearchType.AUTHOR, search);
         }
 
         viewModel.getAuthorList(this, search).observe(this,
@@ -116,7 +117,7 @@ public class AuthorListFragment extends BaseFragment {
 
         AuthorListAdapter adapter = new AuthorListAdapter(getContext(), item -> {
             clearSearchFocus();
-            MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_MENU);
+            AnalyticUtils.viewEvent(AnalyticUtils.ViewType.AUTHOR_QUOTES_FROM_MENU);
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.openQuoteFragment(item);
         });

@@ -37,9 +37,9 @@ import ru.nemodev.project.quotes.ui.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.ui.category.list.CategoryListFragmentDirections;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
-import ru.nemodev.project.quotes.utils.MetricUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 
@@ -97,17 +97,17 @@ public class MainActivity extends AppCompatActivity implements
         final int id = item.getItemId();
         switch (id) {
             case R.id.nav_item_telegram_channel: {
-                MetricUtils.viewEvent(MetricUtils.ViewType.TELEGRAM_CHANNEL);
+                AnalyticUtils.viewEvent(AnalyticUtils.ViewType.TELEGRAM_CHANNEL);
                 AndroidUtils.openTelegramChannel(this, binding.drawerLayout, AndroidUtils.getString(R.string.telegram_channel_name));
                 return true;
             }
             case R.id.nav_item_share: {
-                MetricUtils.inviteEvent(MetricUtils.InviteType.APP_LINK);
+                AnalyticUtils.inviteEvent(AnalyticUtils.InviteType.APP_LINK);
                 AndroidUtils.sendPlayMarketAppInfo(this);
                 return true;
             }
             case R.id.nav_item_rate_app: {
-                MetricUtils.rateEvent(MetricUtils.RateType.APP);
+                AnalyticUtils.rateEvent(AnalyticUtils.RateType.APP);
                 AndroidUtils.openAppPage(this);
                 return true;
             }
@@ -131,13 +131,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onAuthorClick(Author author) {
-        MetricUtils.viewEvent(MetricUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD);
         openQuoteFragment(author);
     }
 
     @Override
     public void onCategoryClick(Category category) {
-        MetricUtils.viewEvent(MetricUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD);
         openQuoteFragment(category);
     }
 
@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onNext(QuoteInfo quote) {
                         if (quoteInfo.getQuote().getLiked()) {
-                            MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_LIKE);
+                            AnalyticUtils.rateEvent(AnalyticUtils.RateType.QUOTE_LIKE);
                         }
                         else {
-                            MetricUtils.rateEvent(MetricUtils.RateType.QUOTE_UNLIKE);
+                            AnalyticUtils.rateEvent(AnalyticUtils.RateType.QUOTE_UNLIKE);
                         }
                     }
 
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onShareClick(QuoteInfo quoteInfo) {
-        MetricUtils.shareEvent(MetricUtils.ShareType.QUOTE);
+        AnalyticUtils.shareEvent(AnalyticUtils.ShareType.QUOTE);
         AndroidUtils.openShareDialog(this,
                 AndroidUtils.getString(R.string.share_quote_dialog_title),
                 QuoteUtils.getQuoteTextForShare(quoteInfo));
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onWidgetClick(QuoteInfo quoteInfo) {
-        MetricUtils.viewEvent(MetricUtils.ViewType.QUOTE_TO_WIDGET);
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.QUOTE_TO_WIDGET);
         AndroidApplication.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteInfo.getQuote().getId());
         AndroidUtils.openAddWidgetDialog(this, QuoteWidgetProvider.class);
     }
