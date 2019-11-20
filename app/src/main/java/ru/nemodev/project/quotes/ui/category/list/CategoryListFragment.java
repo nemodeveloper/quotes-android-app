@@ -16,6 +16,8 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -118,7 +120,11 @@ public class CategoryListFragment extends BaseFragment {
 
         CategoryListAdapter adapter = new CategoryListAdapter(getContext(), item -> {
             clearSearchFocus();
-            AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_MENU);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, item.getName());
+            AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_MENU, bundle);
+
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.openQuoteFragment(item);
         });

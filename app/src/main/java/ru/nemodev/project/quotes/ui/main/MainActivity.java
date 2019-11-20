@@ -15,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Calendar;
 
@@ -131,13 +132,19 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onAuthorClick(Author author) {
-        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, author.getFullName());
+
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.AUTHOR_QUOTES_FROM_QUOTE_CARD, bundle);
         openQuoteFragment(author);
     }
 
     @Override
     public void onCategoryClick(Category category) {
-        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, category.getName());
+
+        AnalyticUtils.viewEvent(AnalyticUtils.ViewType.CATEGORY_QUOTES_FROM_QUOTE_CARD, bundle);
         openQuoteFragment(category);
     }
 

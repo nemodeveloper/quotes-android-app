@@ -47,11 +47,14 @@ public final class AnalyticUtils {
         AndroidApplication.getAnalytics().logEvent(RateType.EVENT_NAME, bundle);
     }
 
+
     public static void viewEvent(ViewType viewType) {
-        Bundle bundle = new Bundle();
+        viewEvent(viewType, new Bundle());
+    }
+
+    public static void viewEvent(ViewType viewType, Bundle bundle) {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, viewType.name());
         bundle.putString(FirebaseAnalytics.Param.CONTENT, viewType.getViewName());
-
         AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 
