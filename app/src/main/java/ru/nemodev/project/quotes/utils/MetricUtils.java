@@ -1,79 +1,77 @@
 package ru.nemodev.project.quotes.utils;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
-import com.crashlytics.android.answers.InviteEvent;
-import com.crashlytics.android.answers.PurchaseEvent;
-import com.crashlytics.android.answers.RatingEvent;
-import com.crashlytics.android.answers.SearchEvent;
-import com.crashlytics.android.answers.ShareEvent;
+import android.os.Bundle;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.purchase.Purchase;
 
-public final class MetricUtils
-{
-    private static final String WHAT_SEARCH_KEY = "WHAT_SEARCH";
+public final class MetricUtils {
 
     private MetricUtils() { }
 
-    public static void searchEvent(SearchType searchType, String whatSearch)
-    {
+    public static void searchEvent(SearchType searchType, String whatSearch) {
         if (StringUtils.isEmpty(whatSearch))
             return;
 
-        Answers.getInstance().logSearch(new SearchEvent()
-                .putQuery(searchType.name())
-                .putCustomAttribute(WHAT_SEARCH_KEY, whatSearch));
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, searchType.name());
+        bundle.putString(FirebaseAnalytics.Param.SEARCH_TERM, whatSearch);
+        AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.SEARCH, bundle);
     }
 
-    public static void shareEvent(ShareType shareType)
-    {
-        Answers.getInstance().logShare(new ShareEvent()
-                .putContentType(shareType.name())
-                .putContentName(shareType.getTypeName()));
+    public static void shareEvent(ShareType shareType) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, shareType.name());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT, shareType.getTypeName());
+
+        AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.SHARE, bundle);
     }
 
-    public static void inviteEvent(InviteType inviteType)
-    {
-        Answers.getInstance().logInvite(new InviteEvent().putMethod(inviteType.name()));
+    public static void inviteEvent(InviteType inviteType) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, inviteType.name());
+
+        AndroidApplication.getAnalytics().logEvent(InviteType.EVENT_NAME, bundle);
     }
 
-    public static void rateEvent(RateType rateType)
-    {
-        Answers.getInstance().logRating(new RatingEvent()
-                .putContentType(rateType.name())
-                .putContentName(rateType.getRateName()));
+    public static void rateEvent(RateType rateType) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, rateType.name());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT, rateType.getRateName());
+
+        AndroidApplication.getAnalytics().logEvent(RateType.EVENT_NAME, bundle);
     }
 
-    public static void viewEvent(ViewType viewType)
-    {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentType(viewType.name())
-                .putContentName(viewType.getViewName()));
+    public static void viewEvent(ViewType viewType) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, viewType.name());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT, viewType.getViewName());
+
+        AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 
-    public static void purchaseEvent(Purchase purchase)
-    {
-        Answers.getInstance().logPurchase(new PurchaseEvent()
-                .putItemId(purchase.getPurchaseType().getProductId())
-                .putItemName(purchase.getTitle())
-                .putItemType(purchase.getPurchaseType().getItemType())
-                .putItemPrice(purchase.getPrice())
-                .putCurrency(purchase.getCurrency())
-                .putSuccess(purchase.isPurchase())
-        );
+    public static void purchaseEvent(Purchase purchase) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, purchase.getPurchaseType().getProductId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, purchase.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, purchase.getPurchaseType().getItemType());
+        bundle.putString(FirebaseAnalytics.Param.PRICE, purchase.getPrice().toString());
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, purchase.getCurrency().toString());
+        bundle.putBoolean(FirebaseAnalytics.Param.SUCCESS, purchase.isPurchase());
+
+        AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle);
     }
 
-    public enum SearchType
-    {
+    public enum SearchType {
         AUTHOR,
         CATEGORY
     }
 
-    public enum ShareType
-    {
+    public enum ShareType {
         QUOTE("Поделиться цитатой");
 
         private final String typeName;
@@ -89,8 +87,7 @@ public final class MetricUtils
         }
     }
 
-    public enum InviteType
-    {
+    public enum InviteType {
         APP_LINK("Ссылка GooglePlay");
 
         private final String inviteName;
@@ -104,10 +101,11 @@ public final class MetricUtils
         {
             return inviteName;
         }
+
+        public static final String EVENT_NAME = "invite";
     }
 
-    public enum RateType
-    {
+    public enum RateType {
         APP("Оценка приложения"),
         QUOTE_LIKE("Лайк цитаты"),
         QUOTE_UNLIKE("Дизлайк цитаты");
@@ -123,10 +121,11 @@ public final class MetricUtils
         {
             return rateName;
         }
+
+        public static final String EVENT_NAME = "rate";
     }
 
-    public enum ViewType
-    {
+    public enum ViewType {
         RANDOM_QUOTES("Случайные цитаты"),
 
         AUTHOR_LIST("Список авторов"),
