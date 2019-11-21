@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements
         NavigationUI.setupWithNavController(binding.navView, navController);
         binding.navView.setNavigationItemSelectedListener(this);
 
-        mainViewModel.updateAppEvent.observe(this, aBoolean -> showUpdateDialog());
+        mainViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
         mainViewModel.buyAdsEvent.observe(this, aBoolean -> showDisableAdsDialog());
 
         purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        purchaseViewModel.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        purchaseViewModel.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -198,14 +198,18 @@ public class MainActivity extends AppCompatActivity implements
 
     private void showUpdateDialog() {
         if (!isFinishing()) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.app_update_available_title)
-                    .setMessage(R.string.app_update_available_desc)
-                    .setPositiveButton(R.string.app_update_yes_text, (dialog, which) -> AndroidUtils.openAppPage(this))
-                    .setNeutralButton(R.string.app_update_pass_text, (dialog, which) -> {})
-                    .setCancelable(false)
-                    .create()
-                    .show();
+            try {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.app_update_ready_title)
+                        .setPositiveButton(R.string.app_update_yes, (dialog, which) -> mainViewModel.appUpdate())
+                        .setNeutralButton(R.string.app_update_no, (dialog, which) -> {})
+                        .setCancelable(true)
+                        .create()
+                        .show();
+            }
+            catch (Exception e) {
+                LogUtils.error(LOG_TAG, "Ошибка показа диалога обновления приложения!", e);
+            }
         }
     }
 

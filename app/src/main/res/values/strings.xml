@@ -57,11 +57,6 @@
 
     <string name="dev_author_name">Разработчик</string>
 
-    <string name="app_update_available_title">Обновить приложение?</string>
-    <string name="app_update_available_desc">В новой версии доступны улучшения и исправлены различные ошибки. Обновите приложение для корректной работы!</string>
-    <string name="app_update_yes_text">Обновить</string>
-    <string name="app_update_pass_text">Не сейчас</string>
-
     <!-- Меню -->
     <string name="random_title">Случайные</string>
     <string name="category_title">Категории</string>
@@ -94,5 +89,9 @@
     <!-- Ошибки -->
     <string name="quote_like_error">Произошла ошибка, попробуйте повторить действие позже</string>
     <string name="load_message">Загрузка...</string>
+
+    <string name="app_update_ready_title">Приложение готово к обновлению</string>
+    <string name="app_update_yes">Обновить</string>
+    <string name="app_update_no">Позже</string>
 
 </resources>
