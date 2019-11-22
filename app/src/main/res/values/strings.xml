@@ -28,9 +28,6 @@
     <!-- fabric.io key -->
     <string name="fabric_io_key">b084a5fe6f1774820fee9a78dd1fdef5101fff2d</string>
 
-    <!-- открытый ключ приложения для покупок -->
-    <string name="APP_GOOGLE_RSA_PUBLIC_KEY">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjFfwGosO5fHf/y/czCUJXOfG550OZiugYePEkDNyA/i3n4+/QA+jU44gV9d4q/XDWBN/ypAEGpWB3SnGqiqYpzjKfh2q5IIpXSIlg8Q37lUw6RYTm6MQuPn6tGIYkCmdIp3RkJDjYjSpytZOtYpT01cWQLyGDPSkyW4ijIIFk7ARWVKrhfK1K2cnAmLzXY+A47xr1qYZEeI2B8lCUm+W8qgtmhUTEqwRYNcQgWHFgZnSSANMoO7PPaBTC7kOnPNWhOVA9OVgMy4tUYQLmAmFpHveAgzZPy4xeWtQYyUiC3TCxHruFQETUAU2rfKWVTJV85T3OOYxtgt8Gm9iWVtPywIDAQAB</string>
-
     <!-- Покупки -->
     <array name="inapp_products">
         <item>quote_widget</item>

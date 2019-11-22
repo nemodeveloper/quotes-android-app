@@ -98,5 +98,5 @@
   public *;
 }
 
-# Purchase
+# PurchaseItem
 -keep class com.android.vending.billing.**

@@ -7,7 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.apache.commons.lang3.StringUtils;
 
 import ru.nemodev.project.quotes.app.AndroidApplication;
-import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 
 
 public final class AnalyticUtils {
@@ -58,14 +58,14 @@ public final class AnalyticUtils {
         AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 
-    public static void purchaseEvent(Purchase purchase) {
+    public static void purchaseEvent(PurchaseItem purchaseItem) {
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, purchase.getPurchaseType().getProductId());
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, purchase.getTitle());
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, purchase.getPurchaseType().getItemType());
-        bundle.putString(FirebaseAnalytics.Param.PRICE, purchase.getPrice().toString());
-        bundle.putString(FirebaseAnalytics.Param.CURRENCY, purchase.getCurrency().toString());
-        bundle.putBoolean(FirebaseAnalytics.Param.SUCCESS, purchase.isPurchase());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, purchaseItem.getPurchaseType().getSku());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, purchaseItem.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, purchaseItem.getPurchaseType().getItemType());
+        bundle.putString(FirebaseAnalytics.Param.PRICE, purchaseItem.getPrice());
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, purchaseItem.getCurrency().toString());
+        bundle.putBoolean(FirebaseAnalytics.Param.SUCCESS, purchaseItem.isPurchase());
 
         AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle);
     }

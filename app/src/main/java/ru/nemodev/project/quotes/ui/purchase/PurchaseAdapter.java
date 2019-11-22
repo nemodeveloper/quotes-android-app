@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.databinding.PurchaseCardViewBinding;
-import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 
 
-public class PurchaseAdapter extends PagedListAdapter<Purchase, PurchaseAdapter.PurchaseViewHolder> {
-    private static DiffUtil.ItemCallback<Purchase> DIFF_CALLBACK = new DiffUtil.ItemCallback<Purchase>() {
+public class PurchaseAdapter extends PagedListAdapter<PurchaseItem, PurchaseAdapter.PurchaseViewHolder> {
+    private static DiffUtil.ItemCallback<PurchaseItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<PurchaseItem>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Purchase oldItem, @NonNull Purchase newItem) {
+        public boolean areItemsTheSame(@NonNull PurchaseItem oldItem, @NonNull PurchaseItem newItem) {
             return oldItem.getPurchaseType().equals(newItem.getPurchaseType());
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Purchase oldItem, @NonNull Purchase newItem) {
+        public boolean areContentsTheSame(@NonNull PurchaseItem oldItem, @NonNull PurchaseItem newItem) {
             return oldItem.getPurchaseType().equals(newItem.getPurchaseType());
         }
     };
@@ -53,13 +53,13 @@ public class PurchaseAdapter extends PagedListAdapter<Purchase, PurchaseAdapter.
                 LayoutInflater.from(context), R.layout.purchase_card_view, parent, false));
     }
 
-    public void onPurchaseClick(Purchase purchase) {
-        onPurchaseClickListener.onPurchaseClick(purchase);
+    public void onPurchaseClick(PurchaseItem purchaseItem) {
+        onPurchaseClickListener.onPurchaseClick(purchaseItem);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PurchaseViewHolder purchaseViewHolder, int position) {
         purchaseViewHolder.binding.setPurchaseAdapter(this);
-        purchaseViewHolder.binding.setPurchase(getItem(position));
+        purchaseViewHolder.binding.setPurchaseItem(getItem(position));
     }
 }

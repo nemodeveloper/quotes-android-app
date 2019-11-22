@@ -1,10 +1,8 @@
 package ru.nemodev.project.quotes.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -37,7 +35,9 @@ import ru.nemodev.project.quotes.ui.author.list.AuthorListFragmentDirections;
 import ru.nemodev.project.quotes.ui.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.ui.category.list.CategoryListFragmentDirections;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
+import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModelFactory;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
+import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModelFactory;
 import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
@@ -61,11 +61,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mainViewModel.setActivity(this);
-
-        purchaseViewModel = ViewModelProviders.of(this).get(PurchaseViewModel.class);
-        purchaseViewModel.setActivity(this);
+        mainViewModel = ViewModelProviders.of(this, new MainViewModelFactory(this)).get(MainViewModel.class);
+        purchaseViewModel = ViewModelProviders.of(this, new PurchaseViewModelFactory(this)).get(PurchaseViewModel.class);
 
         setSupportActionBar(binding.toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         binding.navView.setNavigationItemSelectedListener(this);
 
         mainViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
-        mainViewModel.buyAdsEvent.observe(this, aBoolean -> showDisableAdsDialog());
+        mainViewModel.buyAdsRequest.observe(this, aBoolean -> showDisableAdsDialog());
 
         purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
         purchaseViewModel.onAdsByEvent.observe(this, mainViewModel::onAdsBuy);
@@ -85,12 +82,6 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        purchaseViewModel.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -220,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements
         try {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.adb_disable_dialog_title)
-                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> purchaseViewModel.purchase(PurchaseType.QUOTE_ADB))
+                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> purchaseViewModel.buy(PurchaseType.QUOTE_ADB))
                     .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
                     .setCancelable(true)
                     .create()

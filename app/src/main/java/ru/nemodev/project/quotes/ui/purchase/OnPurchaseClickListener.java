@@ -1,9 +1,9 @@
 package ru.nemodev.project.quotes.ui.purchase;
 
 
-import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 
 public interface OnPurchaseClickListener
 {
-    void onPurchaseClick(Purchase purchase);
+    void onPurchaseClick(PurchaseItem purchaseItem);
 }

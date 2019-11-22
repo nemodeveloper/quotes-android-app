@@ -11,11 +11,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.databinding.PurchaseListFragmentBinding;
-import ru.nemodev.project.quotes.entity.purchase.Purchase;
+import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 import ru.nemodev.project.quotes.ui.base.BaseFragment;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
 import ru.nemodev.project.quotes.utils.AnalyticUtils;
@@ -43,13 +44,13 @@ public class PurchaseListFragment extends BaseFragment {
         return root;
     }
 
-    private void onPurchaseClick(Purchase purchase) {
-        if (purchase.isPurchase()) {
+    private void onPurchaseClick(PurchaseItem purchaseItem) {
+        if (purchaseItem.isPurchase()) {
             showMessage(String.format(
-                    AndroidUtils.getString(R.string.purchase_already_do_detail), purchase.getTitle()));
+                    AndroidUtils.getString(R.string.purchase_already_do_detail), purchaseItem.getTitle()));
         }
         else {
-            viewModel.purchase(purchase);
+            viewModel.buy(purchaseItem);
         }
     }
 
@@ -57,14 +58,16 @@ public class PurchaseListFragment extends BaseFragment {
         showLoader();
         AnalyticUtils.viewEvent(AnalyticUtils.ViewType.PURCHASE_LIST);
 
-        binding.purchaseList.setHasFixedSize(true);
-        binding.purchaseList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.purchaseItemList.setHasFixedSize(true);
+        binding.purchaseItemList.setLayoutManager(new LinearLayoutManager(getActivity()));
         showEmptyContentView(false);
 
         PurchaseAdapter adapter = new PurchaseAdapter(getContext(), this::onPurchaseClick);
-        binding.purchaseList.setAdapter(adapter);
-        viewModel.purchaseList.observe(this,
-                purchases -> adapter.submitList(purchases, this::hideLoader));
+        binding.purchaseItemList.setAdapter(adapter);
+        viewModel.purchaseList.observe(this, purchases -> {
+                    showEmptyContentView(CollectionUtils.isEmpty(purchases));
+                    adapter.submitList(purchases, this::hideLoader);
+                });
     }
 
     private void showMessage(String message) {
