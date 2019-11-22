@@ -98,7 +98,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // view custom
@@ -130,9 +130,10 @@ dependencies {
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.3'
 
     // room
-    implementation 'androidx.room:room-runtime:2.2.1'
-    implementation 'androidx.room:room-rxjava2:2.2.1'
-    annotationProcessor 'androidx.room:room-compiler:2.2.1'
+    def room_version = "2.2.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // system
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
