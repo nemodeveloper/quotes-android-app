@@ -17,15 +17,15 @@ import ru.nemodev.project.quotes.entity.author.Author;
 public interface AuthorRepository
 {
     @Transaction
-    @Query("SELECT * FROM authors ORDER BY full_name")
+    @Query("SELECT * FROM authors ORDER BY full_name COLLATE UNICODE")
     Observable<List<Author>> getAll();
 
     @Transaction
-    @Query("SELECT * FROM authors ORDER BY full_name")
+    @Query("SELECT * FROM authors ORDER BY full_name COLLATE UNICODE")
     DataSource.Factory<Integer, Author> getAllLiveData();
 
     @Transaction
-    @Query("SELECT * FROM authors a WHERE upper(a.full_name) like '%' || upper(:name) || '%' ORDER BY a.full_name")
+    @Query("SELECT * FROM authors a WHERE upper(a.full_name) like '%' || upper(:name) || '%' ORDER BY a.full_name COLLATE UNICODE")
     DataSource.Factory<Integer, Author> findByNameLiveData(String name);
 
     @Transaction

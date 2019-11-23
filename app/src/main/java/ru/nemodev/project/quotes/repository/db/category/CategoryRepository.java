@@ -17,15 +17,15 @@ import ru.nemodev.project.quotes.entity.category.Category;
 public interface CategoryRepository
 {
     @Transaction
-    @Query("SELECT * FROM categories ORDER BY name")
+    @Query("SELECT * FROM categories ORDER BY name COLLATE UNICODE")
     Observable<List<Category>> getAll();
 
     @Transaction
-    @Query("SELECT * FROM categories ORDER BY name")
+    @Query("SELECT * FROM categories ORDER BY name COLLATE UNICODE")
     DataSource.Factory<Integer, Category> getAllLiveData();
 
     @Transaction
-    @Query("SELECT * FROM categories c WHERE upper(c.name) like '%' || upper(:name) || '%' ORDER BY c.name")
+    @Query("SELECT * FROM categories c WHERE upper(c.name) like '%' || upper(:name) || '%' ORDER BY c.name COLLATE UNICODE")
     DataSource.Factory<Integer, Category> findByNameLiveData(String name);
 
     @Transaction
