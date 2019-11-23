@@ -65,7 +65,6 @@ public final class AnalyticUtils {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, purchaseItem.getPurchaseType().getItemType());
         bundle.putString(FirebaseAnalytics.Param.PRICE, purchaseItem.getPrice());
         bundle.putString(FirebaseAnalytics.Param.CURRENCY, purchaseItem.getCurrency().toString());
-        bundle.putBoolean(FirebaseAnalytics.Param.SUCCESS, purchaseItem.isPurchase());
 
         AndroidApplication.getAnalytics().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle);
     }

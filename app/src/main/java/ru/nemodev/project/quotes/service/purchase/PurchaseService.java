@@ -35,6 +35,7 @@ import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.ui.purchase.source.PurchaseListDataSource;
+import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
@@ -158,17 +159,20 @@ public class PurchaseService implements PurchasesUpdatedListener {
     @Override
     public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (CollectionUtils.isNotEmpty(purchases)) {
+            refreshPurchase();
             for (Purchase purchase : purchases) {
                 handlePurchase(purchase);
             }
         }
-
-        refreshPurchase();
     }
 
     private void handlePurchase(Purchase purchase) {
         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            // Acknowledge the purchase if it hasn't already been acknowledged.
+            PurchaseItem purchaseItem = getPurchaseItem(purchase);
+            if (purchaseItem != null) {
+                AnalyticUtils.purchaseEvent(purchaseItem);
+            }
+
             if (!purchase.isAcknowledged()) {
                 AcknowledgePurchaseParams acknowledgePurchaseParams =
                         AcknowledgePurchaseParams.newBuilder()
@@ -181,5 +185,19 @@ public class PurchaseService implements PurchasesUpdatedListener {
 
             onPurchaseEvent.postValue(purchase);
         }
+    }
+
+    private PurchaseItem getPurchaseItem(Purchase purchase) {
+        if (purchaseList.getValue() == null) {
+            return null;
+        }
+
+        for (PurchaseItem purchaseItem : purchaseList.getValue().snapshot()) {
+            if (purchase.getSku().equals(purchaseItem.getSku())) {
+                return purchaseItem;
+            }
+        }
+
+        return null;
     }
 }

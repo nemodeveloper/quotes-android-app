@@ -55,6 +55,10 @@ public class PurchaseItem {
         return title;
     }
 
+    public String getSku() {
+        return skuDetails.getSku();
+    }
+
     private String removeAppDescription(String rawString) {
         String title = rawString;
 

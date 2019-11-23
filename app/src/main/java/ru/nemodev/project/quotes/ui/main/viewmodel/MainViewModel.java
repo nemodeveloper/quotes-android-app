@@ -1,19 +1,12 @@
 package ru.nemodev.project.quotes.ui.main.viewmodel;
 
 import android.app.Activity;
-import android.content.IntentSender;
 import android.net.NetworkInfo;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.billingclient.api.Purchase;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallState;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
-import com.google.android.play.core.install.model.UpdateAvailability;
 
 import java.util.Arrays;
 
@@ -32,56 +25,20 @@ import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
 
 public class MainViewModel extends ViewModel implements AdsBanner.OnAdsListener {
 
-    public final MutableLiveData<InstallState> updateAppEvent;
     public final MutableLiveData<Boolean> buyAdsRequest;
 
     public final MutableLiveData<NetworkInfo.State> networkState;
     private final Disposable internetEventsDisposable;
 
-    private AppUpdateManager appUpdateManager;
     private Activity activity;
     private BannerManager bannerManager;
 
     public MainViewModel(Activity activity) {
         this.activity = activity;
-        updateAppEvent = new MutableLiveData<>();
         buyAdsRequest = new MutableLiveData<>();
         networkState = new MutableLiveData<>();
         internetEventsDisposable = NetworkUtils.getNetworkObservable()
                 .subscribe(connectivity -> networkState.postValue(connectivity.state()));
-
-        appUpdateManager = AppUpdateManagerFactory.create(activity);
-        appUpdateManager.getAppUpdateInfo()
-                .addOnSuccessListener(appUpdateInfo -> {
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                        try {
-                            appUpdateManager.startUpdateFlowForResult(
-                                    appUpdateInfo,
-                                    AppUpdateType.FLEXIBLE,
-                                    activity,
-                                    1077);
-                        } catch (IntentSender.SendIntentException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                        try {
-                            appUpdateManager.startUpdateFlowForResult(
-                                    appUpdateInfo,
-                                    AppUpdateType.IMMEDIATE,
-                                    activity,
-                                    1077);
-                        } catch (IntentSender.SendIntentException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> { });
-        appUpdateManager.registerListener(state -> {
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                updateAppEvent.postValue(state);
-            }
-        });
     }
 
     public void onPurchase(Purchase purchase) {
@@ -119,9 +76,5 @@ public class MainViewModel extends ViewModel implements AdsBanner.OnAdsListener 
     protected void onCleared() {
         internetEventsDisposable.dispose();
         super.onCleared();
-    }
-
-    public void appUpdate() {
-        appUpdateManager.completeUpdate();
     }
 }
