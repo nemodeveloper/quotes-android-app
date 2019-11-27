@@ -49,6 +49,21 @@ public class QuoteService {
                     .subscribeOn(Schedulers.io());
     }
 
+    public Observable<List<QuoteInfo>> getRandomForWidget(Integer count) {
+        Observable<List<QuoteInfo>> gatewayObservable = quoteApi
+                .getRandom(Collections.singletonMap("count", count.toString()))
+                .map(this::saveToDataBase)
+                .onErrorResumeNext(Observable.empty());
+
+        return Observable.concat(
+                quoteRepository.getRandom(count),
+                gatewayObservable)
+                .filter(CollectionUtils::isNotEmpty)
+                .first(Collections.emptyList())
+                .toObservable()
+                .subscribeOn(Schedulers.io());
+    }
+
     public Observable<QuoteInfo> getById(Long quoteId)
     {
         return AppDataBase.getInstance().getQuoteRepository().getById(quoteId)

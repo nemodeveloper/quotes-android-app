@@ -20,7 +20,7 @@ import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.NetworkUtils;
-import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
+import ru.nemodev.project.quotes.widget.WidgetUtils;
 
 
 public class MainViewModel extends ViewModel implements AdsBanner.OnAdsListener {
@@ -46,7 +46,7 @@ public class MainViewModel extends ViewModel implements AdsBanner.OnAdsListener 
             onAdsBuy(true);
         }
         else if (PurchaseType.QUOTE_WIDGET.getSku().equals(purchase.getSku())) {
-            AndroidApplication.getInstance().getAppSetting().setBoolean(QuoteWidgetProvider.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
+            AndroidApplication.getInstance().getAppSetting().setBoolean(WidgetUtils.IS_PURCHASE_QUOTE_WIDGET_KEY, true);
         }
     }
 

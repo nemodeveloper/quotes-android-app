@@ -44,6 +44,7 @@ import ru.nemodev.project.quotes.utils.AnalyticUtils;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 import ru.nemodev.project.quotes.utils.LogUtils;
 import ru.nemodev.project.quotes.widget.QuoteWidgetProvider;
+import ru.nemodev.project.quotes.widget.WidgetUtils;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onWidgetClick(QuoteInfo quoteInfo) {
         AnalyticUtils.viewEvent(AnalyticUtils.ViewType.QUOTE_TO_WIDGET);
-        AndroidApplication.getInstance().getAppSetting().setLong(QuoteWidgetProvider.QUOTE_ID_BUNDLE_KEY, quoteInfo.getQuote().getId());
+        AndroidApplication.getInstance().getAppSetting().setLong(WidgetUtils.QUOTE_ID_BUNDLE_KEY, quoteInfo.getQuote().getId());
         AndroidUtils.openAddWidgetDialog(this, QuoteWidgetProvider.class);
     }
 

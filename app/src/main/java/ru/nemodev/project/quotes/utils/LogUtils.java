@@ -11,4 +11,8 @@ public final class LogUtils {
         Log.e(tag, message, exception);
         Crashlytics.logException(exception);
     }
+
+    public static void info(String tag, String message) {
+        Log.i(tag, message);
+    }
 }
