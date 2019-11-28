@@ -5,15 +5,13 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 
 public class QuoteWidgetProvider extends AppWidgetProvider {
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         if (appWidgetIds.length > 0) {
-            for (int widgetId : appWidgetIds) {
-                WidgetUtils.getWidgetView(context, widgetId);
-            }
             notifyQuoteService(context, appWidgetIds);
         }
     }
@@ -23,8 +21,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         if (WidgetUtils.UPDATE_WIDGET_BUTTON_ACTION.equals(intent.getAction())) {
-            int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-            WidgetUtils.getWidgetView(context, widgetId);
+            int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             notifyQuoteService(context, widgetId);
         }
     }
@@ -42,6 +39,11 @@ public class QuoteWidgetProvider extends AppWidgetProvider {
     private void notifyQuoteService(Context context, int... appWidgetIds) {
         Intent intent = new Intent(context, QuoteWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        context.startService(intent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 }
