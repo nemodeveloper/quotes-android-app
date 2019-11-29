@@ -57,7 +57,8 @@ public class PurchaseService implements PurchasesUpdatedListener {
         skuDetailsMap = new ConcurrentHashMap<>();
         billingClient = BillingClient.newBuilder(AndroidApplication.getInstance())
                 .enablePendingPurchases()
-                .setListener(this).build();
+                .setListener(this)
+                .build();
 
         refreshPurchase();
     }

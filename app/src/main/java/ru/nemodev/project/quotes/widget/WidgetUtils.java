@@ -12,11 +12,8 @@ import ru.nemodev.project.quotes.R;
 public final class WidgetUtils {
 
     public static final String IS_PURCHASE_QUOTE_WIDGET_KEY = "IS_PURCHASE_QUOTE_WIDGET";
-
     public static final String UPDATE_WIDGET_BUTTON_ACTION = "UPDATE_WIDGET_BUTTON_ACTION";
-
-    public static final String WIDGET_QUOTE_ID_BUNDLE_KEY = "widget_quote_id";
-    public static final String QUOTE_ID_BUNDLE_KEY = "quote_id";
+    public static final String WIDGET_QUOTE_ID_KEY = "widget_quote_id";
 
 
     public static RemoteViews getWidgetView(Context context, int widgetId) {

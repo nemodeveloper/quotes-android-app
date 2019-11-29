@@ -65,6 +65,7 @@ public class PurchaseListFragment extends BaseFragment {
         PurchaseAdapter adapter = new PurchaseAdapter(getContext(), this::onPurchaseClick);
         binding.purchaseItemList.setAdapter(adapter);
         viewModel.purchaseList.observe(this, purchases -> {
+                    viewModel.checkPurchase();
                     showEmptyContentView(CollectionUtils.isEmpty(purchases));
                     adapter.submitList(purchases, this::hideLoader);
                 });

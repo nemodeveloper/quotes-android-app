@@ -79,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements
 
         mainViewModel.buyAdsRequest.observe(this, aBoolean -> showDisableAdsDialog());
         updateAppViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
+
         purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
         purchaseViewModel.onAdsByEvent.observe(this, mainViewModel::onAdsBuy);
+        purchaseViewModel.onWidgetByEvent.observe(this, mainViewModel::onWidgetBuy);
+        purchaseViewModel.purchaseList.observe(this, purchaseItems -> purchaseViewModel.checkPurchase());
     }
 
     @Override
@@ -188,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onWidgetClick(QuoteInfo quoteInfo) {
         AnalyticUtils.viewEvent(AnalyticUtils.ViewType.QUOTE_TO_WIDGET);
-        AndroidApplication.getInstance().getAppSetting().setLong(WidgetUtils.QUOTE_ID_BUNDLE_KEY, quoteInfo.getQuote().getId());
+        AndroidApplication.getInstance().getAppSetting().setLong(WidgetUtils.WIDGET_QUOTE_ID_KEY, quoteInfo.getQuote().getId());
         AndroidUtils.openAddWidgetDialog(this, QuoteWidgetProvider.class);
     }
 

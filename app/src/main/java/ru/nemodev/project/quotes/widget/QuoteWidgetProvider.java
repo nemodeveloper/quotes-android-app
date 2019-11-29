@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 
 public class QuoteWidgetProvider extends AppWidgetProvider {
@@ -37,13 +36,8 @@ public class QuoteWidgetProvider extends AppWidgetProvider {
     }
 
     private void notifyQuoteService(Context context, int... appWidgetIds) {
-        Intent intent = new Intent(context, QuoteWidgetService.class);
+        Intent intent = new Intent(context.getApplicationContext(), QuoteWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+        context.startService(intent);
     }
 }

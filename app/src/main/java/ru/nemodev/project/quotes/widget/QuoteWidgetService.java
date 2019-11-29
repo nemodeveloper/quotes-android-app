@@ -1,12 +1,12 @@
 package ru.nemodev.project.quotes.widget;
 
+import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.JobIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -20,37 +20,34 @@ import ru.nemodev.project.quotes.service.quote.QuoteService;
 import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
-public class QuoteWidgetService extends JobIntentService {
+public class QuoteWidgetService extends Service {
 
     private static final QuoteService quoteService = QuoteService.getInstance();
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-
-        int result = super.onStartCommand(intent, flags, startId);
-        if (result == JobIntentService.START_NOT_STICKY) {
-            onHandleWork(intent);
-        }
-
-        return result;
-    }
-
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
         int[] widgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
 
         for (int widgetId : widgetIds) {
-            RemoteViews remoteViews = WidgetUtils.getWidgetView(getApplicationContext(), widgetId);
+            RemoteViews remoteViews = WidgetUtils.getWidgetView(getBaseContext(), widgetId);
             updateQuote(widgetId, remoteViews);
         }
+
+        stopSelf();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     private void updateQuote(final int appWidgetId, final RemoteViews remoteViews) {
         if (AndroidApplication.getInstance().getAppSetting().getBoolean(WidgetUtils.IS_PURCHASE_QUOTE_WIDGET_KEY)) {
-            Long selectQuoteId = AndroidApplication.getInstance().getAppSetting().getLong(WidgetUtils.QUOTE_ID_BUNDLE_KEY);
+            Long selectQuoteId = AndroidApplication.getInstance().getAppSetting().getLong(WidgetUtils.WIDGET_QUOTE_ID_KEY);
             if (selectQuoteId != null && selectQuoteId != 0L) {
-                AndroidApplication.getInstance().getAppSetting().removeValue(WidgetUtils.QUOTE_ID_BUNDLE_KEY);
-
+                AndroidApplication.getInstance().getAppSetting().removeValue(WidgetUtils.WIDGET_QUOTE_ID_KEY);
                 try {
                     QuoteInfo quoteInfo = quoteService.getById(selectQuoteId).blockingFirst();
                     updateQuoteInfo(appWidgetId, remoteViews,

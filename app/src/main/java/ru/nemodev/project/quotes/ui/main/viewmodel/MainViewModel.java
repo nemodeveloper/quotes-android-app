@@ -64,7 +64,10 @@ public class MainViewModel extends ViewModel implements AdsBanner.OnAdsListener 
 
             bannerManager = new BannerManager(activity, Arrays.asList(simpleBanner, fullscreenBanner));
         }
+    }
 
+    public void onWidgetBuy(Boolean isBuy) {
+        AndroidApplication.getInstance().getAppSetting().setBoolean(WidgetUtils.IS_PURCHASE_QUOTE_WIDGET_KEY, isBuy);
     }
 
     @Override
