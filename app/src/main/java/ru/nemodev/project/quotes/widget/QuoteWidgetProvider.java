@@ -36,7 +36,7 @@ public class QuoteWidgetProvider extends AppWidgetProvider {
     }
 
     private void notifyQuoteService(Context context, int... appWidgetIds) {
-        Intent intent = new Intent(context.getApplicationContext(), QuoteWidgetService.class);
+        Intent intent = new Intent(context, QuoteWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         context.startService(intent);
     }

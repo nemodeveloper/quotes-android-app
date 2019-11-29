@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: "androidx.navigation.safeargs"
-apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 buildscript {
