@@ -138,15 +138,4 @@ public final class QuoteUtils
     {
         return quoteInfo.getQuote();
     }
-
-    public static QuoteInfo getQuoteForWidget(List<QuoteInfo> quoteInfoList)
-    {
-        for (QuoteInfo quoteInfo : quoteInfoList)
-        {
-            if (quoteInfo.getQuote().getText().length() < 100)
-                return quoteInfo;
-        }
-
-        return quoteInfoList.get(0);
-    }
 }

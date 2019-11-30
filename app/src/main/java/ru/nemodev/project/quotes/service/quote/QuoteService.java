@@ -20,7 +20,7 @@ import ru.nemodev.project.quotes.repository.db.room.AppDataBase;
 
 
 public class QuoteService {
-    private static volatile QuoteService instance = new QuoteService();
+    private static final QuoteService instance = new QuoteService();
 
     private final QuoteRepository quoteRepository;
     private final QuoteApi quoteApi;
@@ -49,14 +49,16 @@ public class QuoteService {
                     .subscribeOn(Schedulers.io());
     }
 
-    public Observable<List<QuoteInfo>> getRandomForWidget(Integer count) {
+    public Observable<List<QuoteInfo>> getRandomForWidget() {
         Observable<List<QuoteInfo>> gatewayObservable = quoteApi
-                .getRandom(Collections.singletonMap("count", count.toString()))
+                .getRandom(Collections.singletonMap("count", "100"))
                 .map(this::saveToDataBase)
+                .filter(quoteInfos -> CollectionUtils.filter(quoteInfos,
+                        object -> object.getQuote().getText().length() < 101))
                 .onErrorResumeNext(Observable.empty());
 
         return Observable.concat(
-                quoteRepository.getRandom(count),
+                quoteRepository.getRandomForWidget(),
                 gatewayObservable)
                 .filter(CollectionUtils::isNotEmpty)
                 .first(Collections.emptyList())

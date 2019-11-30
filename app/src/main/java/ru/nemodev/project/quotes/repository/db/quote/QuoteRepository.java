@@ -26,6 +26,10 @@ public abstract class QuoteRepository
     public abstract Observable<List<QuoteInfo>> getRandom(int count);
 
     @Transaction
+    @Query("SELECT * FROM quotes WHERE length(quotes.text) < 101 ORDER BY RANDOM() LIMIT 1")
+    public abstract Observable<List<QuoteInfo>> getRandomForWidget();
+
+    @Transaction
     @Query("SELECT * FROM quotes WHERE id = :id")
     public abstract Observable<QuoteInfo> getById(Long id);
 

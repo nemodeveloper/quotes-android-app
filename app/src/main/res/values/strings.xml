@@ -42,7 +42,7 @@
     <!-- Виджет -->
     <string name="widget_update_info">Подбираем для вас цитату…</string>
     <string name="widget_not_purchase">Для просмотра цитат с помощью виджета необходимо перейти в приложение, раздел покупки и приобрести виджет!</string>
-    <string name="widget_update_error">Произошла ошибка, попробуйте пересоздать виджет!</string>
+    <string name="widget_update_error">Произошла ошибка подбора цитат, попробуйте пересоздать виджет и проверьте подключение к интернету!</string>
 
     <!-- Меню -->
     <string name="nav_title">Цитаты великих людей</string>
@@ -85,8 +85,9 @@
 
     <!-- Ошибки -->
     <string name="quote_like_error">Произошла ошибка, попробуйте повторить действие позже</string>
-    <string name="load_message">Загрузка...</string>
+    <string name="load_message">Загрузка…</string>
 
+    <!--  Обновление приложения  -->
     <string name="app_update_ready_title">Приложение готово к обновлению</string>
     <string name="app_update_yes">Обновить</string>
     <string name="app_update_no">Позже</string>

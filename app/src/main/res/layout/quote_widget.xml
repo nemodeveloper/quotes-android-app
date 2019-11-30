@@ -33,8 +33,8 @@
             android:text="@string/dev_author_name"/>
         <ImageView
             android:id="@+id/updateWidgetButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/quoteAuthorName"
             android:layout_alignParentEnd="true"
             android:scaleType="centerCrop"
