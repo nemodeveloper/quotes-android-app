@@ -3,11 +3,13 @@ package ru.nemodev.project.quotes.ui.main;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -124,11 +126,19 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void openQuoteFragment(Category category) {
-        navController.navigate(CategoryListFragmentDirections.actionOpenCategoryDetail(category.getId(), category.getName()));
+        navigate(CategoryListFragmentDirections.actionOpenCategoryDetail(category.getId(), category.getName()));
     }
 
     public void openQuoteFragment(Author author) {
-        navController.navigate(AuthorListFragmentDirections.actionOpenAuthorDetail(author.getId(), author.getFullName()));
+        navigate(AuthorListFragmentDirections.actionOpenAuthorDetail(author.getId(), author.getFullName()));
+    }
+
+    private void navigate(@NonNull NavDirections directions) {
+        if (navController.getCurrentDestination() != null
+                && navController.getCurrentDestination().getAction(directions.getActionId()) != null
+                && navController.getCurrentDestination().getId() != directions.getActionId()) {
+            navController.navigate(directions);
+        }
     }
 
     @Override

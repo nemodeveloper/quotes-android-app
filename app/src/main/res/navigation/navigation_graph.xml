@@ -9,7 +9,7 @@
         android:id="@+id/navigation_random_quote"
         android:name="ru.nemodev.project.quotes.ui.quote.random.RandomQuoteListFragment"
         android:label="@string/random_title"
-        tools:layout="@layout/random_quote_fragment" >
+        tools:layout="@layout/quote_list_fragment" >
         <action
             android:id="@+id/action_open_author_detail"
             app:destination="@+id/navigation_author_detail"
