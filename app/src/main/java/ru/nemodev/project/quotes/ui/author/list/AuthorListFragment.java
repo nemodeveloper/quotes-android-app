@@ -69,7 +69,7 @@ public class AuthorListFragment extends BaseFragment {
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         LiveDataReactiveStreams.fromPublisher(
-            RxSearchObservable.fromview(searchView)
+            RxSearchObservable.fromView(searchView)
                     .debounce(1000, TimeUnit.MILLISECONDS)
                     .distinctUntilChanged()
                     .subscribeOn(Schedulers.io())
