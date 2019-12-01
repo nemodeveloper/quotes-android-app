@@ -54,7 +54,6 @@ public class RandomQuoteListFragment extends BaseFragment {
         binding.quoteList.setAdapter(adapter);
         viewModel.randomQuoteList.observe(this,
                 quoteInfos -> adapter.submitList(quoteInfos, () -> {
-                    binding.quoteList.scrollToPosition(0);
                     binding.swipeRefresh.setRefreshing(false);
                     hideLoader();
                 }));

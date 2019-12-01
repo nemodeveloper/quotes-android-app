@@ -72,6 +72,7 @@
 
     <!-- Диалоги отправки контента -->
     <string name="share_quote_dialog_title">Поделиться цитатой</string>
+    <string name="quote_action_copy">Цитата скопирована</string>
 
     <string name="author_unknown_name">Автор не известен</string>
 

@@ -47,7 +47,6 @@ public final class AnalyticUtils {
         AndroidApplication.getAnalytics().logEvent(RateType.EVENT_NAME, bundle);
     }
 
-
     public static void viewEvent(ViewType viewType) {
         viewEvent(viewType, new Bundle());
     }
@@ -75,7 +74,8 @@ public final class AnalyticUtils {
     }
 
     public enum ShareType {
-        QUOTE("Поделиться цитатой");
+        QUOTE("Поделиться цитатой"),
+        QUOTE_COPY("Копирование цитаты");
 
         private final String typeName;
 

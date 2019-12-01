@@ -98,6 +98,7 @@ public class QuoteInfo implements Serializable
         }
         Quote what = ((QuoteInfo) obj).getQuote();
         return quote.getId().equals(what.getId())
+                && quote.getText().equals(what.getText())
                 && quote.getLiked().equals(what.getLiked());
     }
 }

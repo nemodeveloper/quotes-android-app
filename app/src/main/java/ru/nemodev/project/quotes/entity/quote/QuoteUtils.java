@@ -9,11 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.entity.author.AuthorUtils;
 import ru.nemodev.project.quotes.entity.category.CategoryUtils;
 import ru.nemodev.project.quotes.repository.api.dto.QuoteDTO;
-import ru.nemodev.project.quotes.utils.AndroidUtils;
 
 
 public final class QuoteUtils
@@ -21,13 +19,6 @@ public final class QuoteUtils
     public static final String QUOTE_AUTHOR_SYMBOL = "©";
 
     private QuoteUtils() {}
-
-    public static String getAuthorName(QuoteInfo quote)
-    {
-        return quote.getAuthor() == null
-                ? AndroidUtils.getString(R.string.author_unknown_name)
-                : quote.getAuthor().getFullName();
-    }
 
     public static String getQuoteSource(QuoteInfo quoteInfo, boolean inLine)
     {
@@ -46,7 +37,7 @@ public final class QuoteUtils
     {
         StringBuilder result = new StringBuilder(quoteInfo.getQuote().getText());
 
-        String quoteAuthor = getAuthorName(quoteInfo);
+        String quoteAuthor = quoteInfo.getAuthor().getFullName();
         if (StringUtils.isNotBlank(quoteAuthor))
             result.append("\n\n").append(QUOTE_AUTHOR_SYMBOL).append(quoteAuthor);
 

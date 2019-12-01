@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements
         purchaseViewModel = ViewModelProviders.of(this, new PurchaseViewModelFactory(this)).get(PurchaseViewModel.class);
         updateAppViewModel = ViewModelProviders.of(this, new UpdateAppViewModelFactory(this)).get(UpdateAppViewModel.class);
 
-
+        // navigation
         setSupportActionBar(binding.toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(binding.drawerLayout).build();
@@ -77,9 +77,11 @@ public class MainActivity extends AppCompatActivity implements
         NavigationUI.setupWithNavController(binding.navView, navController);
         binding.navView.setNavigationItemSelectedListener(this);
 
+        // main viewmodel
         mainViewModel.buyAdsRequest.observe(this, aBoolean -> showDisableAdsDialog());
         updateAppViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
 
+        // purchase viewmodel
         purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
         purchaseViewModel.onAdsByEvent.observe(this, mainViewModel::onAdsBuy);
         purchaseViewModel.onWidgetByEvent.observe(this, mainViewModel::onWidgetBuy);
@@ -193,6 +195,13 @@ public class MainActivity extends AppCompatActivity implements
         AnalyticUtils.viewEvent(AnalyticUtils.ViewType.QUOTE_TO_WIDGET);
         AndroidApplication.getInstance().getAppSetting().setLong(WidgetUtils.WIDGET_QUOTE_ID_KEY, quoteInfo.getQuote().getId());
         AndroidUtils.openAddWidgetDialog(this, QuoteWidgetProvider.class);
+    }
+
+    @Override
+    public void onCopyClick(QuoteInfo quoteInfo) {
+        AnalyticUtils.shareEvent(AnalyticUtils.ShareType.QUOTE_COPY);
+        AndroidUtils.copyTextToClipBoard(QuoteUtils.getQuoteTextForShare(quoteInfo));
+        AndroidUtils.showSnackBarMessage(binding.getRoot(), R.string.quote_action_copy);
     }
 
     private void showUpdateDialog() {

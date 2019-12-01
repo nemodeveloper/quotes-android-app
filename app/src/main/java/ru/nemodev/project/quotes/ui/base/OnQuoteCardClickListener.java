@@ -11,4 +11,5 @@ public interface OnQuoteCardClickListener
     void onLikeClick(QuoteInfo quoteInfo);
     void onShareClick(QuoteInfo quoteInfo);
     void onWidgetClick(QuoteInfo quoteInfo);
+    void onCopyClick(QuoteInfo quoteInfo);
 }
