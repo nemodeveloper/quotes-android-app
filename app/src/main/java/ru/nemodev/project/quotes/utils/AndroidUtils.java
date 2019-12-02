@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -111,9 +113,21 @@ public final class AndroidUtils
     {
         try
         {
-            Snackbar
-                .make(whereShow, message, Snackbar.LENGTH_SHORT)
-                .show();
+            Snackbar snackbar = Snackbar.make(whereShow, message, Snackbar.LENGTH_SHORT);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+            // Для показа по размеру текста
+//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+//            params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+//            params.width = FrameLayout.LayoutParams.WRAP_CONTENT;
+//            snackbarView.setLayoutParams(params);
+
+            snackbar.show();
         }
         catch (Exception e)
         {

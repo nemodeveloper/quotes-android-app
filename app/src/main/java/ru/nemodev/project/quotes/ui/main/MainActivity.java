@@ -190,6 +190,11 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete() { }
                 });
+
+        AndroidUtils.showSnackBarMessage(binding.getRoot(),
+                likeQuote.getLiked()
+                        ? R.string.quote_action_like_notify
+                        : R.string.quote_action_unlike_notify);
     }
 
     @Override
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onCopyClick(QuoteInfo quoteInfo) {
         AnalyticUtils.shareEvent(AnalyticUtils.ShareType.QUOTE_COPY);
         AndroidUtils.copyTextToClipBoard(QuoteUtils.getQuoteTextForShare(quoteInfo));
-        AndroidUtils.showSnackBarMessage(binding.getRoot(), R.string.quote_action_copy);
+        AndroidUtils.showSnackBarMessage(binding.getRoot(), R.string.quote_action_copy_notify);
     }
 
     private void showUpdateDialog() {

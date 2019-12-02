@@ -35,17 +35,10 @@
         <item>quote_dev_ty</item>
     </array>
 
-    <string name="purchase_already_do_detail">Покупка «%s» уже совершена!</string>
-
-    <string name="purchase_empty_list">Список покупок временно недоступен. Проверьте подключение к сети интернет или перезапустите приложение.</string>
-
     <!-- Виджет -->
     <string name="widget_update_info">Подбираем для вас цитату…</string>
     <string name="widget_not_purchase">Для просмотра цитат с помощью виджета необходимо перейти в приложение, раздел покупки и приобрести виджет!</string>
     <string name="widget_update_error">Произошла ошибка подбора цитат, попробуйте пересоздать виджет и проверьте подключение к интернету!</string>
-
-    <!-- Меню -->
-    <string name="nav_title">Цитаты великих людей</string>
 
     <!-- Приложение -->
     <string name="app_name">Цитаты</string>
@@ -55,6 +48,8 @@
     <string name="dev_author_name">Разработчик</string>
 
     <!-- Меню -->
+    <string name="nav_title">Цитаты великих людей</string>
+
     <string name="random_title">Случайные</string>
     <string name="category_title">Категории</string>
     <string name="author_title">Авторы</string>
@@ -72,9 +67,6 @@
 
     <!-- Диалоги отправки контента -->
     <string name="share_quote_dialog_title">Поделиться цитатой</string>
-    <string name="quote_action_copy">Цитата скопирована</string>
-
-    <string name="author_unknown_name">Автор не известен</string>
 
     <!-- not full quote info warning message -->
     <string name="connect_off_message">Для корректной работы приложения необходимо подключение к сети интернет!</string>
@@ -92,5 +84,14 @@
     <string name="app_update_ready_title">Приложение готово к обновлению</string>
     <string name="app_update_yes">Обновить</string>
     <string name="app_update_no">Позже</string>
+
+    <!--  Всплывающие уведомления  -->
+    <string name="purchase_already_do_detail">Покупка «%s» уже совершена</string>
+    <string name="purchase_empty_list">Список покупок временно недоступен. Проверьте подключение к сети интернет или перезапустите приложение</string>
+
+    <string name="quote_action_copy_notify">Цитата скопирована</string>
+
+    <string name="quote_action_like_notify">Цитата добавлена в избранное</string>
+    <string name="quote_action_unlike_notify">Цитата удалена из избранное</string>
 
 </resources>

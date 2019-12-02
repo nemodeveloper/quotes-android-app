@@ -6,8 +6,7 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="quote_like_margin_right">16dp</dimen>
-    <dimen name="quote_but_like_size">30dp</dimen>
-
-    <dimen name="quote_but_share_size">30dp</dimen>
+    <dimen name="quote_action_margin_right">12dp</dimen>
+    <dimen name="quote_action_size">25dp</dimen>
+    <dimen name="quote_action_margin_right_size_last">8dp</dimen>
 </resources>
