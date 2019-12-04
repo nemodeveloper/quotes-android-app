@@ -31,14 +31,6 @@ repositories {
 }
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'nemodev-quotes'
-            keyPassword 'dsytujnjds1'
-            storeFile file('D:/work/android-keystore/nemodev-quotes.jks')
-            storePassword 'dsytujnjds1'
-        }
-    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.nemodev.project.quotes"
@@ -68,7 +60,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.config
         }
     }
     compileOptions {
