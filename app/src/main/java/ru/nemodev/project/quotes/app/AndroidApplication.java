@@ -4,6 +4,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import io.fabric.sdk.android.Fabric;
+import ru.nemodev.project.quotes.app.config.FirebaseConfig;
 
 
 public class AndroidApplication extends android.app.Application {
@@ -16,6 +17,7 @@ public class AndroidApplication extends android.app.Application {
         super.onCreate();
         instance = this;
 
+        FirebaseConfig.getInstance();
         appSetting = new AppSetting(getApplicationContext());
         initCrashlytics();
     }

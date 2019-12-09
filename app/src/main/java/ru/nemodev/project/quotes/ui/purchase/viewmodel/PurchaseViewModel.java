@@ -43,7 +43,7 @@ public class PurchaseViewModel extends ViewModel {
     }
 
     public void checkPurchase() {
-        onAdsByEvent.postValue(purchaseService.isPurchase(PurchaseType.QUOTE_ADB));
+        onAdsByEvent.postValue(purchaseService.isPurchase(PurchaseType.QUOTE_ADS));
         onWidgetByEvent.postValue(purchaseService.isPurchase(PurchaseType.QUOTE_WIDGET));
     }
 }

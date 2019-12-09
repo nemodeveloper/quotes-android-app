@@ -1,4 +1,4 @@
-package ru.nemodev.project.quotes.ui.main.viewmodel;
+package ru.nemodev.project.quotes.ui.main.viewmodel.update_app;
 
 import android.app.Activity;
 

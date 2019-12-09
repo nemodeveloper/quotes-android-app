@@ -19,7 +19,6 @@
 
     <string name="ads_fullscreen_banner_id">ca-app-pub-5449253846737836/6488703104</string>
     <string name="ads_fullscreen_banner_id_test">ca-app-pub-3940256099942544/1033173712</string>
-    <integer name="ads_fullscreen_banner_show_period">3</integer>
 
     <string name="adb_disable_dialog_title">Отключить рекламу?</string>
     <string name="adb_disable_dialog_positive">Отключить</string>

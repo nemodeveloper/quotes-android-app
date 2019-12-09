@@ -24,16 +24,16 @@ public class FullscreenBanner implements AdsBanner
 
     private final Context context;
     private final OnAdsListener onAdsListener;
-    private final int showPeriodMinute;
+    private final int showPeriodSeconds;
 
     private PublisherInterstitialAd fullScreenBanner;
     private Disposable fullScreenBannerDisposable;
 
-    public FullscreenBanner(Context context, OnAdsListener onAdsListener, int showPeriodMinute)
+    public FullscreenBanner(Context context, OnAdsListener onAdsListener, int showPeriodSeconds)
     {
         this.context = context;
         this.onAdsListener = onAdsListener;
-        this.showPeriodMinute = showPeriodMinute;
+        this.showPeriodSeconds = showPeriodSeconds;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FullscreenBanner implements AdsBanner
                 }
             });
 
-            fullScreenBannerDisposable = Observable.interval(showPeriodMinute, TimeUnit.MINUTES)
+            fullScreenBannerDisposable = Observable.interval(showPeriodSeconds, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> showFullScreenBanner(),

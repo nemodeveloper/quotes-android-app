@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>fullscreen_banner_show_period_sec</key>
+        <value>180</value>
+    </entry>
+</defaultsMap>
+<!-- END xml_defaults -->

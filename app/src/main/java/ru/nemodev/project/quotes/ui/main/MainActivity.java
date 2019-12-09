@@ -38,8 +38,10 @@ import ru.nemodev.project.quotes.ui.base.OnQuoteCardClickListener;
 import ru.nemodev.project.quotes.ui.category.list.CategoryListFragmentDirections;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModel;
 import ru.nemodev.project.quotes.ui.main.viewmodel.MainViewModelFactory;
-import ru.nemodev.project.quotes.ui.main.viewmodel.UpdateAppViewModel;
-import ru.nemodev.project.quotes.ui.main.viewmodel.UpdateAppViewModelFactory;
+import ru.nemodev.project.quotes.ui.main.viewmodel.ads.AdsViewModel;
+import ru.nemodev.project.quotes.ui.main.viewmodel.ads.AdsViewModelFactory;
+import ru.nemodev.project.quotes.ui.main.viewmodel.update_app.UpdateAppViewModel;
+import ru.nemodev.project.quotes.ui.main.viewmodel.update_app.UpdateAppViewModelFactory;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModel;
 import ru.nemodev.project.quotes.ui.purchase.viewmodel.PurchaseViewModelFactory;
 import ru.nemodev.project.quotes.utils.AnalyticUtils;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements
     private MainViewModel mainViewModel;
     private PurchaseViewModel purchaseViewModel;
     private UpdateAppViewModel updateAppViewModel;
+    private AdsViewModel adsViewModel;
     private MainActivityBinding binding;
 
     @Override
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
         mainViewModel = ViewModelProviders.of(this, new MainViewModelFactory(this)).get(MainViewModel.class);
         purchaseViewModel = ViewModelProviders.of(this, new PurchaseViewModelFactory(this)).get(PurchaseViewModel.class);
         updateAppViewModel = ViewModelProviders.of(this, new UpdateAppViewModelFactory(this)).get(UpdateAppViewModel.class);
+        adsViewModel = ViewModelProviders.of(this, new AdsViewModelFactory(this)).get(AdsViewModel.class);
 
         // navigation
         setSupportActionBar(binding.toolbar);
@@ -84,8 +88,11 @@ public class MainActivity extends AppCompatActivity implements
         updateAppViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
 
         // purchase viewmodel
-        purchaseViewModel.onPurchaseEvent.observe(this, purchase -> mainViewModel.onPurchase(purchase));
-        purchaseViewModel.onAdsByEvent.observe(this, mainViewModel::onAdsBuy);
+        purchaseViewModel.onPurchaseEvent.observe(this, purchase ->  {
+            mainViewModel.onPurchase(purchase);
+            adsViewModel.onBuyEvent(purchase);
+        });
+        purchaseViewModel.onAdsByEvent.observe(this, adsViewModel::onAdsBuyEvent);
         purchaseViewModel.onWidgetByEvent.observe(this, mainViewModel::onWidgetBuy);
         purchaseViewModel.purchaseList.observe(this, purchaseItems -> purchaseViewModel.checkPurchase());
     }
@@ -243,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements
         try {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.adb_disable_dialog_title)
-                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> purchaseViewModel.buy(PurchaseType.QUOTE_ADB))
+                    .setPositiveButton(R.string.adb_disable_dialog_positive, (dialog, which) -> purchaseViewModel.buy(PurchaseType.QUOTE_ADS))
                     .setNeutralButton(R.string.adb_disable_dialog_neutral, (dialog, which) -> {})
                     .setCancelable(true)
                     .create()
