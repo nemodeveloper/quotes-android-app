@@ -34,7 +34,6 @@ import java.util.concurrent.Executors;
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.AndroidApplication;
 import ru.nemodev.project.quotes.app.config.AdsConfig;
-import ru.nemodev.project.quotes.app.config.FirebaseConfig;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.ui.purchase.source.PurchaseListDataSource;
@@ -137,7 +136,7 @@ public class PurchaseService implements PurchasesUpdatedListener {
                 }
             }
 
-            if (!FirebaseConfig.getBoolean(AdsConfig.NEED_SHOW_ADS)) {
+            if (!AdsConfig.isShowSomeAds()) {
                 Iterator<PurchaseItem> purchaseItemIterator = purchaseItems.iterator();
                 while (purchaseItemIterator.hasNext()) {
                     if (PurchaseType.QUOTE_ADS.equals(purchaseItemIterator.next().getPurchaseType())) {

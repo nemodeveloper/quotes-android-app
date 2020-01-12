@@ -6,7 +6,11 @@
         <value>180</value>
     </entry>
     <entry>
-        <key>need_show_ads</key>
+        <key>show_simple_banner_ads</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>show_fullscreen_banner_ads</key>
         <value>true</value>
     </entry>
 </defaultsMap>

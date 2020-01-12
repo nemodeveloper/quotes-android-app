@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.billingclient.api.Purchase;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.ads.AdsBanner;
@@ -16,7 +17,6 @@ import ru.nemodev.project.quotes.ads.BannerManager;
 import ru.nemodev.project.quotes.ads.FullscreenBanner;
 import ru.nemodev.project.quotes.ads.SimpleBanner;
 import ru.nemodev.project.quotes.app.config.AdsConfig;
-import ru.nemodev.project.quotes.app.config.FirebaseConfig;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.utils.LogUtils;
 
@@ -56,13 +56,17 @@ public class AdsViewModel extends ViewModel implements AdsBanner.OnAdsListener {
             }
         }
         else {
-            if (FirebaseConfig.getBoolean(AdsConfig.NEED_SHOW_ADS) && bannerManager == null) {
+            if (AdsConfig.isShowSomeAds() && bannerManager == null) {
                 try {
-                    bannerManager = new BannerManager(activity, Arrays.asList(
-                            new SimpleBanner(activity.findViewById(R.id.adView)),
-                            new FullscreenBanner(activity, this,
-                                    FirebaseConfig.getInteger(AdsConfig.FULLSCREEN_BANNER_SHOW_PERIOD_SEC))
-                    ));
+                    List<AdsBanner> banners = new ArrayList<>();
+                    if (AdsConfig.isShowSimpleBanner()) {
+                        banners.add(new SimpleBanner(activity.findViewById(R.id.adView)));
+                    }
+                    if (AdsConfig.isShowFullscreenBanner()) {
+                        new FullscreenBanner(activity, this, AdsConfig.getFullscreenBannerShowPeriodSec());
+                    }
+
+                    bannerManager = new BannerManager(activity, banners);
                 }
                 catch (Exception e) {
                     LogUtils.error(LOG_TAG, "Ошибка показа рекламы!", e);
