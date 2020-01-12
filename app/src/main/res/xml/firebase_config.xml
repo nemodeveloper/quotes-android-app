@@ -5,5 +5,9 @@
         <key>fullscreen_banner_show_period_sec</key>
         <value>180</value>
     </entry>
+    <entry>
+        <key>need_show_ads</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>
 <!-- END xml_defaults -->

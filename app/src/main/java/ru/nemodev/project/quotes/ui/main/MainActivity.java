@@ -84,8 +84,10 @@ public class MainActivity extends AppCompatActivity implements
         binding.navView.setNavigationItemSelectedListener(this);
 
         // main viewmodel
-        mainViewModel.buyAdsRequest.observe(this, aBoolean -> showDisableAdsDialog());
         updateAppViewModel.updateAppEvent.observe(this, installState -> this.showUpdateDialog());
+
+        // ads viewmodel
+        adsViewModel.getOnFullscreenBannerCloseEvent().observe(this, aBoolean -> showDisableAdsDialog());
 
         // purchase viewmodel
         purchaseViewModel.onPurchaseEvent.observe(this, purchase ->  {

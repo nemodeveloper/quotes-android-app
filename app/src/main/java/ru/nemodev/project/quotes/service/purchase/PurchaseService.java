@@ -24,6 +24,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,8 @@ import java.util.concurrent.Executors;
 
 import ru.nemodev.project.quotes.R;
 import ru.nemodev.project.quotes.app.AndroidApplication;
+import ru.nemodev.project.quotes.app.config.AdsConfig;
+import ru.nemodev.project.quotes.app.config.FirebaseConfig;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseItem;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
 import ru.nemodev.project.quotes.ui.purchase.source.PurchaseListDataSource;
@@ -131,6 +134,16 @@ public class PurchaseService implements PurchasesUpdatedListener {
                 for (SkuDetails skuDetails : skuDetailsList) {
                     skuDetailsMap.put(skuDetails.getSku(), skuDetails);
                     purchaseItems.add(new PurchaseItem(skuDetails, purchaseSkuList.contains(skuDetails.getSku())));
+                }
+            }
+
+            if (!FirebaseConfig.getBoolean(AdsConfig.NEED_SHOW_ADS)) {
+                Iterator<PurchaseItem> purchaseItemIterator = purchaseItems.iterator();
+                while (purchaseItemIterator.hasNext()) {
+                    if (PurchaseType.QUOTE_ADS.equals(purchaseItemIterator.next().getPurchaseType())) {
+                        purchaseItemIterator.remove();
+                        break;
+                    }
                 }
             }
 

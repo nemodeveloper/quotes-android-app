@@ -17,8 +17,6 @@ import ru.nemodev.project.quotes.widget.WidgetUtils;
 
 public class MainViewModel extends ViewModel {
 
-    public final MutableLiveData<Boolean> buyAdsRequest;
-
     public final MutableLiveData<NetworkInfo.State> networkState;
     private final Disposable internetEventsDisposable;
 
@@ -26,7 +24,6 @@ public class MainViewModel extends ViewModel {
 
     public MainViewModel(Activity activity) {
         this.activity = activity;
-        buyAdsRequest = new MutableLiveData<>();
         networkState = new MutableLiveData<>();
         internetEventsDisposable = NetworkUtils.getNetworkObservable()
                 .subscribe(connectivity -> networkState.postValue(connectivity.state()));

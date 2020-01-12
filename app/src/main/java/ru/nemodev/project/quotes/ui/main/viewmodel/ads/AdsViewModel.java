@@ -18,9 +18,13 @@ import ru.nemodev.project.quotes.ads.SimpleBanner;
 import ru.nemodev.project.quotes.app.config.AdsConfig;
 import ru.nemodev.project.quotes.app.config.FirebaseConfig;
 import ru.nemodev.project.quotes.entity.purchase.PurchaseType;
+import ru.nemodev.project.quotes.utils.LogUtils;
 
 
 public class AdsViewModel extends ViewModel implements AdsBanner.OnAdsListener {
+
+    private static final String LOG_TAG = AdsViewModel.class.getSimpleName();
+
     private final Activity activity;
     private BannerManager bannerManager;
     private final MutableLiveData<Boolean> onFullscreenBannerCloseEvent;
@@ -52,11 +56,18 @@ public class AdsViewModel extends ViewModel implements AdsBanner.OnAdsListener {
             }
         }
         else {
-            bannerManager = new BannerManager(activity, Arrays.asList(
-                    new SimpleBanner(activity.findViewById(R.id.adView)),
-                    new FullscreenBanner(activity, this,
-                            FirebaseConfig.getInteger(AdsConfig.FULLSCREEN_BANNER_SHOW_PERIOD_SEC))
-            ));
+            if (FirebaseConfig.getBoolean(AdsConfig.NEED_SHOW_ADS) && bannerManager == null) {
+                try {
+                    bannerManager = new BannerManager(activity, Arrays.asList(
+                            new SimpleBanner(activity.findViewById(R.id.adView)),
+                            new FullscreenBanner(activity, this,
+                                    FirebaseConfig.getInteger(AdsConfig.FULLSCREEN_BANNER_SHOW_PERIOD_SEC))
+                    ));
+                }
+                catch (Exception e) {
+                    LogUtils.error(LOG_TAG, "Ошибка показа рекламы!", e);
+                }
+            }
         }
     }
 }

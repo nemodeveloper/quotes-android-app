@@ -1,6 +1,7 @@
 package ru.nemodev.project.quotes.app.config;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import ru.nemodev.project.quotes.R;
 
@@ -12,6 +13,10 @@ public final class FirebaseConfig {
 
     private FirebaseConfig() {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(300)
+                .build();
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         firebaseRemoteConfig.setDefaultsAsync(R.xml.firebase_config);
         firebaseRemoteConfig.fetchAndActivate();
     }
@@ -30,5 +35,9 @@ public final class FirebaseConfig {
 
     public static Integer getInteger(String key) {
         return (int) instance.firebaseRemoteConfig.getLong(key);
+    }
+
+    public static boolean getBoolean(String key) {
+        return instance.firebaseRemoteConfig.getBoolean(key);
     }
 }
