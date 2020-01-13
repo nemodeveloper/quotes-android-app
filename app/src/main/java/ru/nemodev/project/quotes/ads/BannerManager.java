@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.google.android.gms.ads.MobileAds;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +19,10 @@ public class BannerManager {
     public BannerManager(Context context, List<AdsBanner> adsBannerList) {
         MobileAds.initialize(context, AndroidUtils.getString(R.string.ads_app_id));
 
-        this.adsBannerList = Collections.unmodifiableList(adsBannerList);
+        this.adsBannerList = CollectionUtils.isEmpty(adsBannerList)
+                ? Collections.emptyList()
+                : Collections.unmodifiableList(adsBannerList);
+
         for (AdsBanner adsBanner : adsBannerList) {
             adsBanner.show();
         }

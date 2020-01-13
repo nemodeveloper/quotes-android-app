@@ -63,7 +63,7 @@ public class AdsViewModel extends ViewModel implements AdsBanner.OnAdsListener {
                         banners.add(new SimpleBanner(activity.findViewById(R.id.adView)));
                     }
                     if (AdsConfig.isShowFullscreenBanner()) {
-                        new FullscreenBanner(activity, this, AdsConfig.getFullscreenBannerShowPeriodSec());
+                        banners.add(new FullscreenBanner(activity, this, AdsConfig.getFullscreenBannerShowPeriodSec()));
                     }
 
                     bannerManager = new BannerManager(activity, banners);
